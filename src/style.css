@@ -315,3 +315,4 @@ h1, h2, h3 { font-family: var(--font-cond); text-wrap: balance; }
 .legal ul { margin: 0 0 10px; padding-left: 20px; color: var(--ink-2); }
 .legal li { margin-bottom: 6px; }
 .legal a { color: var(--red); font-weight: 600; }
+.legal address { font-style: normal; color: var(--ink); margin: 0 0 10px; }

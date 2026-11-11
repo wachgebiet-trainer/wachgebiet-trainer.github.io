@@ -509,11 +509,22 @@ function renderLegal() {
   return `${header()}
   <button class="back" data-act="home">← Alle Wachen</button>
   <article class="legal">
-    <h2>Über den Wachgebiet-Trainer</h2>
+    <h2>Impressum</h2>
+    <p><strong>Angaben gemäß § 5 DDG</strong></p>
+    <address>
+      Vincent Wolf<br />
+      Am Rain 8<br />
+      13591 Berlin
+    </address>
+    <p><strong>Kontakt</strong><br />Telefon: 0162 9033110</p>
+    <p><strong>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV:</strong><br />Vincent Wolf, Anschrift wie oben</p>
+
+    <h3>Über den Wachgebiet-Trainer</h3>
     <p>Der Wachgebiet-Trainer ist ein privates, nicht-kommerzielles Projekt von <strong>Vincent Wolf</strong>.
       Er hilft Einsatzkräften der Berufsfeuerwehr und der Freiwilligen Feuerwehren in Berlin, die Straßen und Bahnhöfe
       in ihrem Wachgebiet zu lernen.</p>
-    <p>Idee, Gestaltung und Umsetzung: Vincent Wolf. © ${new Date().getFullYear()} Vincent Wolf. Alle Rechte an Gestaltung und Programmcode vorbehalten,
+    <p>Inspiriert vom Ortskunde-Trainer „Wachgebiet“ (<a href="https://geo.knt-fw.de" target="_blank" rel="noopener">geo.knt-fw.de</a>).
+      Gestaltung und Umsetzung: Vincent Wolf. © ${new Date().getFullYear()} Vincent Wolf. Alle Rechte an Gestaltung und Programmcode vorbehalten,
       soweit nicht anders angegeben.</p>
     <p>Dies ist <strong>kein offizielles Angebot der Berliner Feuerwehr</strong> oder des Landes Berlin. Alle Angaben ohne Gewähr;
       maßgeblich für den Einsatz sind ausschließlich die dienstlichen Unterlagen und Systeme.</p>
@@ -527,7 +538,7 @@ function renderLegal() {
     </ul>
 
     <h3>Datenschutz</h3>
-    <p><strong>Verantwortlich:</strong> Vincent Wolf</p>
+    <p><strong>Verantwortlich:</strong> Vincent Wolf, Am Rain 8, 13591 Berlin, Telefon 0162 9033110</p>
     <p>Diese Seite verwendet keine Cookies, kein Tracking und keine Analyse-Werkzeuge. Es gibt keine Anmeldung,
       und es werden keine personenbezogenen Daten an den Betreiber übermittelt.</p>
     <p><strong>Speicherung auf deinem Gerät:</strong> Einstellungen und Trainingsfortschritt werden ausschließlich
@@ -549,10 +560,10 @@ function renderLegal() {
 
 function footer() {
   return `<footer class="foot">
-    <p class="credit">Erstellt von <strong>Vincent Wolf</strong> · © ${new Date().getFullYear()} Vincent Wolf</p>
+    <p class="credit">Erstellt von <strong>Vincent Wolf</strong> · © ${new Date().getFullYear()} Vincent Wolf · inspiriert von „Wachgebiet“ (geo.knt-fw.de)</p>
     <p class="disclaimer">Private Trainings-Anwendung – kein offizielles Angebot der Berliner Feuerwehr.</p>
     <p>Daten: Geoportal Berlin (Feuerwehr-Standorte, Detailnetz Berlin, dl-de/zero-2-0) · VBB · Karte © OpenFreeMap, © OpenStreetMap-Mitwirkende</p>
-    <p class="foot-links"><button class="link" data-act="legal">Über &amp; Datenschutz</button><button class="link" data-act="clear">Lokalen Fortschritt löschen</button></p>
+    <p class="foot-links"><button class="link" data-act="legal">Impressum &amp; Datenschutz</button><button class="link" data-act="clear">Lokalen Fortschritt löschen</button></p>
   </footer>`;
 }
 
