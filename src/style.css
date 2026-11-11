@@ -383,3 +383,5 @@ html:has(body.start-page), body.start-page { overflow: auto; height: auto; min-h
 .contact-card h2 { font-size: 24px; text-transform: uppercase; margin: 0 0 6px; color: var(--red); }
 .contact-card p { margin: 0 0 8px; color: var(--ink-2); line-height: 1.5; }
 .contact-mail a { font-family: var(--font-cond); font-size: 22px; font-weight: 800; color: var(--red); word-break: break-all; }
+.start-main .how { margin: 0 0 18px; }
+.start-main .how h2 { font-size: 20px; }

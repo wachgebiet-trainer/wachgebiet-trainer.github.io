@@ -180,7 +180,7 @@ for (const p of firePois) {
   stations.push({ number: numberOf(p.name, type), type, name: p.name, short, address: '', center: [+p.center[0].toFixed(6), +p.center[1].toFixed(6)] });
 }
 // Doppelte zusammenfassen, Sondereinrichtungen entfernen
-const refined = refineStations(stations);
+const refined = refineStations(stations, cfg.name);
 stations.length = 0;
 stations.push(...refined);
 // FF/RW direkt an einer BF-Wache (unter 60 m): Standort angleichen

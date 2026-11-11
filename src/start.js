@@ -66,7 +66,16 @@ function render(countsByCity = {}) {
   <main class="start-main">
     <section class="intro">
       <h1>Kenne dein <em>Wachgebiet.</em></h1>
-      <p>Straßen und Bahnhöfe rund um deine Wache lernen – auf einer Karte ohne Beschriftung. Wähle deine Stadt:</p>
+      <p>Straßen und Bahnhöfe rund um deine Wache lernen – auf einer Karte ohne Beschriftung.</p>
+    </section>
+    <section class="how">
+      <h2>So funktioniert's</h2>
+      <ol>
+        <li><b>Stadt wählen</b> – unten aus der Liste oder über die Suche.</li>
+        <li><b>Wache wählen</b> – Feuerwache, Freiwillige Feuerwehr oder Rettungswache.</li>
+        <li><b>Straße oder Bahnhof finden</b> – auf der Karte antippen, so genau wie möglich.</li>
+        <li><b>Abstand sehen</b> – Fehler kommen in späteren Runden öfter dran.</li>
+      </ol>
     </section>
     <div class="search-row city-search">
       <input id="city-search" type="search" placeholder="Stadt suchen" value="${esc(query)}" autocomplete="off" aria-label="Stadt suchen" />
@@ -79,14 +88,6 @@ function render(countsByCity = {}) {
       <h2>Deine Stadt fehlt?</h2>
       <p>Ich nehme gern weitere Städte auf. Schreib mir einfach, welche Stadt du dir wünschst – oder melde fehlende und falsche Wachen:</p>
       <p class="contact-mail"><a href="mailto:${CONTACT_MAIL}?subject=Wachgebiet-Trainer%3A%20Stadt%20vorschlagen">${CONTACT_MAIL}</a></p>
-    </section>
-    <section class="how">
-      <h2>So funktioniert's</h2>
-      <ol>
-        <li><b>Wache wählen</b> – Feuerwache, Freiwillige Feuerwehr oder Rettungswache.</li>
-        <li><b>Straße oder Bahnhof finden</b> – auf der Karte antippen, so genau wie möglich.</li>
-        <li><b>Abstand sehen</b> – Fehler kommen in späteren Runden öfter dran.</li>
-      </ol>
     </section>
     <footer class="foot">
       <p class="credit">Erstellt von <strong>Vincent Wolf</strong> · © ${new Date().getFullYear()} Vincent Wolf · inspiriert von „Wachgebiet“ (geo.knt-fw.de)</p>
