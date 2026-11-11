@@ -1,7 +1,7 @@
 [
   {"id":"aachen","name":"Aachen","kfz":"AC","source":"osm","gen":"Aachen","ars":"05334","bounds":[[5.9749,50.6489],[6.2169,50.8574]]},
   {"id":"augsburg","name":"Augsburg","kfz":"A","source":"osm","gen":"Augsburg","ars":"09761","bounds":[[10.7642,48.2582],[10.9592,48.4587]]},
-  {"id":"berlin","name":"Berlin","kfz":"B","source":"official","units":"Berufsfeuerwehr & Freiwillige Feuerwehren","bounds":[[13.08,52.33],[13.77,52.68]]},
+  {"id":"berlin","name":"Berlin","kfz":"B","source":"official","units":"Berufsfeuerwehr, Freiwillige Feuerwehren & Rettungswachen","bounds":[[13.08,52.33],[13.77,52.68]]},
   {"id":"bielefeld","name":"Bielefeld","kfz":"BI","source":"osm","gen":"Bielefeld","ars":"05711","bounds":[[8.3777,51.915],[8.6635,52.1148]]},
   {"id":"bochum","name":"Bochum","kfz":"BO","source":"osm","gen":"Bochum","ars":"05911","bounds":[[7.1042,51.4108],[7.3498,51.532]]},
   {"id":"bonn","name":"Bonn","kfz":"BN","source":"osm","gen":"Bonn","ars":"05314","bounds":[[7.0235,50.6319],[7.2107,50.7744]]},

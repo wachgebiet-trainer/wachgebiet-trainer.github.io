@@ -45,6 +45,16 @@ for (const f of fw) {
   if (p.wach_typ === 'FF') {
     stations.push({ number: String(p.wach_nr), type: 'FF', name: `Freiwillige Feuerwehr ${name}`, short: name, ...base });
   }
+  if (p.wach_typ === 'RW') {
+    // z. B. „RTW-FRIEDRICHSHAIN (KRH)“, „RTW-RAHNSDORF (ASB)“, „RW-RTH CHRISTOPH 31“
+    const org = (p.wach_name.match(/\(([^)]+)\)\s*$/) || [])[1];
+    const orgText = { KRH: 'am Krankenhaus', DRK: 'DRK', ASB: 'ASB', JUH: 'Johanniter', MHD: 'Malteser' }[org] ?? org;
+    let rwName;
+    if (/RTH/i.test(p.wach_name)) rwName = `Rettungshubschrauber ${titleCase(p.wach_name.replace(/^.*RTH\s*/i, ''))}`;
+    else if (/^Bw$/i.test(name)) rwName = 'Rettungswache Bundeswehrkrankenhaus';
+    else rwName = `Rettungswache ${name}${orgText ? ` (${orgText})` : ''}`;
+    stations.push({ number: String(p.wach_nr), type: 'RW', name: rwName, short: name, ...base });
+  }
   // FF-Einheiten, die an einer BF- oder RTW-Wache untergebracht sind
   if (p.ff_nr && p.ff_nr !== '-') {
     const host = p.wach_typ === 'BF' ? `Feuerwache ${name}` : `Rettungswache ${name}`;
@@ -144,7 +154,7 @@ fs.writeFileSync(path.join(out, 'streets.json'), JSON.stringify({ precision: PRE
 fs.writeFileSync(path.join(out, 'transit.json'), JSON.stringify({ stations: transit }));
 
 const count = (t) => stations.filter((s) => s.type === t).length;
-console.log(`Wachen: ${stations.length} (BF ${count('BF')}, FF ${count('FF')})`);
+console.log(`Wachen: ${stations.length} (BF ${count('BF')}, FF ${count('FF')}, RW ${count('RW')})`);
 console.log(`Straßen: ${names.length} Namen, ${segs.length} Segmente`);
 console.log(`Bahnhöfe: ${transit.length}`);
 for (const f of ['stations.json', 'streets.json', 'transit.json'])

@@ -6,8 +6,8 @@ export const CONTACT_MAIL = 'wachgebiet.trainer@gmail.com';
 // Besonderheiten der Städte mit amtlichen Wachenlisten
 const SPECIAL = {
   berlin: {
-    subtitle: 'Berlin · BF &amp; Freiwillige Feuerwehren',
-    intro: 'Wähle deine Wache – Berufsfeuerwehr oder Freiwillige Feuerwehr – und trainiere Straßen und Bahnhöfe auf einer Karte ohne Beschriftung.',
+    subtitle: 'Berlin · BF, FF &amp; Rettungswachen',
+    intro: 'Wähle deine Wache – Berufsfeuerwehr, Freiwillige Feuerwehr oder Rettungswache – und trainiere Straßen und Bahnhöfe auf einer Karte ohne Beschriftung.',
     searchPlaceholder: 'Wachnummer, Name oder Ortsteil',
     areaLabel: (a) => `EB ${a}`,
     areaAll: 'Alle Einsatzbereiche',
@@ -15,10 +15,10 @@ const SPECIAL = {
     ffHint: 'Tipp: Freiwillige Feuerwehren am Stadtrand haben oft große Ausrückebereiche – probiere 4 oder 5 km.',
     officialName: 'Berliner Feuerwehr',
     disclaimerExtra: ' oder des Landes Berlin',
-    footerSources: 'Daten: Geoportal Berlin (Feuerwehr-Standorte, Detailnetz Berlin, dl-de/zero-2-0) · VBB · Karte © OpenFreeMap, © OpenStreetMap-Mitwirkende',
+    footerSources: 'Daten: Geoportal Berlin (Feuerwehr-Standorte, Detailnetz Berlin, dl-de/zero-2-0) · © VBB (CC BY 4.0) · Karte © OpenFreeMap, © OpenStreetMap-Mitwirkende',
     sources: [
-      'Standorte der Feuerwachen und Freiwilligen Feuerwehren sowie Straßennetz: Geoportal Berlin (WFS „Feuerwehr-Standorte“ und „Detailnetz Berlin“), Datenlizenz Deutschland – Zero – Version 2.0',
-      'S- und U-Bahnhöfe: VBB Verkehrsverbund Berlin-Brandenburg',
+      'Standorte der Feuerwachen, Freiwilligen Feuerwehren und Rettungswachen sowie Straßennetz: Geoportal Berlin (WFS „Feuerwehr-Standorte“ und „Detailnetz Berlin“), Datenlizenz Deutschland – Zero – Version 2.0',
+      'S- und U-Bahnhöfe: VBB-Fahrplandaten (GTFS), © VBB Verkehrsverbund Berlin-Brandenburg GmbH, Lizenz CC BY 4.0, aufbereitet mit „vbb-stations“',
     ],
     storageKey: 'wachgebiet-trainer:v1',
   },
@@ -36,6 +36,7 @@ const SPECIAL = {
       'Standorte der Feuer- und Rettungswachen, der Freiwilligen Feuerwehr und der Rettungswachen sowie Stadtgrenze und Stadtbezirke: Stadt Duisburg, Open Data Duisburg (Datensatz „Rettung“, Geoportal Duisburg), Lizenz CC BY 3.0 DE',
       'Straßen und Bahnhöfe: © OpenStreetMap-Mitwirkende (ODbL), über OpenMapTiles/OpenFreeMap',
     ],
+    odbl: true,
   },
 };
 
@@ -51,11 +52,12 @@ function osmDefaults(c) {
     ffHint: 'Tipp: Freiwillige Feuerwehren am Stadtrand haben oft große Ausrückebereiche – probiere 3 bis 5 km.',
     officialName: `Feuerwehr ${c.name}`,
     disclaimerExtra: ` oder der Stadt ${c.name}`,
-    footerSources: 'Daten: Stadtgrenze © BKG (VG250, dl-de/by-2-0) · Wachen, Straßen und Bahnhöfe © OpenStreetMap-Mitwirkende (ODbL) · Karte © OpenFreeMap',
+    footerSources: 'Daten: Stadtgrenze © GeoBasis-DE / BKG (2026), dl-de/by-2-0 · Wachen, Straßen und Bahnhöfe © OpenStreetMap-Mitwirkende (ODbL) · Karte © OpenFreeMap',
     sources: [
-      'Stadtgrenze: © GeoBasis-DE / BKG (VG250 Gemeinden), Datenlizenz Deutschland – Namensnennung – Version 2.0',
+      'Stadtgrenze: © GeoBasis-DE / BKG (2026), Verwaltungsgebiete 1:250 000 (VG250, Gemeinden), Datenlizenz Deutschland – Namensnennung – Version 2.0 (www.govdata.de/dl-de/by-2-0)',
       'Standorte der Wachen, Straßen und Bahnhöfe: © OpenStreetMap-Mitwirkende (ODbL), über OpenMapTiles/OpenFreeMap',
     ],
+    odbl: true,
     dataNote: `Die Wachenstandorte für ${c.name} stammen aus OpenStreetMap und können unvollständig sein. Fehlt eine Wache oder stimmt etwas nicht? Schreib an ${CONTACT_MAIL}.`,
   };
 }

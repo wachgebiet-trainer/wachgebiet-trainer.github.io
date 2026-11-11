@@ -12,7 +12,7 @@ import { TrainerMap, COLORS, targetFeatures } from './map.js';
 import { loadStations, loadGeo, buildPool, streetsGeoJSON, DIFFICULTIES } from './data.js';
 import { nearestOnLines, distance, formatDistance } from './geo.js';
 import { store } from './store.js';
-import { CITY, TYPE_LABEL, SITE_ROOT, LAST_CITY_KEY } from './city.js';
+import { CITY, TYPE_LABEL, SITE_ROOT, LAST_CITY_KEY, DATA_BASE } from './city.js';
 
 const RADII = [500, 1000, 2000, 3000, 4000, 5000];
 const COUNTS = [10, 20, 0];
@@ -554,6 +554,12 @@ function renderLegal() {
       ${CITY.sources.map((src) => `<li>${esc(src)}</li>`).join('')}
       <li>Hintergrundkarte: OpenFreeMap, OpenMapTiles, © OpenStreetMap-Mitwirkende (ODbL)</li>
     </ul>
+    ${CITY.odbl ? `<p>Die für ${esc(CITY.name)} aus OpenStreetMap abgeleiteten Daten (Wachenstandorte, Straßen und Bahnhöfe) stehen unter der
+      <a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener">Open Database License (ODbL) 1.0</a>
+      und können als Dateien abgerufen werden:
+      <a href="${DATA_BASE}stations.json" target="_blank" rel="noopener">Wachen</a>,
+      <a href="${DATA_BASE}streets.json" target="_blank" rel="noopener">Straßen</a>,
+      <a href="${DATA_BASE}transit.json" target="_blank" rel="noopener">Bahnhöfe</a>.</p>` : ''}
 
     <h3>Datenschutz</h3>
     <p><strong>Verantwortlich:</strong> Vincent Wolf, Am Rain 8, 13591 Berlin, E-Mail: <a href="mailto:wachgebiet.trainer@gmail.com">wachgebiet.trainer@gmail.com</a></p>
