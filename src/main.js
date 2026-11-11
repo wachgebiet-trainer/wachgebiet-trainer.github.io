@@ -452,7 +452,7 @@ const renderError = () => `<div class="center-msg"><h2>Da ist etwas schiefgelauf
 function header(sub = '') {
   return `<header class="brand">
     <button class="logo" data-act="home" aria-label="Zur Startseite">
-      <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="6" fill="#fff"/><path d="M9 26c0-8.3 4.9-14.5 11-14.5S31 17.7 31 26z" fill="#e30613"/><path d="M18.6 9.5h2.8V26h-2.8z" fill="#b0000e"/><path d="M5 26h30v3.2c0 1-.8 1.8-1.8 1.8H6.8c-1 0-1.8-.8-1.8-1.8z" fill="#1d1d1b"/><path d="M11 26c.4-4.8 2.6-8.6 5.6-10.3" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".7"/></svg>
+      <span class="logo-icon" aria-hidden="true">🚨</span>
       <span><strong>Wachgebiet-Trainer</strong><small>Berlin · BF &amp; Freiwillige Feuerwehren</small></span>
     </button>${sub}
     <button class="theme-btn" data-act="theme-menu" aria-expanded="${!!state.themeMenu}" aria-label="Darstellung wählen" title="Darstellung">${THEMES.find((t) => t.value === state.settings.theme)?.icon ?? THEMES[0].icon}</button>
