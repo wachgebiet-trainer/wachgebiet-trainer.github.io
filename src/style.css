@@ -365,3 +365,21 @@ html:has(body.start-page), body.start-page { overflow: auto; height: auto; min-h
   .city-mark { width: 46px; height: 46px; font-size: 20px; }
   .city-name { font-size: 26px; }
 }
+
+.data-note { font-size: 13px !important; color: var(--ink-2) !important; background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--ff); border-radius: var(--radius); padding: 8px 12px; }
+
+/* Startseite: viele Städte */
+.city-search { margin: 4px 0 12px; }
+.city-list { grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 10px; }
+.city-card { padding: 12px 14px 12px 18px; gap: 12px; }
+.city-mark { width: 50px; height: 50px; font-size: 20px; }
+.city-name { font-size: 24px; }
+.city-units { font-size: 13.5px; }
+.city-counts { font-size: 12.5px; gap: 2px 10px; }
+.city-go { font-size: 22px; }
+.city-empty { grid-column: 1 / -1; color: var(--muted); margin: 4px 0; }
+.start-main { max-width: 980px; }
+.contact-card { background: var(--card); border: 2px solid var(--red); border-radius: var(--radius); padding: 16px 18px; margin: 0 0 28px; }
+.contact-card h2 { font-size: 24px; text-transform: uppercase; margin: 0 0 6px; color: var(--red); }
+.contact-card p { margin: 0 0 8px; color: var(--ink-2); line-height: 1.5; }
+.contact-mail a { font-family: var(--font-cond); font-size: 22px; font-weight: 800; color: var(--red); word-break: break-all; }

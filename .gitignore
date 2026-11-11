@@ -3,3 +3,4 @@ dist
 build/node_modules
 build/raw
 build/raw-duisburg
+build/raw-cities

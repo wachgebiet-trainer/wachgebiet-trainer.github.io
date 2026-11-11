@@ -28,6 +28,15 @@ aus dem Open-Data-Datensatz „Rettung“ der Stadt Duisburg (CC BY 3.0 DE); Str
 npm run data:duisburg
 ```
 
+**Weitere Städte** (Bochum, Braunschweig, Bremen, Dortmund, Dresden, Düsseldorf, Essen, Frankfurt am Main, Hamburg,
+Hannover, Köln, Leipzig, München, Nürnberg, Potsdam, Stuttgart, Wolfsburg): Stadtgrenze amtlich vom BKG (VG250),
+Wachen, Straßen und Bahnhöfe aus OpenStreetMap. Die Wachenlisten können unvollständig sein; die App weist darauf hin.
+
+Neue Stadt aufnehmen:
+1. Eintrag in `src/cities.json` (`source: "osm"`, `gen` = Gemeindename laut VG250, `ars` = Anfang des Regionalschlüssels)
+2. `npm run data:osm -- <id>` lädt Grenze und Kartenkacheln und schreibt `public/data/<id>/`
+3. `npm run pages` erzeugt die Stadtseite und übernimmt den Kartenausschnitt
+
 ## Veröffentlichen
 Jeder Push auf `main` baut die Seite und veröffentlicht sie über GitHub Pages (`.github/workflows/pages.yml`).
 Einmalig im Repository: Settings → Pages → Source: „GitHub Actions“.

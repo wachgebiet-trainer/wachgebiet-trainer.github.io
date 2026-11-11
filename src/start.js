@@ -7,7 +7,7 @@ import '@fontsource/barlow-condensed/latin-600.css';
 import '@fontsource/barlow-condensed/latin-700.css';
 import '@fontsource/barlow-condensed/latin-800.css';
 import './style.css';
-import { CITIES, cityUrl, dataUrl, LAST_CITY_KEY } from './city.js';
+import { CITIES, cityUrl, dataUrl, LAST_CITY_KEY, CONTACT_MAIL } from './city.js';
 
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 
@@ -33,20 +33,17 @@ try {
   /* kein Speicher */
 }
 
-const CITY_INFO = {
-  berlin: { units: 'Berufsfeuerwehr & Freiwillige Feuerwehren', crest: 'B' },
-  duisburg: { units: 'Feuerwehr, Freiwillige Feuerwehr & Rettungswachen', crest: 'DU' },
-};
+let query = '';
 
 function cityCard(c, counts) {
-  const info = CITY_INFO[c.id] ?? { units: '', crest: c.name.slice(0, 2) };
+  const info = { units: c.units ?? '', crest: c.kfz ?? c.name.slice(0, 2) };
   const parts = counts
     ? [['BF', 'Feuerwachen'], ['FF', 'FF-Einheiten'], ['RW', 'Rettungswachen']]
         .filter(([t]) => counts[t])
         .map(([t, l]) => `<span><i class="dot ${t}"></i><b>${counts[t]}</b> ${l}</span>`)
         .join('')
     : '';
-  return `<a class="city-card" href="${cityUrl(c)}">
+  return `<a class="city-card" href="${cityUrl(c)}" data-name="${esc(c.name.toLowerCase())}">
     <span class="city-mark" aria-hidden="true">${esc(info.crest)}</span>
     <span class="city-body">
       <span class="city-name">${esc(c.name)}${last === c.id ? '<em>zuletzt genutzt</em>' : ''}</span>
@@ -58,7 +55,7 @@ function cityCard(c, counts) {
 }
 
 function render(countsByCity = {}) {
-  const cities = Object.values(CITIES);
+  const cities = Object.values(CITIES).sort((a, b) => (b.id === last) - (a.id === last) || a.name.localeCompare(b.name, 'de'));
   document.getElementById('start').innerHTML = `
   <header class="brand start-brand">
     <span class="logo">
@@ -71,9 +68,18 @@ function render(countsByCity = {}) {
       <h1>Kenne dein <em>Wachgebiet.</em></h1>
       <p>Straßen und Bahnhöfe rund um deine Wache lernen – auf einer Karte ohne Beschriftung. Wähle deine Stadt:</p>
     </section>
+    <div class="search-row city-search">
+      <input id="city-search" type="search" placeholder="Stadt suchen" value="${esc(query)}" autocomplete="off" aria-label="Stadt suchen" />
+    </div>
     <nav class="city-list" aria-label="Stadt wählen">
       ${cities.map((c) => cityCard(c, countsByCity[c.id])).join('')}
+      <p class="city-empty" hidden>Diese Stadt gibt es noch nicht – schreib mir gern (siehe unten).</p>
     </nav>
+    <section class="contact-card">
+      <h2>Deine Stadt fehlt?</h2>
+      <p>Ich nehme gern weitere Städte auf. Schreib mir einfach, welche Stadt du dir wünschst – oder melde fehlende und falsche Wachen:</p>
+      <p class="contact-mail"><a href="mailto:${CONTACT_MAIL}?subject=Wachgebiet-Trainer%3A%20Stadt%20vorschlagen">${CONTACT_MAIL}</a></p>
+    </section>
     <section class="how">
       <h2>So funktioniert's</h2>
       <ol>
@@ -89,6 +95,25 @@ function render(countsByCity = {}) {
     </footer>
   </main>`;
 }
+
+function applyFilter() {
+  const q = query.trim().toLowerCase();
+  let shown = 0;
+  for (const a of document.querySelectorAll('.city-card')) {
+    const hit = !q || a.dataset.name.includes(q);
+    a.hidden = !hit;
+    if (hit) shown++;
+  }
+  const empty = document.querySelector('.city-empty');
+  if (empty) empty.hidden = shown > 0;
+}
+
+document.getElementById('start').addEventListener('input', (e) => {
+  if (e.target.id === 'city-search') {
+    query = e.target.value;
+    applyFilter();
+  }
+});
 
 applyTheme();
 render();
@@ -106,4 +131,13 @@ Promise.all(
       return [c.id, null];
     }
   }),
-).then((entries) => render(Object.fromEntries(entries)));
+).then((entries) => {
+  const focused = document.activeElement?.id === 'city-search';
+  render(Object.fromEntries(entries));
+  applyFilter();
+  if (focused) {
+    const inp = document.getElementById('city-search');
+    inp.focus();
+    inp.setSelectionRange(inp.value.length, inp.value.length);
+  }
+});

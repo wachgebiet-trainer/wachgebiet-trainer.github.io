@@ -1,0 +1,21 @@
+[
+  {"id":"berlin","name":"Berlin","kfz":"B","source":"official","units":"Berufsfeuerwehr & Freiwillige Feuerwehren","bounds":[[13.08,52.33],[13.77,52.68]]},
+  {"id":"bochum","name":"Bochum","kfz":"BO","source":"osm","gen":"Bochum","ars":"05911","bounds":[[7.1042,51.4108],[7.3498,51.532]]},
+  {"id":"braunschweig","name":"Braunschweig","kfz":"BS","source":"osm","gen":"Braunschweig","ars":"03101","bounds":[[10.4124,52.1867],[10.643,52.3575]]},
+  {"id":"bremen","name":"Bremen","kfz":"HB","source":"osm","gen":"Bremen","ars":"04011","bounds":[[8.4817,53.011],[8.9909,53.2289]]},
+  {"id":"dortmund","name":"Dortmund","kfz":"DO","source":"osm","gen":"Dortmund","ars":"05913","bounds":[[7.3023,51.4156],[7.6379,51.5995]]},
+  {"id":"dresden","name":"Dresden","kfz":"DD","source":"osm","gen":"Dresden","ars":"14612","bounds":[[13.5797,50.9752],[13.9658,51.1777]]},
+  {"id":"duesseldorf","name":"Düsseldorf","kfz":"D","source":"osm","gen":"Düsseldorf","ars":"05111","bounds":[[6.6898,51.1244],[6.94,51.3514]]},
+  {"id":"duisburg","name":"Duisburg","kfz":"DU","source":"official","units":"Feuerwehr, Freiwillige Feuerwehr & Rettungswachen","bounds":[[6.62,51.33],[6.84,51.57]]},
+  {"id":"essen","name":"Essen","kfz":"E","source":"osm","gen":"Essen","ars":"05113","bounds":[[6.8945,51.3474],[7.1368,51.5341]]},
+  {"id":"frankfurt","name":"Frankfurt am Main","kfz":"F","source":"osm","gen":"Frankfurt am Main","ars":"06412","bounds":[[8.4726,50.0156],[8.8005,50.2263]]},
+  {"id":"hamburg","name":"Hamburg","kfz":"HH","source":"osm","gen":"Hamburg","ars":"02000","bounds":[[9.7301,53.3951],[10.326,53.7385]]},
+  {"id":"hannover","name":"Hannover","kfz":"H","source":"osm","gen":"Hannover","ars":"03241","bounds":[[9.6047,52.3059],[9.9186,52.4537]]},
+  {"id":"koeln","name":"Köln","kfz":"K","source":"osm","gen":"Köln","ars":"05315","bounds":[[6.7724,50.8296],[7.1636,51.0846]]},
+  {"id":"leipzig","name":"Leipzig","kfz":"L","source":"osm","gen":"Leipzig","ars":"14713","bounds":[[12.2368,51.2382],[12.5426,51.4481]]},
+  {"id":"muenchen","name":"München","kfz":"M","source":"osm","gen":"München","ars":"09162","bounds":[[11.3609,48.0616],[11.7231,48.2481]]},
+  {"id":"nuernberg","name":"Nürnberg","kfz":"N","source":"osm","gen":"Nürnberg","ars":"09564","bounds":[[10.9879,49.3319],[11.2801,49.5403]]},
+  {"id":"potsdam","name":"Potsdam","kfz":"P","source":"osm","gen":"Potsdam","ars":"12054","bounds":[[12.8872,52.3429],[13.1659,52.5148]]},
+  {"id":"stuttgart","name":"Stuttgart","kfz":"S","source":"osm","gen":"Stuttgart","ars":"08111","bounds":[[9.039,48.69],[9.3154,48.8672]]},
+  {"id":"wolfsburg","name":"Wolfsburg","kfz":"WOB","source":"osm","gen":"Wolfsburg","ars":"03103","bounds":[[10.6472,52.3159],[10.9069,52.4951]]}
+]

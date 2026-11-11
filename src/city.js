@@ -1,10 +1,11 @@
 // Stadt-Konfiguration. Die Stadt steht im <meta name="wachgebiet-city"> der jeweiligen HTML-Seite.
-export const CITIES = {
+import CITY_LIST from './cities.json';
+
+export const CONTACT_MAIL = 'wachgebiet.trainer@gmail.com';
+
+// Besonderheiten der Städte mit amtlichen Wachenlisten
+const SPECIAL = {
   berlin: {
-    id: 'berlin',
-    name: 'Berlin',
-    path: 'berlin/',
-    bounds: [[13.08, 52.33], [13.77, 52.68]],
     subtitle: 'Berlin · BF &amp; Freiwillige Feuerwehren',
     intro: 'Wähle deine Wache – Berufsfeuerwehr oder Freiwillige Feuerwehr – und trainiere Straßen und Bahnhöfe auf einer Karte ohne Beschriftung.',
     searchPlaceholder: 'Wachnummer, Name oder Ortsteil',
@@ -22,14 +23,9 @@ export const CITIES = {
     storageKey: 'wachgebiet-trainer:v1',
   },
   duisburg: {
-    id: 'duisburg',
-    name: 'Duisburg',
-    path: 'duisburg/',
-    bounds: [[6.62, 51.33], [6.84, 51.57]],
     subtitle: 'Duisburg · BF, FF &amp; Rettungswachen',
     intro: 'Wähle deine Wache – Feuer- und Rettungswache, Löschzug der Freiwilligen Feuerwehr oder Rettungswache – und trainiere Straßen und Bahnhöfe auf einer Karte ohne Beschriftung.',
     searchPlaceholder: 'Wache, Löschzug oder Stadtbezirk',
-    areaLabel: (a) => a,
     areaAll: 'Alle Stadtbezirke',
     areaAria: 'Stadtbezirk',
     ffHint: 'Tipp: Löschzüge im Außenbereich haben oft große Ausrückebereiche – probiere 3 bis 5 km.',
@@ -40,9 +36,43 @@ export const CITIES = {
       'Standorte der Feuer- und Rettungswachen, der Freiwilligen Feuerwehr und der Rettungswachen sowie Stadtgrenze und Stadtbezirke: Stadt Duisburg, Open Data Duisburg (Datensatz „Rettung“, Geoportal Duisburg), Lizenz CC BY 3.0 DE',
       'Straßen und Bahnhöfe: © OpenStreetMap-Mitwirkende (ODbL), über OpenMapTiles/OpenFreeMap',
     ],
-    storageKey: 'wachgebiet-trainer:duisburg:v1',
   },
 };
+
+// Standard für Städte, deren Wachen aus OpenStreetMap stammen
+function osmDefaults(c) {
+  return {
+    subtitle: `${c.name} · Feuerwehr &amp; Rettungsdienst`,
+    units: 'Feuerwachen & Freiwillige Feuerwehren',
+    intro: 'Wähle deine Wache – Feuerwache, Freiwillige Feuerwehr oder Rettungswache – und trainiere Straßen und Bahnhöfe auf einer Karte ohne Beschriftung.',
+    searchPlaceholder: 'Wache oder Stadtteil',
+    areaAll: 'Alle Bereiche',
+    areaAria: 'Bereich',
+    ffHint: 'Tipp: Freiwillige Feuerwehren am Stadtrand haben oft große Ausrückebereiche – probiere 3 bis 5 km.',
+    officialName: `Feuerwehr ${c.name}`,
+    disclaimerExtra: ` oder der Stadt ${c.name}`,
+    footerSources: 'Daten: Stadtgrenze © BKG (VG250, dl-de/by-2-0) · Wachen, Straßen und Bahnhöfe © OpenStreetMap-Mitwirkende (ODbL) · Karte © OpenFreeMap',
+    sources: [
+      'Stadtgrenze: © GeoBasis-DE / BKG (VG250 Gemeinden), Datenlizenz Deutschland – Namensnennung – Version 2.0',
+      'Standorte der Wachen, Straßen und Bahnhöfe: © OpenStreetMap-Mitwirkende (ODbL), über OpenMapTiles/OpenFreeMap',
+    ],
+    dataNote: `Die Wachenstandorte für ${c.name} stammen aus OpenStreetMap und können unvollständig sein. Fehlt eine Wache oder stimmt etwas nicht? Schreib an ${CONTACT_MAIL}.`,
+  };
+}
+
+export const CITIES = Object.fromEntries(
+  CITY_LIST.map((c) => [
+    c.id,
+    {
+      path: `${c.id}/`,
+      areaLabel: (a) => a,
+      storageKey: `wachgebiet-trainer:${c.id}:v1`,
+      ...(c.source === 'osm' ? osmDefaults(c) : {}),
+      ...c,
+      ...(SPECIAL[c.id] ?? {}),
+    },
+  ]),
+);
 
 const wanted = document.querySelector('meta[name="wachgebiet-city"]')?.content ?? '';
 // Auf der Startseite (ohne Stadt) ist CITY null

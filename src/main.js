@@ -107,6 +107,14 @@ async function init() {
   }
 }
 
+window.addEventListener('hashchange', () => {
+  if (location.hash === '#impressum' && state.stations.length) {
+    stopTimer();
+    state.view = 'legal';
+    render();
+  }
+});
+
 function setUrl(station) {
   const url = new URL(location.href);
   url.search = station ? `?wache=${station.number}` : '';
@@ -488,6 +496,7 @@ function renderHome() {
   <section class="intro">
     <h1>Kenne dein <em>Wachgebiet.</em></h1>
     <p>${CITY.intro}</p>
+    ${CITY.dataNote ? `<p class="data-note">${esc(CITY.dataNote)}</p>` : ''}
   </section>
   <div class="search-row">
     <input id="search" type="search" placeholder="${CITY.searchPlaceholder}" value="${esc(state.filter.q)}" autocomplete="off" aria-label="Wache suchen" />
@@ -510,7 +519,7 @@ function stationItem(s) {
   const best = Math.max(0, ...Object.values(prog.best));
   return `<li><button class="station" data-act="select" data-key="${s.key}">
     <span class="badge ${s.type}">${s.number}</span>
-    <span class="st-main"><strong>${esc(s.name)}</strong><small>${esc(s.hostedAt ? `an ${s.hostedAt}` : s.address)}</small></span>
+    <span class="st-main"><strong>${esc(s.name)}</strong><small>${esc(s.hostedAt ? `an ${s.hostedAt}` : s.address || typeLabel(s.type))}</small></span>
     ${best ? `<span class="best" title="Bestleistung">${Math.round(best * 100)}%</span>` : ''}
   </button></li>`;
 }
@@ -595,7 +604,7 @@ function renderSetup() {
   <section class="station-card ${s.type}">
     <div class="sc-top"><span class="badge ${s.type} big">${s.number}</span><span class="type">${typeLabel(s.type)}${s.area ? ` · ${esc(CITY.areaLabel(s.area))}` : ''}</span></div>
     <h2>${esc(s.name)}</h2>
-    <p>${esc(s.address)}${s.ortsteil ? ` · ${esc(s.ortsteil)}` : ''}</p>
+    ${s.address || s.ortsteil ? `<p>${esc(s.address)}${s.address && s.ortsteil ? ' · ' : ''}${esc(s.ortsteil ?? '')}</p>` : ''}
     ${s.hostedAt ? `<p class="hosted">Untergebracht an der ${esc(s.hostedAt)}</p>` : ''}
     ${ff && !s.hostedAt ? `<p class="hint">${CITY.ffHint}</p>` : ''}
   </section>
