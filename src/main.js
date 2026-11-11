@@ -12,7 +12,7 @@ import { TrainerMap, COLORS, targetFeatures } from './map.js';
 import { loadStations, loadGeo, buildPool, streetsGeoJSON, DIFFICULTIES } from './data.js';
 import { nearestOnLines, distance, formatDistance } from './geo.js';
 import { store } from './store.js';
-import { CITY, OTHER_CITIES, TYPE_LABEL, cityUrl } from './city.js';
+import { CITY, TYPE_LABEL, SITE_ROOT, LAST_CITY_KEY } from './city.js';
 
 const RADII = [500, 1000, 2000, 3000, 4000, 5000];
 const COUNTS = [10, 20, 0];
@@ -72,6 +72,11 @@ darkQuery.addEventListener?.('change', () => state.settings.theme === 'auto' && 
 
 // ---------------------------------------------------------------- Start
 async function init() {
+  try {
+    localStorage.setItem(LAST_CITY_KEY, CITY.id);
+  } catch {
+    /* ohne Speicher kein Merken der Stadt */
+  }
   render();
   try {
     const [st] = await Promise.all([loadStations(), tmap.ready]);
@@ -96,6 +101,10 @@ async function init() {
   const found = wanted && state.stations.find((s) => s.number === wanted || s.key === wanted);
   if (found) selectStation(found);
   else showHome();
+  if (location.hash === '#impressum') {
+    state.view = 'legal';
+    render();
+  }
 }
 
 function setUrl(station) {
@@ -562,7 +571,7 @@ function footer() {
     <p class="credit">Erstellt von <strong>Vincent Wolf</strong> · © ${new Date().getFullYear()} Vincent Wolf · inspiriert von „Wachgebiet“ (geo.knt-fw.de)</p>
     <p class="disclaimer">Private Trainings-Anwendung – kein offizielles Angebot der ${CITY.officialName}.</p>
     <p>${CITY.footerSources}</p>
-    ${OTHER_CITIES.length ? `<p class="other-cities">Auch verfügbar: ${OTHER_CITIES.map((c) => `<a href="${cityUrl(c)}">${esc(c.name)}</a>`).join(' · ')}</p>` : ''}
+    <p class="other-cities"><a href="${SITE_ROOT.href}">Stadt wechseln</a></p>
     <p class="foot-links"><button class="link" data-act="legal">Impressum &amp; Datenschutz</button><button class="link" data-act="clear">Lokalen Fortschritt löschen</button></p>
   </footer>`;
 }

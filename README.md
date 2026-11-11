@@ -1,6 +1,6 @@
 # Wachgebiet-Trainer Berlin
 
-Live: https://wachgebiet-trainer.github.io/ (Berlin) · https://wachgebiet-trainer.github.io/duisburg/ (Duisburg)
+Live: https://wachgebiet-trainer.github.io/ (Startseite mit Stadtauswahl) · [/berlin/](https://wachgebiet-trainer.github.io/berlin/) · [/duisburg/](https://wachgebiet-trainer.github.io/duisburg/)
 
 Ortskunde-Training für **Berufsfeuerwehr und Freiwillige Feuerwehren** in Berlin:
 Wache wählen, Straße oder Bahnhof wird genannt, auf der Karte ohne Beschriftung antippen, Abstand wird bewertet.
@@ -11,12 +11,13 @@ Wache wählen, Straße oder Bahnhof wird genannt, auf der Karte ohne Beschriftun
 - Training: Schwierigkeit (Haupt-/alle/Nebenstraßen), Radius 500 m – 5 km, 10/20/alle Ziele, Zeitlimit, S-/U-Bahnhöfe optional, Straßennamen als Hilfe
 - Auswertung mit Karte, Fehler wiederholen, Bestleistung je Modus; Fehler kommen in späteren Runden häufiger dran
 - Erkunden-Modus: Straßen nach Klasse eingefärbt, Name per Hover/Tippen, Suche
-- Direktlink: `?wache=2620` (auch `?3600` wie beim Original)
+- Direktlink: `/berlin/?wache=2620` bzw. `/duisburg/?wache=530`; `#impressum` öffnet Impressum & Datenschutz
 - Fortschritt lokal im Browser, Gastmodus
 - Darstellung wählbar: Auto (System), Hell, Dunkel, Stadtplan – Oberfläche und Karte wechseln mit
 
 ## Städte
-Eine Codebasis, eine Seite pro Stadt (`index.html` = Berlin, `duisburg/index.html` = Duisburg).
+Eine Codebasis: `index.html` ist die Startseite mit Stadtauswahl (`src/start.js`), je Stadt gibt es eine Seite (`berlin/index.html`, `duisburg/index.html`).
+Alte Direktlinks wie `/?wache=2620` leitet die Startseite nach `/berlin/` weiter.
 Die Stadt-Einstellungen stehen in `src/city.js`, die Daten unter `public/data/<stadt>/`.
 
 **Duisburg:** 7 Feuer- und Rettungswachen, 16 Einheiten der Freiwilligen Feuerwehr und 11 Rettungswachen

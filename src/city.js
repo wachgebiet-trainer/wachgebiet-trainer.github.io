@@ -1,9 +1,9 @@
 // Stadt-Konfiguration. Die Stadt steht im <meta name="wachgebiet-city"> der jeweiligen HTML-Seite.
-const CITIES = {
+export const CITIES = {
   berlin: {
     id: 'berlin',
     name: 'Berlin',
-    path: '',
+    path: 'berlin/',
     bounds: [[13.08, 52.33], [13.77, 52.68]],
     subtitle: 'Berlin · BF &amp; Freiwillige Feuerwehren',
     intro: 'Wähle deine Wache – Berufsfeuerwehr oder Freiwillige Feuerwehr – und trainiere Straßen und Bahnhöfe auf einer Karte ohne Beschriftung.',
@@ -44,14 +44,17 @@ const CITIES = {
   },
 };
 
-const wanted = document.querySelector('meta[name="wachgebiet-city"]')?.content ?? 'berlin';
-export const CITY = CITIES[wanted] ?? CITIES.berlin;
-export const OTHER_CITIES = Object.values(CITIES).filter((c) => c.id !== CITY.id);
+const wanted = document.querySelector('meta[name="wachgebiet-city"]')?.content ?? '';
+// Auf der Startseite (ohne Stadt) ist CITY null
+export const CITY = CITIES[wanted] ?? null;
+export const OTHER_CITIES = Object.values(CITIES).filter((c) => c.id !== CITY?.id);
 
 // Wurzel der Seite (für Daten und Links zwischen den Städten), unabhängig von der Unterseite
 const here = new URL('.', location.href);
-export const SITE_ROOT = CITY.path ? new URL('../'.repeat(CITY.path.split('/').filter(Boolean).length), here) : here;
-export const DATA_BASE = new URL(`data/${CITY.id}/`, SITE_ROOT).href;
+export const SITE_ROOT = CITY?.path ? new URL('../'.repeat(CITY.path.split('/').filter(Boolean).length), here) : here;
+export const DATA_BASE = CITY ? new URL(`data/${CITY.id}/`, SITE_ROOT).href : null;
+export const dataUrl = (c, file) => new URL(`data/${c.id}/${file}`, SITE_ROOT).href;
+export const LAST_CITY_KEY = 'wachgebiet-trainer:last-city';
 export const cityUrl = (c) => new URL(c.path, SITE_ROOT).href;
 
 export const TYPE_LABEL = {

@@ -2,19 +2,18 @@
 <html lang="de">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, interactive-widget=resizes-content" />
-    <meta name="wachgebiet-city" content="berlin" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#e30613" />
-    <meta name="description" content="Ortskunde-Training für Berufsfeuerwehr und Freiwillige Feuerwehren in Berlin." />
-    <title>Wachgebiet-Trainer Berlin</title>
+    <meta name="description" content="Ortskunde-Training für Feuerwehr und Rettungsdienst: Wähle deine Stadt und trainiere die Straßen und Bahnhöfe in deinem Wachgebiet." />
+    <title>Wachgebiet-Trainer</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%9A%A8%3C/text%3E%3C/svg%3E" />
+    <script>
+      // Alte Direktlinks (z. B. ?wache=2620 oder ?3600) führen weiterhin zur Berlin-Version
+      if (location.search) location.replace('berlin/' + location.search + location.hash);
+    </script>
   </head>
-  <body>
-    <div id="app" data-view="loading">
-      <aside id="panel" aria-live="polite"></aside>
-      <main id="map" aria-label="Karte"></main>
-      <div id="toast" role="status"></div>
-    </div>
-    <script type="module" src="/src/main.js"></script>
+  <body class="start-page">
+    <div id="start"></div>
+    <script type="module" src="/src/start.js"></script>
   </body>
 </html>

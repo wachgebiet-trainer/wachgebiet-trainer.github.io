@@ -320,3 +320,48 @@ h1, h2, h3 { font-family: var(--font-cond); text-wrap: balance; }
 .legal a { color: var(--red); font-weight: 600; }
 .legal address { font-style: normal; color: var(--ink); margin: 0 0 10px; }
 .other-cities a { color: var(--red); font-weight: 700; }
+
+/* ---------- Startseite (Stadtauswahl) ---------- */
+html:has(body.start-page), body.start-page { overflow: auto; height: auto; min-height: 100%; }
+.start-page .start-brand { position: relative; margin: 0; padding: 14px max(20px, env(safe-area-inset-left, 0px)) 22px; }
+.start-page .start-brand .logo { cursor: default; }
+.start-main { max-width: 720px; margin: 0 auto; padding: 8px max(20px, env(safe-area-inset-left, 0px)) 32px; }
+.start-main .intro h1 { font-size: 40px; margin-top: 20px; }
+.start-main .intro p { font-size: 17px; max-width: 52ch; }
+.city-list { display: grid; gap: 12px; margin: 8px 0 28px; }
+.city-card {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 16px;
+  padding: 16px 18px; background: var(--card); border: 2px solid var(--line); border-radius: var(--radius);
+  color: var(--ink); text-decoration: none; position: relative; overflow: hidden;
+  transition: border-color .15s, transform .15s;
+}
+.city-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px;
+  background: repeating-linear-gradient(-45deg, var(--red) 0 8px, #fff 8px 16px); }
+.city-card:hover, .city-card:focus-visible { border-color: var(--red); }
+.city-card:active { transform: scale(.99); }
+.city-mark {
+  width: 56px; height: 56px; display: grid; place-items: center; border-radius: var(--radius);
+  background: var(--red); color: #fff; font-family: var(--font-cond); font-weight: 800; font-size: 24px; letter-spacing: .02em;
+}
+.city-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.city-name { font-family: var(--font-cond); font-size: 30px; font-weight: 800; text-transform: uppercase; line-height: 1; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.city-name em { font-family: var(--font); font-style: normal; font-size: 12px; font-weight: 700; text-transform: none; letter-spacing: 0;
+  color: var(--red); border: 1.5px solid var(--red); border-radius: 4px; padding: 1px 6px; }
+.city-units { color: var(--ink-2); font-size: 14.5px; }
+.city-counts { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 13px; color: var(--muted); min-height: 18px; margin-top: 4px; }
+.city-counts .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 5px; }
+.city-counts .dot.BF { background: var(--bf); }
+.city-counts .dot.FF { background: var(--ff); }
+.city-counts .dot.RW { background: var(--card); box-shadow: inset 0 0 0 2.5px var(--bf); }
+.city-counts b { color: var(--ink); font-weight: 700; }
+.city-go { font-size: 28px; color: var(--red); font-weight: 700; }
+.how h2 { font-size: 22px; text-transform: uppercase; margin: 0 0 8px; }
+.how ol { margin: 0; padding-left: 22px; color: var(--ink-2); line-height: 1.55; display: grid; gap: 4px; }
+.how b { color: var(--ink); }
+.start-main .foot-links a { text-decoration: underline; }
+@media (max-width: 480px) {
+  .start-main .intro h1 { font-size: 30px; }
+  .city-card { gap: 12px; padding: 14px; }
+  .city-mark { width: 46px; height: 46px; font-size: 20px; }
+  .city-name { font-size: 26px; }
+}
