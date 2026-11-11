@@ -1,7 +1,7 @@
 import 'maplibre-gl/dist/maplibre-gl.css';
 import './style.css';
 import { TrainerMap, COLORS, targetFeatures } from './map.js';
-import { loadStations, loadGeo, buildPool, streetsGeoJSON, DIFFICULTIES } from './data.js';
+import { loadStations, loadGeo, buildPool, streetsGeoJSON, streetNamesGeoJSON, DIFFICULTIES } from './data.js';
 import { nearestOnLines, distance, formatDistance } from './geo.js';
 import { store } from './store.js';
 
@@ -128,12 +128,20 @@ async function selectStation(station) {
     }
   }
   updatePoolPreview();
+  updateNames();
 }
 
 function previewArea() {
   const s = state.station;
   tmap.showArea(s.center, state.settings.radius, s.type === 'FF' ? COLORS.FF : COLORS.BF);
   tmap.fitArea(s.center, state.settings.radius);
+  updateNames();
+}
+
+// Stadtplan: Straßennamen in der Wachen-Übersicht (nicht im Training)
+function updateNames() {
+  const show = state.view === 'setup' && state.geo && resolvedTheme() === 'city';
+  tmap.set('names', show ? streetNamesGeoJSON(state.geo, state.station.center, state.settings.radius + 1500) : null);
 }
 
 function updatePoolPreview() {
@@ -184,7 +192,7 @@ function startGame(targets) {
     phase: 'guess',
     isRepeat: !!targets,
     modeKey: `${s.difficulty}-${s.radius}-${s.transit ? 'b' : 'n'}`,
-    labelsUsed: s.labels || resolvedTheme() === 'city',
+    labelsUsed: s.labels,
   };
   state.view = 'game';
   tmap.clearOverlays();
@@ -533,7 +541,6 @@ function renderSetup() {
     <div class="toggles">
       <label class="switch"><input type="checkbox" data-act="toggle" data-k="transit" ${st.transit ? 'checked' : ''}/><span></span>S-/U-Bahnhöfe abfragen</label>
       <label class="switch"><input type="checkbox" data-act="toggle" data-k="labels" ${st.labels ? 'checked' : ''}/><span></span>Straßennamen anzeigen (Orientierungshilfe)</label>
-      ${resolvedTheme() === 'city' ? '<p class="muted small">In der Darstellung „Stadtplan“ sind Straßennamen immer sichtbar.</p>' : ''}
     </div>
     <p id="pool-info" class="pool">${poolInfoHTML()}</p>
   </section>
@@ -566,7 +573,7 @@ function renderGame() {
     <div class="prompt">
       <small>${kind}</small>
       <h2>${esc(t.name)}</h2>
-      ${state.settings.labels || resolvedTheme() === 'city' ? '<p class="muted small">Straßennamen sind als Orientierungshilfe sichtbar.</p>' : ''}
+      ${state.settings.labels ? '<p class="muted small">Straßennamen sind als Orientierungshilfe sichtbar.</p>' : ''}
     </div>
     ${
       r
@@ -661,6 +668,7 @@ $panel.addEventListener('click', (e) => {
       store.saveSettings(state.settings);
       if (k === 'theme') {
         applyTheme();
+        if (state.view === 'setup') updateNames();
         return render();
       }
       if (k === 'radius') previewArea();

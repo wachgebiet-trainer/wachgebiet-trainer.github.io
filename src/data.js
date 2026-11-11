@@ -121,3 +121,67 @@ export function streetsGeoJSON(geo, center, radius) {
   }
   return { type: 'FeatureCollection', features };
 }
+
+// Straßenabschnitte gleichen Namens zu durchgehenden Linien verbinden (für Beschriftung)
+export function streetNamesGeoJSON(geo, center, radius) {
+  const byName = new Map();
+  for (const f of streetsGeoJSON(geo, center, radius).features) {
+    const n = f.properties.name;
+    if (!byName.has(n)) byName.set(n, { cls: f.properties.cls, lines: [] });
+    const e = byName.get(n);
+    e.cls = Math.min(e.cls, f.properties.cls);
+    e.lines.push(f.geometry.coordinates.slice());
+  }
+  const key = (p) => `${p[0].toFixed(5)},${p[1].toFixed(5)}`;
+  const features = [];
+  for (const [name, { cls, lines }] of byName) {
+    let pool = lines;
+    let changed = true;
+    while (changed && pool.length > 1) {
+      changed = false;
+      const out = [];
+      while (pool.length) {
+        let cur = pool.pop();
+        for (let i = pool.length - 1; i >= 0; i--) {
+          const l = pool[i];
+          const cs = key(cur[0]), ce = key(cur[cur.length - 1]);
+          const ls = key(l[0]), le = key(l[l.length - 1]);
+          let merged = null;
+          if (ce === ls) merged = cur.concat(l.slice(1));
+          else if (le === cs) merged = l.concat(cur.slice(1));
+          else if (ce === le) merged = cur.concat(l.slice().reverse().slice(1));
+          else if (cs === ls) merged = l.slice().reverse().concat(cur.slice(1));
+          if (merged) {
+            cur = merged;
+            pool.splice(i, 1);
+            changed = true;
+          }
+        }
+        out.push(cur);
+      }
+      pool = out;
+    }
+    // längstes Stück bekommt zusätzlich einen Mittelpunkt für die waagerechte Beschriftung
+    let longest = null;
+    let longestLen = -1;
+    for (const coords of pool) {
+      features.push({ type: 'Feature', properties: { name, cls }, geometry: { type: 'LineString', coordinates: coords } });
+      let len = 0;
+      for (let i = 1; i < coords.length; i++) len += Math.hypot(coords[i][0] - coords[i - 1][0], (coords[i][1] - coords[i - 1][1]) * 1.6);
+      if (len > longestLen) [longest, longestLen] = [coords, len];
+    }
+    if (longest) {
+      let acc = 0;
+      let mid = longest[0];
+      for (let i = 1; i < longest.length; i++) {
+        acc += Math.hypot(longest[i][0] - longest[i - 1][0], (longest[i][1] - longest[i - 1][1]) * 1.6);
+        if (acc >= longestLen / 2) {
+          mid = [(longest[i][0] + longest[i - 1][0]) / 2, (longest[i][1] + longest[i - 1][1]) / 2];
+          break;
+        }
+      }
+      features.push({ type: 'Feature', properties: { name, cls, rank: cls * 1000 - Math.round(longestLen * 1e5) }, geometry: { type: 'Point', coordinates: mid } });
+    }
+  }
+  return { type: 'FeatureCollection', features };
+}
