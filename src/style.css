@@ -97,6 +97,7 @@ h1, h2, h3 { font-family: var(--font-cond); text-wrap: balance; }
 .logo-icon {
   width: 40px; height: 40px; flex: none; display: grid; place-items: center;
   background: #fff; border-radius: var(--radius); font-size: 26px; line-height: 1;
+  padding-top: 4px; /* Emoji sitzt in den meisten Schriften zu hoch */
   font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
 }
 .logo span { display: flex; flex-direction: column; line-height: 1.05; }
