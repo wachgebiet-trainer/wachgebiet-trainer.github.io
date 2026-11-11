@@ -755,4 +755,26 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
+// Ändert sich die Kartengröße (Drehen des Geräts, Wechsel ins Training),
+// den aktuellen Ausschnitt neu einpassen, damit der Kreis vollständig sichtbar bleibt.
+let lastMapSize = '';
+let refitTimer = null;
+new ResizeObserver(([entry]) => {
+  const { width, height } = entry.contentRect;
+  const size = `${Math.round(width)}x${Math.round(height)}`;
+  if (size === lastMapSize || !width || !height) return;
+  lastMapSize = size;
+  clearTimeout(refitTimer);
+  refitTimer = setTimeout(() => {
+    if (!tmap?.map) return;
+    tmap.map.resize();
+    if (!state.station) return;
+    if (state.view === 'setup' || state.view === 'explore' || (state.view === 'game' && state.game?.phase === 'guess')) {
+      tmap.fitArea(state.station.center, state.settings.radius, { duration: 300 });
+    } else if (state.view === 'results') {
+      tmap.fitArea(state.station.center, state.settings.radius, { duration: 300 });
+    }
+  }, 120);
+}).observe(document.getElementById('map'));
+
 init();

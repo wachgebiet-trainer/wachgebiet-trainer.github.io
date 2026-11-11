@@ -70,6 +70,7 @@ h1, h2, h3 { font-family: var(--font-cond); text-wrap: balance; }
 #app {
   display: grid;
   grid-template-columns: var(--panel-w) 1fr;
+  height: 100vh;  /* Fallback für ältere Safari-Versionen */
   height: 100dvh;
 }
 #panel {
@@ -288,12 +289,12 @@ h1, h2, h3 { font-family: var(--font-cond); text-wrap: balance; }
 
 /* ---------- Mobil ---------- */
 @media (max-width: 820px) {
-  #app { grid-template-columns: 1fr; grid-template-rows: 42dvh 1fr; }
+  #app { grid-template-columns: 1fr; grid-template-rows: 42vh 1fr; grid-template-rows: 42dvh 1fr; }
   #map { grid-row: 1; }
   #panel { grid-row: 2; border-right: 0; border-top: 1px solid var(--line); padding: 0 16px 20px; }
   .brand { margin: 0 -16px 10px; padding: 10px 16px 18px; }
   #app[data-view='game'] { grid-template-rows: 1fr auto; }
-  #app[data-view='game'] #panel { max-height: 48dvh; }
+  #app[data-view='game'] #panel { max-height: 48vh; max-height: 48dvh; }
   #app[data-view='game'] .prompt h2 { font-size: 25px; }
   #app[data-view='game'] .prompt { margin: 8px 0 6px; padding: 10px 14px 18px; }
   #app[data-view='game'] .game { padding-top: 10px; }
