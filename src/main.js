@@ -184,7 +184,7 @@ function startGame(targets) {
     phase: 'guess',
     isRepeat: !!targets,
     modeKey: `${s.difficulty}-${s.radius}-${s.transit ? 'b' : 'n'}`,
-    labelsUsed: s.labels,
+    labelsUsed: s.labels || resolvedTheme() === 'city',
   };
   state.view = 'game';
   tmap.clearOverlays();
@@ -467,7 +467,7 @@ function renderHome() {
     <input id="search" type="search" placeholder="Wachnummer, Name oder Ortsteil" value="${esc(state.filter.q)}" autocomplete="off" aria-label="Wache suchen" />
   </div>
   <div class="chips">
-    ${chip('all', 'Alle', state.stations.length)}${chip('BF', 'Berufsfeuerwehr', bf)}${chip('FF', 'Freiwillige Feuerwehr', ff)}
+    ${chip('all', 'Alle', state.stations.length)}${chip('BF', '<i class="dot BF"></i>Berufsfeuerwehr', bf)}${chip('FF', '<i class="dot FF"></i>Freiwillige Feuerwehr', ff)}
     <select id="area" aria-label="Einsatzbereich">
       <option value="0">Alle Einsatzbereiche</option>
       ${areas.map((a) => `<option value="${a}" ${state.filter.area === a ? 'selected' : ''}>EB ${a}</option>`).join('')}
@@ -533,6 +533,7 @@ function renderSetup() {
     <div class="toggles">
       <label class="switch"><input type="checkbox" data-act="toggle" data-k="transit" ${st.transit ? 'checked' : ''}/><span></span>S-/U-Bahnhöfe abfragen</label>
       <label class="switch"><input type="checkbox" data-act="toggle" data-k="labels" ${st.labels ? 'checked' : ''}/><span></span>Straßennamen anzeigen (Orientierungshilfe)</label>
+      ${resolvedTheme() === 'city' ? '<p class="muted small">In der Darstellung „Stadtplan“ sind Straßennamen immer sichtbar.</p>' : ''}
     </div>
     <p id="pool-info" class="pool">${poolInfoHTML()}</p>
   </section>
@@ -565,7 +566,7 @@ function renderGame() {
     <div class="prompt">
       <small>${kind}</small>
       <h2>${esc(t.name)}</h2>
-      ${state.settings.labels ? '<p class="muted small">Straßennamen sind als Orientierungshilfe sichtbar.</p>' : ''}
+      ${state.settings.labels || resolvedTheme() === 'city' ? '<p class="muted small">Straßennamen sind als Orientierungshilfe sichtbar.</p>' : ''}
     </div>
     ${
       r

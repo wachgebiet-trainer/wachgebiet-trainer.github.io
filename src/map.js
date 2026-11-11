@@ -9,7 +9,7 @@ export const MAP_STYLES = {
 const BERLIN = [[13.08, 52.33], [13.77, 52.68]];
 const EMPTY = { type: 'FeatureCollection', features: [] };
 
-export const COLORS = { BF: '#e30613', FF: '#e30613', guess: '#1d5fbf', solution: '#0b8a4b' };
+export const COLORS = { BF: '#a3000b', FF: '#ff4d55', guess: '#1d5fbf', solution: '#0b8a4b' };
 
 export class TrainerMap {
   constructor(container, theme = 'light') {
@@ -122,9 +122,9 @@ export class TrainerMap {
       id: 'stations', type: 'circle', source: 'stations',
       paint: {
         'circle-radius': ['interpolate', ['linear'], ['zoom'], 9, ['case', ['get', 'selected'], 8, 5], 14, ['case', ['get', 'selected'], 13, 9]],
-        'circle-color': ['match', ['get', 'type'], 'FF', halo, COLORS.BF],
-        'circle-stroke-color': ['case', ['get', 'selected'], ink, ['==', ['get', 'type'], 'FF'], COLORS.FF, halo],
-        'circle-stroke-width': ['case', ['get', 'selected'], 3.5, ['==', ['get', 'type'], 'FF'], 3, 1.5],
+        'circle-color': ['match', ['get', 'type'], 'FF', COLORS.FF, COLORS.BF],
+        'circle-stroke-color': ['case', ['get', 'selected'], ink, halo],
+        'circle-stroke-width': ['case', ['get', 'selected'], 3.5, 1.5],
       },
     });
     m.addLayer({
@@ -156,8 +156,9 @@ export class TrainerMap {
 
   setLabels(visible) {
     this.labelsVisible = visible;
+    const show = visible || this.theme === 'city'; // Stadtplan zeigt Straßennamen immer
     for (const id of this.labelLayers) {
-      if (this.map.getLayer(id)) this.map.setLayoutProperty(id, 'visibility', visible ? 'visible' : 'none');
+      if (this.map.getLayer(id)) this.map.setLayoutProperty(id, 'visibility', show ? 'visible' : 'none');
     }
   }
 
