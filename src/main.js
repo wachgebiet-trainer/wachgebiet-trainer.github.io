@@ -516,7 +516,7 @@ function renderLegal() {
       Am Rain 8<br />
       13591 Berlin
     </address>
-    <p><strong>Kontakt</strong><br />Telefon: 0162 9033110</p>
+    <p><strong>Kontakt</strong><br />E-Mail: <a href="mailto:wachgebiet.trainer@gmail.com">wachgebiet.trainer@gmail.com</a><br />Telefon: 0162 9033110</p>
     <p><strong>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV:</strong><br />Vincent Wolf, Anschrift wie oben</p>
 
     <h3>Über den Wachgebiet-Trainer</h3>
@@ -538,7 +538,7 @@ function renderLegal() {
     </ul>
 
     <h3>Datenschutz</h3>
-    <p><strong>Verantwortlich:</strong> Vincent Wolf, Am Rain 8, 13591 Berlin, Telefon 0162 9033110</p>
+    <p><strong>Verantwortlich:</strong> Vincent Wolf, Am Rain 8, 13591 Berlin, E-Mail: <a href="mailto:wachgebiet.trainer@gmail.com">wachgebiet.trainer@gmail.com</a></p>
     <p>Diese Seite verwendet keine Cookies, kein Tracking und keine Analyse-Werkzeuge. Es gibt keine Anmeldung,
       und es werden keine personenbezogenen Daten an den Betreiber übermittelt.</p>
     <p><strong>Speicherung auf deinem Gerät:</strong> Einstellungen und Trainingsfortschritt werden ausschließlich
