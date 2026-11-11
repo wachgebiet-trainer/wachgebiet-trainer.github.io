@@ -304,3 +304,14 @@ h1, h2, h3 { font-family: var(--font-cond); text-wrap: balance; }
 .ico { width: 20px; height: 20px; display: block; }
 .theme-btn { display: grid; place-items: center; }
 .theme-menu .seg .ico { width: 17px; height: 17px; }
+
+/* ---------- Über & Datenschutz ---------- */
+.foot .credit { color: var(--ink); font-size: 13px; }
+.foot-links { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.legal { max-width: 65ch; line-height: 1.55; font-size: 15px; }
+.legal h2 { font-size: 28px; font-weight: 800; text-transform: uppercase; margin: 6px 0 10px; }
+.legal h3 { font-size: 19px; text-transform: uppercase; letter-spacing: .03em; margin: 22px 0 6px; }
+.legal p { margin: 0 0 10px; color: var(--ink-2); }
+.legal ul { margin: 0 0 10px; padding-left: 20px; color: var(--ink-2); }
+.legal li { margin-bottom: 6px; }
+.legal a { color: var(--red); font-weight: 600; }

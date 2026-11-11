@@ -1,4 +1,12 @@
 import 'maplibre-gl/dist/maplibre-gl.css';
+// Schriften lokal ausliefern (keine Verbindung zu Google Fonts)
+import '@fontsource/barlow/latin-400.css';
+import '@fontsource/barlow/latin-500.css';
+import '@fontsource/barlow/latin-600.css';
+import '@fontsource/barlow/latin-700.css';
+import '@fontsource/barlow-condensed/latin-600.css';
+import '@fontsource/barlow-condensed/latin-700.css';
+import '@fontsource/barlow-condensed/latin-800.css';
 import './style.css';
 import { TrainerMap, COLORS, targetFeatures } from './map.js';
 import { loadStations, loadGeo, buildPool, streetsGeoJSON, DIFFICULTIES } from './data.js';
@@ -435,7 +443,7 @@ function render() {
     render.last = key;
   }
   $app.dataset.view = state.view;
-  const fn = { loading: renderLoading, error: renderError, home: renderHome, setup: renderSetup, game: renderGame, results: renderResults, explore: renderExplore }[state.view];
+  const fn = { loading: renderLoading, error: renderError, home: renderHome, setup: renderSetup, game: renderGame, results: renderResults, explore: renderExplore, legal: renderLegal }[state.view];
   $panel.innerHTML = fn();
   if (state.view === 'home') {
     const inp = document.getElementById('search');
@@ -497,11 +505,54 @@ function stationItem(s) {
   </button></li>`;
 }
 
+function renderLegal() {
+  return `${header()}
+  <button class="back" data-act="home">← Alle Wachen</button>
+  <article class="legal">
+    <h2>Über den Wachgebiet-Trainer</h2>
+    <p>Der Wachgebiet-Trainer ist ein privates, nicht-kommerzielles Projekt von <strong>Vincent Wolf</strong>.
+      Er hilft Einsatzkräften der Berufsfeuerwehr und der Freiwilligen Feuerwehren in Berlin, die Straßen und Bahnhöfe
+      in ihrem Wachgebiet zu lernen.</p>
+    <p>Idee, Gestaltung und Umsetzung: Vincent Wolf. © ${new Date().getFullYear()} Vincent Wolf. Alle Rechte an Gestaltung und Programmcode vorbehalten,
+      soweit nicht anders angegeben.</p>
+    <p>Dies ist <strong>kein offizielles Angebot der Berliner Feuerwehr</strong> oder des Landes Berlin. Alle Angaben ohne Gewähr;
+      maßgeblich für den Einsatz sind ausschließlich die dienstlichen Unterlagen und Systeme.</p>
+
+    <h3>Datenquellen</h3>
+    <ul>
+      <li>Standorte der Feuerwachen und Freiwilligen Feuerwehren sowie Straßennetz: Geoportal Berlin
+        (WFS „Feuerwehr-Standorte“ und „Detailnetz Berlin“), Datenlizenz Deutschland – Zero – Version 2.0</li>
+      <li>S- und U-Bahnhöfe: VBB Verkehrsverbund Berlin-Brandenburg</li>
+      <li>Hintergrundkarte: OpenFreeMap, OpenMapTiles, © OpenStreetMap-Mitwirkende (ODbL)</li>
+    </ul>
+
+    <h3>Datenschutz</h3>
+    <p><strong>Verantwortlich:</strong> Vincent Wolf</p>
+    <p>Diese Seite verwendet keine Cookies, kein Tracking und keine Analyse-Werkzeuge. Es gibt keine Anmeldung,
+      und es werden keine personenbezogenen Daten an den Betreiber übermittelt.</p>
+    <p><strong>Speicherung auf deinem Gerät:</strong> Einstellungen und Trainingsfortschritt werden ausschließlich
+      im Browser deines Geräts gespeichert (Local Storage) und verlassen es nicht. Du kannst sie jederzeit über
+      „Lokalen Fortschritt löschen“ oder die Browser-Einstellungen entfernen. Im Gastmodus wird kein Fortschritt gespeichert.</p>
+    <p><strong>Hosting:</strong> Die Seite wird über GitHub Pages (GitHub Inc., USA) bereitgestellt. Beim Aufruf
+      verarbeitet GitHub technisch notwendige Verbindungsdaten wie die IP-Adresse, um die Seite auszuliefern und die
+      Sicherheit des Dienstes zu gewährleisten (Art. 6 Abs. 1 lit. f DSGVO). Näheres in der
+      <a href="https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">Datenschutzerklärung von GitHub</a>.</p>
+    <p><strong>Kartendienst:</strong> Die Hintergrundkarte wird von OpenFreeMap geladen. Dabei wird deine IP-Adresse an
+      deren Server übertragen, damit die Kartenausschnitte ausgeliefert werden können (Art. 6 Abs. 1 lit. f DSGVO).
+      Siehe <a href="https://openfreemap.org" target="_blank" rel="noopener">openfreemap.org</a>.</p>
+    <p>Schriften und alle übrigen Inhalte werden direkt von dieser Seite ausgeliefert; es besteht keine Verbindung zu Google.</p>
+    <p>Du hast das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung sowie ein Beschwerderecht
+      bei einer Datenschutz-Aufsichtsbehörde.</p>
+  </article>
+  ${footer()}`;
+}
+
 function footer() {
   return `<footer class="foot">
+    <p class="credit">Erstellt von <strong>Vincent Wolf</strong> · © ${new Date().getFullYear()} Vincent Wolf</p>
     <p class="disclaimer">Private Trainings-Anwendung – kein offizielles Angebot der Berliner Feuerwehr.</p>
     <p>Daten: Geoportal Berlin (Feuerwehr-Standorte, Detailnetz Berlin, dl-de/zero-2-0) · VBB · Karte © OpenFreeMap, © OpenStreetMap-Mitwirkende</p>
-    <button class="link" data-act="clear">Lokalen Fortschritt löschen</button>
+    <p class="foot-links"><button class="link" data-act="legal">Über &amp; Datenschutz</button><button class="link" data-act="clear">Lokalen Fortschritt löschen</button></p>
   </footer>`;
 }
 
@@ -692,6 +743,10 @@ $panel.addEventListener('click', (e) => {
     }
     case 'review': return showReview(Number(b.dataset.i));
     case 'review-all': return showReview();
+    case 'legal':
+      stopTimer();
+      state.view = 'legal';
+      return render();
     case 'clear':
       if (confirm('Gesamten lokalen Trainingsfortschritt auf diesem Gerät löschen?')) {
         store.clear();
