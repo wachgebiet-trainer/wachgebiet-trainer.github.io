@@ -1,6 +1,6 @@
 # Wachgebiet-Trainer Berlin
 
-Live: https://vincentkeanuwolf.github.io/wachgebiet-trainer/
+Live: https://wachgebiet-trainer.github.io/
 
 Ortskunde-Training für **Berufsfeuerwehr und Freiwillige Feuerwehren** in Berlin:
 Wache wählen, Straße oder Bahnhof wird genannt, auf der Karte ohne Beschriftung antippen, Abstand wird bewertet.
