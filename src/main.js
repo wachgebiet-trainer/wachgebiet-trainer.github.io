@@ -9,11 +9,12 @@ const RADII = [500, 1000, 2000, 3000, 4000, 5000];
 const COUNTS = [10, 20, 0];
 const TIME_LIMITS = [0, 10, 20, 30, 45, 60];
 const DEFAULTS = { difficulty: 'mixed', radius: 2000, count: 10, timeLimit: 0, labels: false, transit: true, theme: 'auto' };
+const ico = (d) => `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
 const THEMES = [
-  { value: 'auto', label: 'Auto', icon: '◐' },
-  { value: 'light', label: 'Hell', icon: '☀' },
-  { value: 'dark', label: 'Dunkel', icon: '☾' },
-  { value: 'city', label: 'Stadtplan', icon: '▦' },
+  { value: 'auto', label: 'Auto', icon: ico('<circle cx="12" cy="12" r="8"/><path d="M12 4v16a8 8 0 0 0 0-16z" fill="currentColor"/>') },
+  { value: 'light', label: 'Hell', icon: ico('<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>') },
+  { value: 'dark', label: 'Dunkel', icon: ico('<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>') },
+  { value: 'city', label: 'Stadtplan', icon: ico('<path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/>') },
 ];
 const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
@@ -51,7 +52,7 @@ function resolvedTheme() {
 function applyTheme() {
   const t = resolvedTheme();
   document.documentElement.dataset.theme = t === 'dark' ? 'dark' : 'light';
-  document.querySelector('meta[name=theme-color]')?.setAttribute('content', t === 'dark' ? '#0e1419' : '#17212b');
+  document.querySelector('meta[name=theme-color]')?.setAttribute('content', t === 'dark' ? '#b0000e' : '#e30613');
   tmap?.setTheme?.(t);
 }
 let tmap = null;
@@ -310,7 +311,7 @@ function finishGame() {
   render();
 }
 
-const scoreColor = (s) => (s >= 85 ? '#0b8a4b' : s >= 50 ? '#c99700' : s > 0 ? '#e07b00' : '#c8102e');
+const scoreColor = (s) => (s >= 85 ? '#0b8a4b' : s >= 50 ? '#c99700' : s > 0 ? '#e07b00' : '#e30613');
 
 function showReview(focusIndex = null) {
   const res = state.game.results;
@@ -443,10 +444,10 @@ const renderError = () => `<div class="center-msg"><h2>Da ist etwas schiefgelauf
 function header(sub = '') {
   return `<header class="brand">
     <button class="logo" data-act="home" aria-label="Zur Startseite">
-      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 14 16 4l12 10v14H4z" fill="#c8102e"/><path d="M10 16h12v12H10z" fill="#fff"/><path d="M13 28v-7h6v7" fill="#c8102e"/></svg>
+      <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="6" fill="#fff"/><path d="M9 26c0-8.3 4.9-14.5 11-14.5S31 17.7 31 26z" fill="#e30613"/><path d="M18.6 9.5h2.8V26h-2.8z" fill="#b0000e"/><path d="M5 26h30v3.2c0 1-.8 1.8-1.8 1.8H6.8c-1 0-1.8-.8-1.8-1.8z" fill="#1d1d1b"/><path d="M11 26c.4-4.8 2.6-8.6 5.6-10.3" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".7"/></svg>
       <span><strong>Wachgebiet-Trainer</strong><small>Berlin · BF &amp; Freiwillige Feuerwehren</small></span>
     </button>${sub}
-    <button class="theme-btn" data-act="theme-menu" aria-expanded="${!!state.themeMenu}" aria-label="Darstellung wählen" title="Darstellung">${THEMES.find((t) => t.value === state.settings.theme)?.icon ?? '◐'}</button>
+    <button class="theme-btn" data-act="theme-menu" aria-expanded="${!!state.themeMenu}" aria-label="Darstellung wählen" title="Darstellung">${THEMES.find((t) => t.value === state.settings.theme)?.icon ?? THEMES[0].icon}</button>
   </header>
   ${state.themeMenu ? `<div class="theme-menu"><span class="lbl">Darstellung</span>${seg('theme', THEMES, state.settings.theme, (o) => `<b aria-hidden="true">${o.icon}</b>${o.label}`)}</div>` : ''}`;
 }
@@ -459,7 +460,7 @@ function renderHome() {
   const areas = [...new Set(state.stations.map((s) => s.area).filter(Boolean))].sort();
   return `${header()}
   <section class="intro">
-    <h1>Kenne dein Wachgebiet.</h1>
+    <h1>Kenne dein <em>Wachgebiet.</em></h1>
     <p>Wähle deine Wache – Berufsfeuerwehr oder Freiwillige Feuerwehr – und trainiere Straßen und Bahnhöfe auf einer Karte ohne Beschriftung.</p>
   </section>
   <div class="search-row">
@@ -490,6 +491,7 @@ function stationItem(s) {
 
 function footer() {
   return `<footer class="foot">
+    <p class="disclaimer">Private Trainings-Anwendung – kein offizielles Angebot der Berliner Feuerwehr.</p>
     <p>Daten: Geoportal Berlin (Feuerwehr-Standorte, Detailnetz Berlin, dl-de/zero-2-0) · VBB · Karte © OpenFreeMap, © OpenStreetMap-Mitwirkende</p>
     <button class="link" data-act="clear">Lokalen Fortschritt löschen</button>
   </footer>`;
