@@ -8,7 +8,7 @@ import { store } from './store.js';
 const RADII = [500, 1000, 2000, 3000, 4000, 5000];
 const COUNTS = [10, 20, 0];
 const TIME_LIMITS = [0, 10, 20, 30, 45, 60];
-const DEFAULTS = { difficulty: 'mixed', radius: 2000, count: 10, timeLimit: 0, labels: false, transit: true, theme: 'auto' };
+const DEFAULTS = { difficulty: 'mixed', radius: 2000, count: 10, timeLimit: 0, labels: false, transit: true, theme: 'city' };
 const ico = (d) => `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
 const THEMES = [
   { value: 'auto', label: 'Auto', icon: ico('<circle cx="12" cy="12" r="8"/><path d="M12 4v16a8 8 0 0 0 0-16z" fill="currentColor"/>') },
