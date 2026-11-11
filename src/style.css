@@ -16,8 +16,7 @@
   --accent-strong: #e30613;
   --seg-bg: #e6e6e2;
   --switch-off: #c9c9c4;
-  --bf: #a3000b;          /* Berufsfeuerwehr: Dunkelrot */
-  --ff: #ff4d55;          /* Freiwillige Feuerwehr: Hellrot */
+  --ff-bg: #ffffff;
   --blue: #1d5fbf;
   --green: #0b8a4b;
   --radius: 6px;
@@ -46,8 +45,7 @@
   --accent-strong: #ff2a35;
   --seg-bg: #0b0b0a;
   --switch-off: #3c3c38;
-  --bf: #d0121c;
-  --ff: #f0464e;
+  --ff-bg: #1c1c1a;
   --blue: #6aa2ff;
   --green: #2fbf71;
   color-scheme: dark;
@@ -146,8 +144,7 @@ h1, h2, h3 { font-family: var(--font-cond); text-wrap: balance; }
   font-variant-numeric: tabular-nums; letter-spacing: .03em; line-height: 1;
   padding: 7px 8px 6px; border-radius: 4px; color: #fff; background: var(--red); border: 2px solid var(--red);
 }
-.badge.BF { background: var(--bf); border-color: var(--bf); }
-.badge.FF { background: var(--ff); border-color: var(--ff); }
+.badge.FF { background: var(--ff-bg); color: var(--red); }
 .badge.big { font-size: 26px; padding: 8px 12px 7px; }
 
 /* ---------- Wache & Einstellungen ---------- */
@@ -162,16 +159,12 @@ h1, h2, h3 { font-family: var(--font-cond); text-wrap: balance; }
   content: ''; position: absolute; left: 0; right: 0; top: 0; height: 6px;
   background: var(--red);
 }
-.station-card.BF::before { background: var(--bf); }
-.station-card.FF::before { background: var(--ff); }
-.chip .dot { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: 0; }
-.chip .dot.BF { background: var(--bf); }
-.chip .dot.FF { background: var(--ff); }
+.station-card.FF::before { background: repeating-linear-gradient(-45deg, var(--red) 0 8px, var(--card) 8px 16px); }
 .sc-top { display: flex; align-items: center; gap: 10px; }
 .sc-top .type { font-size: 13px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
 .station-card h2 { margin: 10px 0 4px; font-size: 26px; line-height: 1.05; font-weight: 800; }
 .station-card p { margin: 2px 0; color: var(--ink-2); font-size: 14px; }
-.station-card .hosted { color: var(--ink-2); font-weight: 600; }
+.station-card .hosted { color: var(--red); font-weight: 600; }
 .station-card .hint { margin-top: 8px; font-size: 13px; color: var(--muted); }
 
 .lbl { display: block; font-family: var(--font-cond); font-size: 15px; font-weight: 700; color: var(--ink-2); margin: 16px 0 6px; text-transform: uppercase; letter-spacing: .06em; }

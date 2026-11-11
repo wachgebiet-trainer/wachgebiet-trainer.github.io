@@ -9,7 +9,7 @@ export const MAP_STYLES = {
 const BERLIN = [[13.08, 52.33], [13.77, 52.68]];
 const EMPTY = { type: 'FeatureCollection', features: [] };
 
-export const COLORS = { BF: '#a3000b', FF: '#ff4d55', guess: '#1d5fbf', solution: '#0b8a4b' };
+export const COLORS = { BF: '#e30613', FF: '#e30613', guess: '#1d5fbf', solution: '#0b8a4b' };
 
 export class TrainerMap {
   constructor(container, theme = 'light') {
@@ -68,13 +68,8 @@ export class TrainerMap {
     const ink = dark ? '#ffffff' : '#17212b';
     const halo = dark ? '#0c0c0c' : '#ffffff';
     this.labelLayers = m.getStyle().layers.filter((l) => l.type === 'symbol').map((l) => l.id);
-    // Stadtplan: Straßennamen schon in der Übersicht (weiter herausgezoomt) zeigen
-    if (this.theme === 'city') {
-      const earlier = { 'highway-name-major': 11, 'highway-name-minor': 14, 'highway-name-path': 15 };
-      for (const [id, z] of Object.entries(earlier)) if (m.getLayer(id)) m.setLayerZoomRange(id, z, 24);
-    }
     const src = (id) => m.addSource(id, { type: 'geojson', data: EMPTY });
-    ['mask', 'ring', 'explore', 'solution', 'link', 'points', 'stations', 'reviewLines', 'reviewPoints', 'names'].forEach(src);
+    ['mask', 'ring', 'explore', 'solution', 'link', 'points', 'stations', 'reviewLines', 'reviewPoints'].forEach(src);
 
     m.addLayer({ id: 'mask', type: 'fill', source: 'mask', paint: { 'fill-color': dark ? '#000000' : '#17212b', 'fill-opacity': dark ? 0.55 : 0.35 } });
     m.addLayer({ id: 'ring', type: 'line', source: 'ring', paint: { 'line-color': COLORS.BF, 'line-width': 2.5, 'line-dasharray': [2, 1.5] } });
@@ -124,38 +119,12 @@ export class TrainerMap {
       },
     });
     m.addLayer({
-      id: 'names-point', type: 'symbol', source: 'names', maxzoom: 14.5,
-      filter: ['==', ['geometry-type'], 'Point'],
-      layout: {
-        'text-field': ['get', 'name'],
-        'text-font': ['Noto Sans Regular'],
-        'text-size': ['match', ['get', 'cls'], 3, 10, 11.5],
-        'symbol-sort-key': ['get', 'rank'],
-        'text-padding': 3,
-        'text-max-width': 8,
-      },
-      paint: { 'text-color': dark ? '#e8e8e4' : '#4a3b2c', 'text-halo-color': halo, 'text-halo-width': 1.6 },
-    });
-    m.addLayer({
-      id: 'names', type: 'symbol', source: 'names', minzoom: 14.5,
-      filter: ['==', ['geometry-type'], 'LineString'],
-      layout: {
-        'symbol-placement': 'line',
-        'text-field': ['get', 'name'],
-        'text-font': ['Noto Sans Regular'],
-        'text-size': ['interpolate', ['linear'], ['zoom'], 12, ['match', ['get', 'cls'], 3, 9, 11], 16, ['match', ['get', 'cls'], 3, 13, 15]],
-        'text-max-angle': 30,
-        'symbol-spacing': 350,
-      },
-      paint: { 'text-color': dark ? '#e8e8e4' : '#4a3b2c', 'text-halo-color': halo, 'text-halo-width': 1.6 },
-    });
-    m.addLayer({
       id: 'stations', type: 'circle', source: 'stations',
       paint: {
         'circle-radius': ['interpolate', ['linear'], ['zoom'], 9, ['case', ['get', 'selected'], 8, 5], 14, ['case', ['get', 'selected'], 13, 9]],
-        'circle-color': ['match', ['get', 'type'], 'FF', COLORS.FF, COLORS.BF],
-        'circle-stroke-color': ['case', ['get', 'selected'], ink, halo],
-        'circle-stroke-width': ['case', ['get', 'selected'], 3.5, 1.5],
+        'circle-color': ['match', ['get', 'type'], 'FF', halo, COLORS.BF],
+        'circle-stroke-color': ['case', ['get', 'selected'], ink, ['==', ['get', 'type'], 'FF'], COLORS.FF, halo],
+        'circle-stroke-width': ['case', ['get', 'selected'], 3.5, ['==', ['get', 'type'], 'FF'], 3, 1.5],
       },
     });
     m.addLayer({
@@ -177,7 +146,7 @@ export class TrainerMap {
   }
 
   clearOverlays() {
-    ['mask', 'ring', 'explore', 'solution', 'link', 'points', 'reviewLines', 'reviewPoints', 'names'].forEach((id) => this.set(id));
+    ['mask', 'ring', 'explore', 'solution', 'link', 'points', 'reviewLines', 'reviewPoints'].forEach((id) => this.set(id));
     this.map.setFilter('explore-hover', ['==', ['get', 'name'], '']);
   }
 

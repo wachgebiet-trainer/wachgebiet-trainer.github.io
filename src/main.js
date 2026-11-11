@@ -1,7 +1,7 @@
 import 'maplibre-gl/dist/maplibre-gl.css';
 import './style.css';
 import { TrainerMap, COLORS, targetFeatures } from './map.js';
-import { loadStations, loadGeo, buildPool, streetsGeoJSON, streetNamesGeoJSON, DIFFICULTIES } from './data.js';
+import { loadStations, loadGeo, buildPool, streetsGeoJSON, DIFFICULTIES } from './data.js';
 import { nearestOnLines, distance, formatDistance } from './geo.js';
 import { store } from './store.js';
 
@@ -128,20 +128,12 @@ async function selectStation(station) {
     }
   }
   updatePoolPreview();
-  updateNames();
 }
 
 function previewArea() {
   const s = state.station;
   tmap.showArea(s.center, state.settings.radius, s.type === 'FF' ? COLORS.FF : COLORS.BF);
   tmap.fitArea(s.center, state.settings.radius);
-  updateNames();
-}
-
-// Stadtplan: Straßennamen in der Wachen-Übersicht (nicht im Training)
-function updateNames() {
-  const show = state.view === 'setup' && state.geo && resolvedTheme() === 'city';
-  tmap.set('names', show ? streetNamesGeoJSON(state.geo, state.station.center, state.settings.radius + 1500) : null);
 }
 
 function updatePoolPreview() {
@@ -475,7 +467,7 @@ function renderHome() {
     <input id="search" type="search" placeholder="Wachnummer, Name oder Ortsteil" value="${esc(state.filter.q)}" autocomplete="off" aria-label="Wache suchen" />
   </div>
   <div class="chips">
-    ${chip('all', 'Alle', state.stations.length)}${chip('BF', '<i class="dot BF"></i>Berufsfeuerwehr', bf)}${chip('FF', '<i class="dot FF"></i>Freiwillige Feuerwehr', ff)}
+    ${chip('all', 'Alle', state.stations.length)}${chip('BF', 'Berufsfeuerwehr', bf)}${chip('FF', 'Freiwillige Feuerwehr', ff)}
     <select id="area" aria-label="Einsatzbereich">
       <option value="0">Alle Einsatzbereiche</option>
       ${areas.map((a) => `<option value="${a}" ${state.filter.area === a ? 'selected' : ''}>EB ${a}</option>`).join('')}
@@ -668,7 +660,6 @@ $panel.addEventListener('click', (e) => {
       store.saveSettings(state.settings);
       if (k === 'theme') {
         applyTheme();
-        if (state.view === 'setup') updateNames();
         return render();
       }
       if (k === 'radius') previewArea();
