@@ -75,8 +75,10 @@ async function init() {
   }
   tmap.map.on('click', onMapClick);
   tmap.map.on('mousemove', onMapMove);
-  tmap.map.on('mouseenter', 'stations', () => (tmap.map.getCanvas().style.cursor = 'pointer'));
-  tmap.map.on('mouseleave', 'stations', () => (tmap.map.getCanvas().style.cursor = ''));
+  for (const layer of ['stations', 'stations-split']) {
+    tmap.map.on('mouseenter', layer, () => (tmap.map.getCanvas().style.cursor = 'pointer'));
+    tmap.map.on('mouseleave', layer, () => (tmap.map.getCanvas().style.cursor = ''));
+  }
   tmap.setLabels(true);
 
   const params = new URLSearchParams(location.search);
@@ -376,9 +378,15 @@ function exploreSelect(target) {
 function onMapClick(e) {
   const lngLat = [e.lngLat.lng, e.lngLat.lat];
   if (state.view === 'home' || state.view === 'setup') {
-    const f = tmap.map.queryRenderedFeatures(e.point, { layers: ['stations'] })[0];
+    const f = tmap.map.queryRenderedFeatures(e.point, { layers: ['stations', 'stations-split'] })[0];
     if (f) {
-      const st = state.stations.find((s) => s.key === f.properties.key);
+      let key = f.properties.key;
+      if (f.properties.type === 'BOTH') {
+        // geteilter Kreis: linke Hälfte = BF, rechte Hälfte = FF
+        const cx = tmap.map.project(f.geometry.coordinates).x;
+        key = e.point.x < cx ? f.properties.bfKey : f.properties.ffKey;
+      }
+      const st = state.stations.find((s) => s.key === key);
       if (st) selectStation(st);
     }
     return;
@@ -467,7 +475,7 @@ function renderHome() {
     <input id="search" type="search" placeholder="Wachnummer, Name oder Ortsteil" value="${esc(state.filter.q)}" autocomplete="off" aria-label="Wache suchen" />
   </div>
   <div class="chips">
-    ${chip('all', 'Alle', state.stations.length)}${chip('BF', 'Berufsfeuerwehr', bf)}${chip('FF', 'Freiwillige Feuerwehr', ff)}
+    ${chip('all', 'Alle', state.stations.length)}${chip('BF', '<i class="dot BF"></i>Berufsfeuerwehr', bf)}${chip('FF', '<i class="dot FF"></i>Freiwillige Feuerwehr', ff)}
     <select id="area" aria-label="Einsatzbereich">
       <option value="0">Alle Einsatzbereiche</option>
       ${areas.map((a) => `<option value="${a}" ${state.filter.area === a ? 'selected' : ''}>EB ${a}</option>`).join('')}

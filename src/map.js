@@ -9,7 +9,7 @@ export const MAP_STYLES = {
 const BERLIN = [[13.08, 52.33], [13.77, 52.68]];
 const EMPTY = { type: 'FeatureCollection', features: [] };
 
-export const COLORS = { BF: '#e30613', FF: '#e30613', guess: '#1d5fbf', solution: '#0b8a4b' };
+export const COLORS = { BF: '#a3000b', FF: '#ff4d55', guess: '#1d5fbf', solution: '#0b8a4b' };
 
 export class TrainerMap {
   constructor(container, theme = 'light') {
@@ -120,11 +120,24 @@ export class TrainerMap {
     });
     m.addLayer({
       id: 'stations', type: 'circle', source: 'stations',
+      filter: ['!=', ['get', 'type'], 'BOTH'],
       paint: {
         'circle-radius': ['interpolate', ['linear'], ['zoom'], 9, ['case', ['get', 'selected'], 8, 5], 14, ['case', ['get', 'selected'], 13, 9]],
-        'circle-color': ['match', ['get', 'type'], 'FF', halo, COLORS.BF],
-        'circle-stroke-color': ['case', ['get', 'selected'], ink, ['==', ['get', 'type'], 'FF'], COLORS.FF, halo],
-        'circle-stroke-width': ['case', ['get', 'selected'], 3.5, ['==', ['get', 'type'], 'FF'], 3, 1.5],
+        'circle-color': ['match', ['get', 'type'], 'FF', COLORS.FF, COLORS.BF],
+        'circle-stroke-color': ['case', ['get', 'selected'], ink, halo],
+        'circle-stroke-width': ['case', ['get', 'selected'], 3.5, 1.5],
+      },
+    });
+    // BF und FF am selben Standort: senkrecht geteilter Kreis (links BF, rechts FF)
+    this.#addSplitImages(halo, ink);
+    m.addLayer({
+      id: 'stations-split', type: 'symbol', source: 'stations',
+      filter: ['==', ['get', 'type'], 'BOTH'],
+      layout: {
+        'icon-image': ['case', ['get', 'selected'], 'split-selected', 'split'],
+        'icon-size': ['interpolate', ['linear'], ['zoom'], 9, ['case', ['get', 'selected'], 0.5, 0.375], 14, ['case', ['get', 'selected'], 0.8, 0.625]],
+        'icon-allow-overlap': true,
+        'icon-ignore-placement': true,
       },
     });
     m.addLayer({
@@ -161,17 +174,69 @@ export class TrainerMap {
     }
   }
 
+  #addSplitImages(halo, ink) {
+    const draw = (selected) => {
+      const size = 64;
+      const c = document.createElement('canvas');
+      c.width = c.height = size;
+      const g = c.getContext('2d');
+      const r = size / 2;
+      const stroke = selected ? 9 : 4;
+      const inner = r - stroke / 2 - 1;
+      g.beginPath();
+      g.arc(r, r, inner, Math.PI / 2, (Math.PI * 3) / 2);
+      g.closePath();
+      g.fillStyle = COLORS.BF;
+      g.fill();
+      g.beginPath();
+      g.arc(r, r, inner, -Math.PI / 2, Math.PI / 2);
+      g.closePath();
+      g.fillStyle = COLORS.FF;
+      g.fill();
+      g.beginPath();
+      g.arc(r, r, inner, 0, Math.PI * 2);
+      g.lineWidth = stroke;
+      g.strokeStyle = selected ? ink : halo;
+      g.stroke();
+      return g.getImageData(0, 0, size, size);
+    };
+    const m = this.map;
+    if (m.hasImage('split')) m.removeImage('split');
+    if (m.hasImage('split-selected')) m.removeImage('split-selected');
+    m.addImage('split', draw(false), { pixelRatio: 2 });
+    m.addImage('split-selected', draw(true), { pixelRatio: 2 });
+  }
+
   showStations(stations, selectedKey) {
     this.#setVis('stations', 'visible');
+    this.#setVis('stations-split', 'visible');
     this.#setVis('stations-label', 'visible');
-    this.set('stations', {
-      type: 'FeatureCollection',
-      features: stations.map((s) => ({
-        type: 'Feature',
-        properties: { key: s.key, number: s.number, type: s.type, selected: s.key === selectedKey },
-        geometry: { type: 'Point', coordinates: s.center },
-      })),
-    });
+    // Wachen am selben Standort zusammenfassen
+    const groups = new Map();
+    for (const s of stations) {
+      const k = `${s.center[0].toFixed(5)},${s.center[1].toFixed(5)}`;
+      if (!groups.has(k)) groups.set(k, []);
+      groups.get(k).push(s);
+    }
+    const features = [];
+    for (const group of groups.values()) {
+      const bf = group.find((s) => s.type === 'BF');
+      const ff = group.find((s) => s.type === 'FF');
+      if (bf && ff) {
+        features.push({
+          type: 'Feature',
+          properties: {
+            type: 'BOTH', bfKey: bf.key, ffKey: ff.key, number: `${bf.number}/${ff.number}`,
+            selected: group.some((s) => s.key === selectedKey),
+          },
+          geometry: { type: 'Point', coordinates: bf.center },
+        });
+        group.filter((s) => s !== bf && s !== ff).forEach((s) => features.push(stationFeature(s, selectedKey)));
+      } else {
+        group.forEach((s) => features.push(stationFeature(s, selectedKey)));
+      }
+    }
+    this.set('stations', { type: 'FeatureCollection', features });
   }
 
   hideStationsExcept(station) {
@@ -211,4 +276,12 @@ export function targetFeatures(target, props = {}) {
     return [{ type: 'Feature', properties: props, geometry: { type: 'Point', coordinates: target.lines[0][0] } }];
   }
   return [{ type: 'Feature', properties: props, geometry: { type: 'MultiLineString', coordinates: target.lines } }];
+}
+
+function stationFeature(s, selectedKey) {
+  return {
+    type: 'Feature',
+    properties: { key: s.key, number: s.number, type: s.type, selected: s.key === selectedKey },
+    geometry: { type: 'Point', coordinates: s.center },
+  };
 }
