@@ -6,10 +6,11 @@ export const MAP_STYLES = {
   dark: 'https://tiles.openfreemap.org/styles/dark',
   city: 'https://tiles.openfreemap.org/styles/liberty',
 };
-const BERLIN = [[13.08, 52.33], [13.77, 52.68]];
+import { CITY } from './city.js';
+const BOUNDS = CITY.bounds;
 const EMPTY = { type: 'FeatureCollection', features: [] };
 
-export const COLORS = { BF: '#a3000b', FF: '#ff4d55', guess: '#1d5fbf', solution: '#0b8a4b' };
+export const COLORS = { BF: '#a3000b', FF: '#ff4d55', RW: '#ffffff', RWring: '#a3000b', guess: '#1d5fbf', solution: '#0b8a4b' };
 
 export class TrainerMap {
   constructor(container, theme = 'light') {
@@ -22,7 +23,7 @@ export class TrainerMap {
       this.map = new maplibregl.Map({
         container,
         style: MAP_STYLES[theme],
-        bounds: BERLIN,
+        bounds: BOUNDS,
         fitBoundsOptions: { padding: 20 },
         attributionControl: { compact: true },
         dragRotate: false,
@@ -123,9 +124,9 @@ export class TrainerMap {
       filter: ['!=', ['get', 'type'], 'BOTH'],
       paint: {
         'circle-radius': ['interpolate', ['linear'], ['zoom'], 9, ['case', ['get', 'selected'], 8, 5], 14, ['case', ['get', 'selected'], 13, 9]],
-        'circle-color': ['match', ['get', 'type'], 'FF', COLORS.FF, COLORS.BF],
-        'circle-stroke-color': ['case', ['get', 'selected'], ink, halo],
-        'circle-stroke-width': ['case', ['get', 'selected'], 3.5, 1.5],
+        'circle-color': ['match', ['get', 'type'], 'FF', COLORS.FF, 'RW', COLORS.RW, COLORS.BF],
+        'circle-stroke-color': ['case', ['get', 'selected'], ink, ['==', ['get', 'type'], 'RW'], COLORS.RWring, halo],
+        'circle-stroke-width': ['case', ['get', 'selected'], 3.5, ['==', ['get', 'type'], 'RW'], 3, 1.5],
       },
     });
     // BF und FF am selben Standort: senkrecht geteilter Kreis (links BF, rechts FF)
@@ -255,8 +256,8 @@ export class TrainerMap {
     this.map.fitBounds(boundsOf(center, radius), { padding: 24, duration: 700, ...opts });
   }
 
-  fitBerlin() {
-    this.map.fitBounds(BERLIN, { padding: 20, duration: 700 });
+  fitCity() {
+    this.map.fitBounds(BOUNDS, { padding: 20, duration: 700 });
   }
 
   fitLines(lines, extra = []) {

@@ -12,6 +12,7 @@ import { TrainerMap, COLORS, targetFeatures } from './map.js';
 import { loadStations, loadGeo, buildPool, streetsGeoJSON, DIFFICULTIES } from './data.js';
 import { nearestOnLines, distance, formatDistance } from './geo.js';
 import { store } from './store.js';
+import { CITY, OTHER_CITIES, TYPE_LABEL, cityUrl } from './city.js';
 
 const RADII = [500, 1000, 2000, 3000, 4000, 5000];
 const COUNTS = [10, 20, 0];
@@ -35,7 +36,7 @@ const state = {
   stations: [],
   meta: null,
   geo: null,
-  filter: { q: '', type: 'all', area: 0 },
+  filter: { q: '', type: 'all', area: '' },
   station: null,
   settings: { ...DEFAULTS, ...(store.settings ?? {}) },
   game: null,
@@ -44,7 +45,8 @@ const state = {
 
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const radiusLabel = (r) => (r < 1000 ? `${r} m` : `${r / 1000} km`);
-const typeLabel = (t) => (t === 'FF' ? 'Freiwillige Feuerwehr' : 'Berufsfeuerwehr');
+const typeLabel = (t) => TYPE_LABEL[t] ?? TYPE_LABEL.BF;
+const areaColor = (type) => (type === 'RW' ? COLORS.RWring : COLORS[type] ?? COLORS.BF);
 
 function toast(msg) {
   $toast.textContent = msg;
@@ -113,7 +115,7 @@ function showHome() {
   tmap.clearOverlays();
   tmap.setLabels(true);
   tmap.showStations(filteredStations());
-  tmap.fitBerlin();
+  tmap.fitCity();
   render();
 }
 
@@ -142,7 +144,7 @@ async function selectStation(station) {
 
 function previewArea() {
   const s = state.station;
-  tmap.showArea(s.center, state.settings.radius, s.type === 'FF' ? COLORS.FF : COLORS.BF);
+  tmap.showArea(s.center, state.settings.radius, areaColor(s.type));
   tmap.fitArea(s.center, state.settings.radius);
 }
 
@@ -199,7 +201,7 @@ function startGame(targets) {
   state.view = 'game';
   tmap.clearOverlays();
   tmap.hideStationsExcept(state.station);
-  tmap.showArea(state.station.center, s.radius, state.station.type === 'FF' ? COLORS.FF : COLORS.BF);
+  tmap.showArea(state.station.center, s.radius, areaColor(state.station.type));
   tmap.setLabels(s.labels);
   tmap.fitArea(state.station.center, s.radius);
   nextTarget(true);
@@ -367,7 +369,7 @@ function startExplore() {
   state.explore = { pool, selected: null, hover: null };
   tmap.clearOverlays();
   tmap.hideStationsExcept(state.station);
-  tmap.showArea(state.station.center, s.radius, state.station.type === 'FF' ? COLORS.FF : COLORS.BF);
+  tmap.showArea(state.station.center, s.radius, areaColor(state.station.type));
   tmap.set('explore', streetsGeoJSON(state.geo, state.station.center, s.radius + 300));
   tmap.setLabels(s.labels);
   tmap.fitArea(state.station.center, s.radius);
@@ -431,7 +433,7 @@ function filteredStations() {
   return state.stations.filter(
     (s) =>
       (type === 'all' || s.type === type) &&
-      (!area || s.area === area) &&
+      (!area || String(s.area) === area) &&
       (!needle || s.number.includes(needle) || s.name.toLowerCase().includes(needle) || s.ortsteil?.toLowerCase().includes(needle) || s.bezirk?.toLowerCase().includes(needle)),
   );
 }
@@ -461,7 +463,7 @@ function header(sub = '') {
   return `<header class="brand">
     <button class="logo" data-act="home" aria-label="Zur Startseite">
       <span class="logo-icon" aria-hidden="true">🚨</span>
-      <span><strong>Wachgebiet-Trainer</strong><small>Berlin · BF &amp; Freiwillige Feuerwehren</small></span>
+      <span><strong>Wachgebiet-Trainer</strong><small>${CITY.subtitle}</small></span>
     </button>${sub}
     <button class="theme-btn" data-act="theme-menu" aria-expanded="${!!state.themeMenu}" aria-label="Darstellung wählen" title="Darstellung">${THEMES.find((t) => t.value === state.settings.theme)?.icon ?? THEMES[0].icon}</button>
   </header>
@@ -470,23 +472,22 @@ function header(sub = '') {
 
 function renderHome() {
   const list = filteredStations();
-  const ff = state.stations.filter((s) => s.type === 'FF').length;
-  const bf = state.stations.length - ff;
+  const count = (t) => state.stations.filter((s) => s.type === t).length;
   const chip = (v, l, n) => `<button class="chip ${state.filter.type === v ? 'on' : ''}" data-act="ftype" data-v="${v}">${l} <span>${n}</span></button>`;
   const areas = [...new Set(state.stations.map((s) => s.area).filter(Boolean))].sort();
   return `${header()}
   <section class="intro">
     <h1>Kenne dein <em>Wachgebiet.</em></h1>
-    <p>Wähle deine Wache – Berufsfeuerwehr oder Freiwillige Feuerwehr – und trainiere Straßen und Bahnhöfe auf einer Karte ohne Beschriftung.</p>
+    <p>${CITY.intro}</p>
   </section>
   <div class="search-row">
-    <input id="search" type="search" placeholder="Wachnummer, Name oder Ortsteil" value="${esc(state.filter.q)}" autocomplete="off" aria-label="Wache suchen" />
+    <input id="search" type="search" placeholder="${CITY.searchPlaceholder}" value="${esc(state.filter.q)}" autocomplete="off" aria-label="Wache suchen" />
   </div>
   <div class="chips">
-    ${chip('all', 'Alle', state.stations.length)}${chip('BF', '<i class="dot BF"></i>Berufsfeuerwehr', bf)}${chip('FF', '<i class="dot FF"></i>Freiwillige Feuerwehr', ff)}
-    <select id="area" aria-label="Einsatzbereich">
-      <option value="0">Alle Einsatzbereiche</option>
-      ${areas.map((a) => `<option value="${a}" ${state.filter.area === a ? 'selected' : ''}>EB ${a}</option>`).join('')}
+    ${chip('all', 'Alle', state.stations.length)}${['BF', 'FF', 'RW'].filter((t) => count(t)).map((t) => chip(t, `<i class="dot ${t}"></i>${TYPE_LABEL[t]}`, count(t))).join('')}
+    <select id="area" aria-label="${CITY.areaAria}">
+      <option value="">${CITY.areaAll}</option>
+      ${areas.map((a) => `<option value="${esc(a)}" ${state.filter.area === String(a) ? 'selected' : ''}>${esc(CITY.areaLabel(a))}</option>`).join('')}
     </select>
   </div>
   <ul class="station-list">
@@ -521,19 +522,17 @@ function renderLegal() {
 
     <h3>Über den Wachgebiet-Trainer</h3>
     <p>Der Wachgebiet-Trainer ist ein privates, nicht-kommerzielles Projekt von <strong>Vincent Wolf</strong>.
-      Er hilft Einsatzkräften der Berufsfeuerwehr und der Freiwilligen Feuerwehren in Berlin, die Straßen und Bahnhöfe
+      Er hilft Einsatzkräften der Berufsfeuerwehr, der Freiwilligen Feuerwehren und des Rettungsdienstes, die Straßen und Bahnhöfe
       in ihrem Wachgebiet zu lernen.</p>
     <p>Inspiriert vom Ortskunde-Trainer „Wachgebiet“ (<a href="https://geo.knt-fw.de" target="_blank" rel="noopener">geo.knt-fw.de</a>).
       Gestaltung und Umsetzung: Vincent Wolf. © ${new Date().getFullYear()} Vincent Wolf. Alle Rechte an Gestaltung und Programmcode vorbehalten,
       soweit nicht anders angegeben.</p>
-    <p>Dies ist <strong>kein offizielles Angebot der Berliner Feuerwehr</strong> oder des Landes Berlin. Alle Angaben ohne Gewähr;
+    <p>Dies ist <strong>kein offizielles Angebot der ${CITY.officialName}</strong>${CITY.disclaimerExtra}. Alle Angaben ohne Gewähr;
       maßgeblich für den Einsatz sind ausschließlich die dienstlichen Unterlagen und Systeme.</p>
 
-    <h3>Datenquellen</h3>
+    <h3>Datenquellen ${esc(CITY.name)}</h3>
     <ul>
-      <li>Standorte der Feuerwachen und Freiwilligen Feuerwehren sowie Straßennetz: Geoportal Berlin
-        (WFS „Feuerwehr-Standorte“ und „Detailnetz Berlin“), Datenlizenz Deutschland – Zero – Version 2.0</li>
-      <li>S- und U-Bahnhöfe: VBB Verkehrsverbund Berlin-Brandenburg</li>
+      ${CITY.sources.map((src) => `<li>${esc(src)}</li>`).join('')}
       <li>Hintergrundkarte: OpenFreeMap, OpenMapTiles, © OpenStreetMap-Mitwirkende (ODbL)</li>
     </ul>
 
@@ -561,8 +560,9 @@ function renderLegal() {
 function footer() {
   return `<footer class="foot">
     <p class="credit">Erstellt von <strong>Vincent Wolf</strong> · © ${new Date().getFullYear()} Vincent Wolf · inspiriert von „Wachgebiet“ (geo.knt-fw.de)</p>
-    <p class="disclaimer">Private Trainings-Anwendung – kein offizielles Angebot der Berliner Feuerwehr.</p>
-    <p>Daten: Geoportal Berlin (Feuerwehr-Standorte, Detailnetz Berlin, dl-de/zero-2-0) · VBB · Karte © OpenFreeMap, © OpenStreetMap-Mitwirkende</p>
+    <p class="disclaimer">Private Trainings-Anwendung – kein offizielles Angebot der ${CITY.officialName}.</p>
+    <p>${CITY.footerSources}</p>
+    ${OTHER_CITIES.length ? `<p class="other-cities">Auch verfügbar: ${OTHER_CITIES.map((c) => `<a href="${cityUrl(c)}">${esc(c.name)}</a>`).join(' · ')}</p>` : ''}
     <p class="foot-links"><button class="link" data-act="legal">Impressum &amp; Datenschutz</button><button class="link" data-act="clear">Lokalen Fortschritt löschen</button></p>
   </footer>`;
 }
@@ -584,11 +584,11 @@ function renderSetup() {
   return `${header()}
   <button class="back" data-act="home">← Alle Wachen</button>
   <section class="station-card ${s.type}">
-    <div class="sc-top"><span class="badge ${s.type} big">${s.number}</span><span class="type">${typeLabel(s.type)}${s.area ? ` · EB ${s.area}` : ''}</span></div>
+    <div class="sc-top"><span class="badge ${s.type} big">${s.number}</span><span class="type">${typeLabel(s.type)}${s.area ? ` · ${esc(CITY.areaLabel(s.area))}` : ''}</span></div>
     <h2>${esc(s.name)}</h2>
     <p>${esc(s.address)}${s.ortsteil ? ` · ${esc(s.ortsteil)}` : ''}</p>
     ${s.hostedAt ? `<p class="hosted">Untergebracht an der ${esc(s.hostedAt)}</p>` : ''}
-    ${ff && !s.hostedAt ? '<p class="hint">Tipp: Freiwillige Feuerwehren am Stadtrand haben oft große Ausrückebereiche – probiere 4 oder 5 km.</p>' : ''}
+    ${ff && !s.hostedAt ? `<p class="hint">${CITY.ffHint}</p>` : ''}
   </section>
 
   <section class="settings">
@@ -771,7 +771,7 @@ $panel.addEventListener('click', (e) => {
 $panel.addEventListener('change', (e) => {
   const el = e.target;
   if (el.id === 'area') {
-    state.filter.area = Number(el.value);
+    state.filter.area = el.value;
     tmap.showStations(filteredStations());
     return render();
   }

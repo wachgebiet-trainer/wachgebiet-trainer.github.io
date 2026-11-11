@@ -1,6 +1,8 @@
 import { projector } from './geo.js';
 
-const BASE = import.meta.env.BASE_URL + 'data/';
+import { DATA_BASE } from './city.js';
+
+const BASE = DATA_BASE;
 
 let cache = null;
 

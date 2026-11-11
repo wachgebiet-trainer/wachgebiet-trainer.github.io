@@ -1,6 +1,6 @@
 # Wachgebiet-Trainer Berlin
 
-Live: https://wachgebiet-trainer.github.io/
+Live: https://wachgebiet-trainer.github.io/ (Berlin) · https://wachgebiet-trainer.github.io/duisburg/ (Duisburg)
 
 Ortskunde-Training für **Berufsfeuerwehr und Freiwillige Feuerwehren** in Berlin:
 Wache wählen, Straße oder Bahnhof wird genannt, auf der Karte ohne Beschriftung antippen, Abstand wird bewertet.
@@ -14,6 +14,18 @@ Wache wählen, Straße oder Bahnhof wird genannt, auf der Karte ohne Beschriftun
 - Direktlink: `?wache=2620` (auch `?3600` wie beim Original)
 - Fortschritt lokal im Browser, Gastmodus
 - Darstellung wählbar: Auto (System), Hell, Dunkel, Stadtplan – Oberfläche und Karte wechseln mit
+
+## Städte
+Eine Codebasis, eine Seite pro Stadt (`index.html` = Berlin, `duisburg/index.html` = Duisburg).
+Die Stadt-Einstellungen stehen in `src/city.js`, die Daten unter `public/data/<stadt>/`.
+
+**Duisburg:** 7 Feuer- und Rettungswachen, 16 Einheiten der Freiwilligen Feuerwehr und 11 Rettungswachen
+aus dem Open-Data-Datensatz „Rettung“ der Stadt Duisburg (CC BY 3.0 DE); Straßen und Bahnhöfe aus OpenStreetMap
+(OpenMapTiles-Kacheln). Daten aktualisieren:
+```
+./build/fetch-duisburg.sh
+npm run data:duisburg
+```
 
 ## Veröffentlichen
 Jeder Push auf `main` baut die Seite und veröffentlicht sie über GitHub Pages (`.github/workflows/pages.yml`).

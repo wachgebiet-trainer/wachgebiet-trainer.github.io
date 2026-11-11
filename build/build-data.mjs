@@ -8,7 +8,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const here = path.dirname(new URL(import.meta.url).pathname);
-const out = path.join(here, '..', 'public', 'data');
+const out = path.join(here, '..', 'public', 'data', 'berlin');
 fs.mkdirSync(out, { recursive: true });
 
 // ---------- Wachen ----------

@@ -1,5 +1,7 @@
 // Lokaler Fortschritt (nur auf diesem Gerät)
-const KEY = 'wachgebiet-trainer:v1';
+import { CITY } from './city.js';
+
+const KEY = CITY.storageKey;
 
 function read() {
   try {

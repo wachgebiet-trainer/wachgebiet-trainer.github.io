@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@mapbox/vector-tile": "^2.0.5",
+    "pbf": "^4.0.2",
     "vbb-stations": "^8.31.0"
   }
 }
