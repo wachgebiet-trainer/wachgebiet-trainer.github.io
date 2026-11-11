@@ -482,6 +482,7 @@ function header(sub = '') {
       <span class="logo-icon" aria-hidden="true">🚨</span>
       <span><strong>Wachgebiet-Trainer</strong><small>${CITY.subtitle}</small></span>
     </button>${sub}
+    <a class="city-btn" href="${SITE_ROOT.href}" title="Stadt wechseln" aria-label="Stadt wechseln (aktuell ${esc(CITY.name)})">${ico('<path d="M12 21s-6-5.3-6-10a6 6 0 0 1 12 0c0 4.7-6 10-6 10z"/><circle cx="12" cy="11" r="2.2"/>')}<span>Stadt</span></a>
     <button class="theme-btn" data-act="theme-menu" aria-expanded="${!!state.themeMenu}" aria-label="Darstellung wählen" title="Darstellung">${THEMES.find((t) => t.value === state.settings.theme)?.icon ?? THEMES[0].icon}</button>
   </header>
   ${state.themeMenu ? `<div class="theme-menu"><span class="lbl">Darstellung</span>${seg('theme', THEMES, state.settings.theme, (o) => `<b aria-hidden="true">${o.icon}</b>${o.label}`)}</div>` : ''}`;
@@ -580,7 +581,7 @@ function footer() {
     <p class="credit">Erstellt von <strong>Vincent Wolf</strong> · © ${new Date().getFullYear()} Vincent Wolf · inspiriert von „Wachgebiet“ (geo.knt-fw.de)</p>
     <p class="disclaimer">Private Trainings-Anwendung – kein offizielles Angebot der ${CITY.officialName}.</p>
     <p>${CITY.footerSources}</p>
-    <p class="other-cities"><a href="${SITE_ROOT.href}">Stadt wechseln</a></p>
+    <p class="other-cities"><a class="btn city-switch" href="${SITE_ROOT.href}">${ico('<path d="M12 21s-6-5.3-6-10a6 6 0 0 1 12 0c0 4.7-6 10-6 10z"/><circle cx="12" cy="11" r="2.2"/>')} Stadt wechseln</a></p>
     <p class="foot-links"><button class="link" data-act="legal">Impressum &amp; Datenschutz</button><button class="link" data-act="clear">Lokalen Fortschritt löschen</button></p>
   </footer>`;
 }

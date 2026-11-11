@@ -385,3 +385,20 @@ html:has(body.start-page), body.start-page { overflow: auto; height: auto; min-h
 .contact-mail a { font-family: var(--font-cond); font-size: 22px; font-weight: 800; color: var(--red); word-break: break-all; }
 .start-main .how { margin: 0 0 18px; }
 .start-main .how h2 { font-size: 20px; }
+
+/* Stadt wechseln */
+.city-btn {
+  flex: none; height: 40px; display: inline-flex; align-items: center; gap: 4px; padding: 0 10px;
+  border-radius: var(--radius); border: 2px solid rgb(255 255 255 / .6); color: #fff; text-decoration: none;
+  font-family: var(--font-cond); font-weight: 700; font-size: 16px; text-transform: uppercase; letter-spacing: .03em;
+}
+.city-btn:hover, .city-btn:focus-visible { background: #fff; color: var(--red-dark); border-color: #fff; }
+.city-btn .ico { width: 18px; height: 18px; }
+.brand .logo > span:last-child { min-width: 0; }
+.brand .logo strong { font-size: clamp(16px, 4.6vw, 22px); overflow-wrap: anywhere; }
+.brand .logo small { font-size: clamp(11px, 3.1vw, 12.5px); }
+@media (max-width: 380px) { .city-btn span { display: none; } .city-btn { width: 40px; justify-content: center; padding: 0; } }
+.other-cities { margin: 14px 0; }
+.btn.city-switch { display: inline-flex; align-items: center; gap: 8px; justify-content: center; text-decoration: none; color: var(--ink); width: 100%; }
+.btn.city-switch .ico { width: 20px; height: 20px; }
+@media (min-width: 821px) { #panel .brand .logo strong { font-size: 19px; } #panel .brand .logo small { font-size: 12px; } }
