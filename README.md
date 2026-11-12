@@ -28,14 +28,23 @@ aus dem Open-Data-Datensatz „Rettung“ der Stadt Duisburg (CC BY 3.0 DE); Str
 npm run data:duisburg
 ```
 
-**Weitere Städte** (Bochum, Braunschweig, Bremen, Dortmund, Dresden, Düsseldorf, Essen, Frankfurt am Main, Hamburg,
-Hannover, Köln, Leipzig, München, Nürnberg, Potsdam, Stuttgart, Wolfsburg): Stadtgrenze amtlich vom BKG (VG250),
-Wachen, Straßen und Bahnhöfe aus OpenStreetMap. Die Wachenlisten können unvollständig sein; die App weist darauf hin.
+**Weitere Städte** – Stadtgrenze amtlich vom BKG (VG250). Wachenliste aus mehreren Quellen, in dieser Reihenfolge:
+
+1. **OpenStreetMap-Kartendaten** (OpenMapTiles-Kacheln): Straßen, Bahnhöfe, benannte Wachen – `build/build-osm-city.mjs`
+2. **OpenStreetMap-Suche** (Nominatim): weitere Feuer- und Rettungswachen, Adressen – `build/enrich-nominatim.mjs`
+3. **Ergänzungen** aus Wikipedia und Hand (`build/supplements/<stadt>.json`, automatische Funde in `<stadt>.auto.json`) – `build/apply-supplements.mjs`
+4. **Amtliche Standortlisten**, wo vorhanden – `build/convert-official.mjs` → `build/official/<stadt>.json` → `build/apply-official.mjs`
+   - Köln (WFS Stadt Köln) und Düsseldorf (Open Data): vollständig, ersetzen OSM für Feuerwachen und FF
+   - Ruhrgebiet (Regionalverband Ruhr, POI „Rettungswesen“): Bochum, Bottrop, Dortmund, Essen, Gelsenkirchen,
+     Hagen, Hamm, Herne, Moers, Mülheim an der Ruhr, Oberhausen – mit OSM zusammengeführt
+
+Alles neu bauen: `./build/build-all-osm.sh` (oder einzelne Städte: `./build/build-all-osm.sh koeln essen`).
+Vollständigkeit gegen Wikipedia prüfen: `./build/fetch-wiki.sh && node build/completeness.mjs`.
 
 Neue Stadt aufnehmen:
 1. Eintrag in `src/cities.json` (`source: "osm"`, `gen` = Gemeindename laut VG250, `ars` = Anfang des Regionalschlüssels)
-2. `npm run data:osm -- <id>` lädt Grenze und Kartenkacheln und schreibt `public/data/<id>/`
-3. `npm run pages` erzeugt die Stadtseite und übernimmt den Kartenausschnitt
+   – oder `node build/add-cities.mjs '[{"id":"…","name":"…","kfz":"…","ars":"…"}]'`
+2. `./build/build-all-osm.sh <id>`
 
 ## Veröffentlichen
 Jeder Push auf `main` baut die Seite und veröffentlicht sie über GitHub Pages (`.github/workflows/pages.yml`).
