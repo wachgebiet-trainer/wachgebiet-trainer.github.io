@@ -684,6 +684,7 @@ function render() {
     render.last = key;
   }
   $app.dataset.view = state.view;
+  $app.dataset.choice = state.view === 'game' && state.game?.queue[state.game.index]?.choices ? '1' : '';
   const fn = { loading: renderLoading, error: renderError, home: renderHome, setup: renderSetup, game: renderGame, results: renderResults, explore: renderExplore, legal: renderLegal }[state.view];
   $panel.innerHTML = fn();
   if (state.view === 'home') {
@@ -974,7 +975,7 @@ function renderChoiceGame(g, t, r, total) {
     <div class="prompt">
       <small>${route ? 'Einsatzstelle' : 'Was ist hier?'}</small>
       <h2>${route ? esc(t.name) : 'Welches Objekt ist markiert?'}</h2>
-      <p class="muted small">${route ? 'Über welche Straße führt die schnellste Anfahrt ab deiner Wache?' : 'Der rote Punkt auf der Karte zeigt das Objekt.'}</p>
+      <p class="muted small">${route ? 'Über welche Straße führt die schnellste Anfahrt ab deiner Wache?' : 'Der gelbe Punkt auf der Karte zeigt das Objekt.'}</p>
     </div>
     <div class="choices">${buttons}</div>
     ${reveal}
