@@ -1,0 +1,15 @@
+{
+ "source": "automatisch: Wikipedia-Abgleich + OSM-Suche",
+ "add": [
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Dänischburg",
+   "center": [
+    10.74006,
+    53.912071
+   ],
+   "address": "Schäferkamp 7a, 23569 Lübeck",
+   "source": "Wikipedia „Feuerwehr Lübeck“ + OSM-Suche"
+  }
+ ]
+}

@@ -1,0 +1,16 @@
+{
+  "source": "Wikipedia „Feuerwehr Essen“ (Abruf 11/2026)",
+  "rename": [
+    { "match": "^Feuerwache 3 \\(Kupferdreh\\) \\+ FF Kupferdreh$", "name": "Feuerwache 3 (Kupferdreh)" },
+    { "match": "^Feuer- u\\. Rettungswache 2 Essen$", "name": "Feuer- und Rettungswache 2 (Altenessen)", "type": "BF", "number": "2" },
+    { "match": "^Feuerwehr Essen Feuerwache 8 Gerätehaus 2$", "name": "Feuerwache 8 (Kettwig, Gerätehaus 2)" }
+  ],
+  "add": [
+    { "type": "FF", "name": "Freiwillige Feuerwehr Mitte", "at": "^Feuer- und Rettungswache 1 " },
+    { "type": "FF", "name": "Freiwillige Feuerwehr Kray", "at": "^Feuerwache 30 " },
+    { "type": "FF", "name": "Freiwillige Feuerwehr Steele", "at": "^Feuerwache 31 " },
+    { "type": "FF", "name": "Freiwillige Feuerwehr Kupferdreh", "at": "^Feuerwache 3 " },
+    { "type": "FF", "name": "Freiwillige Feuerwehr Kettwig", "at": "^Feuer- und Rettungswache Kettwig" },
+    { "type": "FF", "name": "Freiwillige Feuerwehr Burgaltendorf", "at": "^Feuerwache 35 " }
+  ]
+}

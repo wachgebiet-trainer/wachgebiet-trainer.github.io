@@ -1,0 +1,15 @@
+{
+ "source": "automatisch: Wikipedia-Abgleich + OSM-Suche",
+ "add": [
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Freiburg Abteilung 04 Zähringen",
+   "center": [
+    7.847728,
+    48.026537
+   ],
+   "address": "Tullastraße 59, 79108 Freiburg im Breisgau",
+   "source": "Wikipedia „Feuerwehr Freiburg im Breisgau“ + OSM-Suche"
+  }
+ ]
+}

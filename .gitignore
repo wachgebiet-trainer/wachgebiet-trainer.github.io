@@ -1,6 +1,7 @@
-node_modules
-dist
 build/node_modules
 build/raw
-build/raw-duisburg
 build/raw-cities
+build/raw-duisburg
+build/raw-wiki
+dist
+node_modules

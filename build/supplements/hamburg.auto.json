@@ -1,0 +1,25 @@
+{
+ "source": "automatisch: Wikipedia-Abgleich + OSM-Suche",
+ "add": [
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Bille",
+   "center": [
+    10.21648,
+    53.487166
+   ],
+   "address": "Chrysanderstraße 2d, 21029 Hamburg",
+   "source": "Wikipedia „Feuerwehr Hamburg“ + OSM-Suche"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Warwisch",
+   "center": [
+    10.127156,
+    53.444122
+   ],
+   "address": "Durchdeich 62, 21037 Hamburg",
+   "source": "Wikipedia „Feuerwehr Hamburg“ + OSM-Suche"
+  }
+ ]
+}

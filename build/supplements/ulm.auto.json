@@ -1,0 +1,15 @@
+{
+ "source": "automatisch: Wikipedia-Abgleich + OSM-Suche",
+ "add": [
+  {
+   "type": "FF",
+   "name": "Feuerwehr Mähringen",
+   "center": [
+    9.939334,
+    48.435419
+   ],
+   "address": "Kiesentalstraße 5, 89081 Ulm",
+   "source": "Wikipedia „Feuerwehr Ulm“ + OSM-Suche"
+  }
+ ]
+}

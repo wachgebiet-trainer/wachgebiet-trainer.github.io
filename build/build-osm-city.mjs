@@ -8,7 +8,7 @@ import path from 'node:path';
 import zlib from 'node:zlib';
 import { execFileSync } from 'node:child_process';
 import { createRequire } from 'node:module';
-import { refineStations, SKIP } from './refine-stations.mjs';
+import { refineStations, classify, numberOf } from './refine-stations.mjs';
 
 const require = createRequire(import.meta.url);
 const { VectorTile } = require('@mapbox/vector-tile');
@@ -88,6 +88,7 @@ const segs = [];
 const PREC = 1e5;
 const transitMap = new Map();
 const firePois = [];
+const places = [];
 for (const [x, y] of tileList) {
   const f = path.join(raw, 'tiles', `${x}_${y}.pbf`);
   if (!fs.existsSync(f)) continue;
@@ -128,6 +129,15 @@ for (const [x, y] of tileList) {
     }
   }
 
+  const pl = tile.layers.place;
+  for (let i = 0; pl && i < pl.length; i++) {
+    const ft = pl.feature(i);
+    const pr = ft.properties;
+    if (!pr.name || !['suburb', 'quarter', 'neighbourhood', 'village', 'hamlet', 'town', 'isolated_dwelling'].includes(pr.class)) continue;
+    const c = ft.toGeoJSON(x, y, z).geometry.coordinates;
+    if (inCity(c)) places.push({ name: String(pr['name:de'] || pr.name), cls: pr.class, center: [+c[0].toFixed(5), +c[1].toFixed(5)] });
+  }
+
   const poi = tile.layers.poi;
   for (let i = 0; poi && i < poi.length; i++) {
     const ft = poi.feature(i);
@@ -149,23 +159,7 @@ for (const [x, y] of tileList) {
   }
 }
 
-// ---------- Wachen einordnen ----------
-const RW = /rettungswache|rettungsdienst|rettungsstation|notarzt|\brtw\b|\bdrk\b|\basb\b|johanniter|malteser|arbeiter-samariter|rotes kreuz/i;
-const BF = /feuerwache|berufsfeuerwehr|feuer- und rettungswache|\bfu?rw\b|hauptfeuerwache|\bwache \d|\bfw \d|^f ?\d{1,3}\b|\(f ?\d{1,3}\)/i;
-const FF = /freiwillige|\bff\b|\bffw\b|löschzug|löschgruppe|löscheinheit|ortswehr|ortsfeuerwehr|gerätehaus|feuerwehrhaus|löschabteilung|abteilung|stadtteilfeuerwehr|\blz\b|\blg\b/i;
-function classify(p) {
-  const n = p.name;
-  if (!n || SKIP.test(n)) return null;
-  if (BF.test(n)) return 'BF';
-  if (RW.test(n) || p.subclass === 'ambulance_station') return 'RW';
-  if (FF.test(n)) return 'FF';
-  return /feuerwehr/i.test(n) ? 'FF' : null;
-}
-function numberOf(name, type) {
-  const m = name.match(/\(?\b(F ?\d{1,3})\b\)?/) || name.match(/(?:wache|zug|gruppe|einheit|abteilung|FW|FRW|FuRW|LZ|LG|RW|Nr\.?)\s*(\d{1,4})\b/i) || name.match(/\b(\d{1,4})\b/);
-  if (m) return m[1].replace(/\s/g, '');
-  return type === 'BF' ? 'FW' : type;
-}
+// ---------- Wachen einordnen (Regeln in refine-stations.mjs) ----------
 const dist = (a, b) => Math.hypot((a[0] - b[0]) * 111320 * Math.cos((a[1] * Math.PI) / 180), (a[1] - b[1]) * 110540);
 const stations = [];
 for (const p of firePois) {
@@ -212,10 +206,19 @@ const meta = {
   sources: ['Stadtgrenze: © BKG (VG250), dl-de/by-2-0', 'Wachen, Straßen und Bahnhöfe: © OpenStreetMap-Mitwirkende (ODbL)'],
 };
 fs.writeFileSync(path.join(out, 'stations.json'), JSON.stringify({ meta, stations }));
+// Zusatzdaten für den Abgleich (nicht veröffentlicht): unbenannte Feuerwachen und Ortsteile
+const unnamed = [];
+for (const p of firePois) {
+  if (p.name) continue;
+  if (stations.some((st) => dist(st.center, p.center) < 120) || unnamed.some((u) => dist(u.center, p.center) < 60)) continue;
+  unnamed.push({ center: [+p.center[0].toFixed(6), +p.center[1].toFixed(6)] });
+}
+const uniqPlaces = [...new Map(places.map((p) => [p.name + p.cls, p])).values()];
+fs.writeFileSync(path.join(raw, 'extras.json'), JSON.stringify({ unnamed, places: uniqPlaces }));
 fs.writeFileSync(path.join(out, 'streets.json'), JSON.stringify({ precision: PREC, names, segs }));
 fs.writeFileSync(path.join(out, 'transit.json'), JSON.stringify({ stations: transit }));
 if (!keepTiles) fs.rmSync(path.join(raw, 'tiles'), { recursive: true, force: true });
 
 const count = (t) => stations.filter((s) => s.type === t).length;
 const size = (f) => (fs.statSync(path.join(out, f)).size / 1024).toFixed(0);
-console.log(`${cfg.name}: ${tileList.length} Kacheln · Wachen ${stations.length} (BF ${count('BF')}, FF ${count('FF')}, RW ${count('RW')}) · Straßen ${names.length} · Bahnhöfe ${transit.length} · streets.json ${size('streets.json')} KB`);
+console.log(`${cfg.name}: ${tileList.length} Kacheln · Wachen ${stations.length} (BF ${count('BF')}, FF ${count('FF')}, RW ${count('RW')}) · unbenannt ${unnamed.length} · Straßen ${names.length} · Bahnhöfe ${transit.length} · streets.json ${size('streets.json')} KB`);

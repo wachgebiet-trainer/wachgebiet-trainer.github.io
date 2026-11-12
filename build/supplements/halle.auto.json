@@ -1,0 +1,15 @@
+{
+ "source": "automatisch: Wikipedia-Abgleich + OSM-Suche",
+ "add": [
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Diemitz",
+   "center": [
+    12.005227,
+    51.490181
+   ],
+   "address": "Apoldaer Straße, 06116 Halle (Saale)",
+   "source": "Wikipedia „Feuerwehr Halle (Saale)“ + OSM-Suche"
+  }
+ ]
+}
