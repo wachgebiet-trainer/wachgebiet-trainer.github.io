@@ -21,6 +21,14 @@ export function classify(p) {
   return /feuerwehr/i.test(n) ? 'FF' : null;
 }
 export function numberOf(name, type) {
+  const roman = name.match(/wache\s+([IVX]{1,4})\b/);
+  if (roman) {
+    const v = { I: 1, V: 5, X: 10 };
+    let n = 0;
+    const r = roman[1];
+    for (let i = 0; i < r.length; i++) n += v[r[i]] < (v[r[i + 1]] ?? 0) ? -v[r[i]] : v[r[i]];
+    return String(n);
+  }
   const m = name.match(/\(?\b(F ?\d{1,3})\b\)?/) || name.match(/(?:wache|zug|gruppe|einheit|abteilung|FW|FRW|FuRW|LZ|LG|RW|Nr\.?)\s*(\d{1,4})\b/i) || name.match(/\b(\d{1,4})\b/);
   if (m) return m[1].replace(/\s/g, '');
   return type === 'BF' ? 'FW' : type;
@@ -29,7 +37,7 @@ export function numberOf(name, type) {
 const dist = (a, b) => Math.hypot((a[0] - b[0]) * 111320 * Math.cos((a[1] * Math.PI) / 180), (a[1] - b[1]) * 110540);
 
 // Haben zwei Namen ein gemeinsames, aussagekräftiges Wort (z. B. Ortsteil)?
-const GENERIC_WORDS = new Set(['feuerwehr', 'freiwillige', 'feuerwache', 'rettungswache', 'wache', 'abteilung', 'löschzug', 'löschgruppe', 'löscheinheit', 'gerätehaus', 'feuerwehrhaus', 'rettung', 'und', 'der', 'die', 'das', 'stadt', 'drk', 'asb', 'juh', 'johanniter', 'malteser', 'falck', 'deutsches', 'rotes', 'kreuz', 'berufsfeuerwehr', 'hauptwache', 'standort', 'e.v.']);
+const GENERIC_WORDS = new Set(['feuerwehr', 'freiwillige', 'feuerwache', 'rettungswache', 'wache', 'abteilung', 'löschzug', 'löschgruppe', 'löscheinheit', 'gerätehaus', 'feuerwehrhaus', 'rettung', 'und', 'der', 'die', 'das', 'stadt', 'drk', 'asb', 'juh', 'johanniter', 'malteser', 'falck', 'deutsches', 'rotes', 'kreuz', 'berufsfeuerwehr', 'hauptwache', 'standort', 'e.v.', 'feuer', 'umweltwache', 'städtische', 'amt', 'für', 'bevölkerungsschutz', 'rettungsdienst', 'zentrale']);
 export function namesSimilar(a, b, city = '') {
   const cityWords = new Set(city.toLowerCase().split(/[\s()-]+/));
   const words = (t) => new Set(t.toLowerCase().replace(/[()–,.+/]/g, ' ').split(/[\s-]+/).filter((w) => w.length > 2 && !GENERIC_WORDS.has(w) && !cityWords.has(w) && !/^\d+$/.test(w)));
