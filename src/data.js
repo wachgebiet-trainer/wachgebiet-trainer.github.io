@@ -124,11 +124,7 @@ export function streetsGeoJSON(geo, area, pad = 300) {
 
 // Objekte (Krankenhäuser, Einkaufszentren …) für den Objekt-Trainer
 export async function loadObjects() {
-  try {
-    return (await getJSON('objects.json')).objects;
-  } catch {
-    return [];
-  }
+  return (await getJSON('objects.json')).objects;
 }
 
 // Straßengraph für den Anfahrt-Trainer (kompaktes Format, siehe roadgraph.js)

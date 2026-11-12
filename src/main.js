@@ -212,7 +212,7 @@ async function ensureModeData() {
       state.graph = new RoadGraph(CITY.free ? state.geo.roads : await loadRoads());
     }
   } catch (e) {
-    toast('Die Daten für diese Trainingsart konnten nicht geladen werden.');
+    (state.unavailable ??= {})[mode] = true;
   }
 }
 
@@ -297,6 +297,7 @@ function updatePoolPreview() {
 function poolInfoHTML() {
   const pool = state.pool;
   const mode = state.settings.mode;
+  if (!pool && state.unavailable?.[mode]) return `<span class="muted">${mode === 'route' ? 'Der Anfahrt-Trainer' : 'Der Objekt-Trainer'} wird für ${esc(CITY.name)} gerade vorbereitet und ist in Kürze verfügbar.</span>`;
   if (!pool) return `<span class="muted">${mode === 'route' ? 'Straßennetz' : mode === 'objects' ? 'Objekte werden' : 'Straßendaten werden'}${mode === 'route' ? ' wird' : ''} geladen …</span>`;
   if (mode === 'objects') {
     if (state.settings.objQ === 'which' && pool.length < 4) return '<span class="muted">Für „Was ist hier?“ braucht es mindestens 4 Objekte im Gebiet – wähle weitere Kategorien oder ein größeres Gebiet.</span>';
