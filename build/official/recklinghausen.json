@@ -64,7 +64,7 @@
    "street": "Stresemannplatz"
   },
   {
-   "type": "BF",
+   "type": "RW",
    "name": "Feuerwehr Recklinghausen - DRK-Rettungswache Ortloh",
    "address": "Alte Röllinghäuser Straße 32, 45665 Recklinghausen",
    "center": [
@@ -72,16 +72,6 @@
     51.598882
    ],
    "street": "Alte Röllinghäuser Straße"
-  },
-  {
-   "type": "BF",
-   "name": "neue Hauptfeuerwache geplant",
-   "address": "Schimmelsheider Weg, 45663 Recklinghausen",
-   "center": [
-    7.222063,
-    51.583404
-   ],
-   "street": "Schimmelsheider Weg"
   },
   {
    "type": "FF",

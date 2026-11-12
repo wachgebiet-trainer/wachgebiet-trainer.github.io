@@ -30,8 +30,10 @@ if (fs.existsSync(path.join(here, 'raw-official', 'rvr_rettung.json'))) {
       const p = f.properties;
       const name = (p.name || '').replace(/\s+/g, ' ').trim();
       let type = TYPE[p.kategorie];
-      if (!type || !name || SKIP.test(name)) continue;
+      if (!type || !name || SKIP.test(name) || /geplant|in planung|baustelle/i.test(name)) continue;
       if (type === 'RW' && BF.test(name)) type = 'BF';
+      // „Feuerwehr X – DRK-Rettungswache Y“: Rettungswache, keine Feuerwache
+      if (type === 'BF' && /rettungswache/i.test(name) && !BF.test(name)) type = 'RW';
       const center = utm32ToLonLat(...f.geometry.coordinates);
       const street = [p.strasse, p.hausnummer].map((s) => (s || '').trim()).filter(Boolean).join(' ');
       const address = street ? `${street}, ${[p.plz, p.ort].filter(Boolean).join(' ')}` : '';
