@@ -18,9 +18,13 @@ const SPECIAL = {
     footerSources: 'Daten: Geoportal Berlin (Feuerwehr-Standorte, Detailnetz Berlin, dl-de/zero-2-0) · © VBB (CC BY 4.0) · Karte © OpenFreeMap, © OpenStreetMap-Mitwirkende',
     sources: [
       'Standorte der Feuerwachen, Freiwilligen Feuerwehren und Rettungswachen sowie Straßennetz: Geoportal Berlin (WFS „Feuerwehr-Standorte“ und „Detailnetz Berlin“), Datenlizenz Deutschland – Zero – Version 2.0',
+      'Einsatzbereiche: Geoportal Berlin, WFS „Feuerwehr Standorte und Einsatzbereiche“ (feuerwehr:b_feuerwehr_einsatzbereiche), Datenlizenz Deutschland – Namensnennung – Version 2.0',
       'S- und U-Bahnhöfe: VBB-Fahrplandaten (GTFS), © VBB Verkehrsverbund Berlin-Brandenburg GmbH, Lizenz CC BY 4.0, aufbereitet mit „vbb-stations“',
     ],
     storageKey: 'wachgebiet-trainer:v1',
+    areas: true,
+    areaName: 'Einsatzbereichs',
+    areaSource: 'Geoportal Berlin, Berliner Feuerwehr',
   },
   duisburg: {
     subtitle: 'Duisburg · BF, FF &amp; Rettungswachen',

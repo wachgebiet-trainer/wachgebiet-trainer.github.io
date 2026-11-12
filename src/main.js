@@ -9,7 +9,8 @@ import '@fontsource/barlow-condensed/latin-700.css';
 import '@fontsource/barlow-condensed/latin-800.css';
 import './style.css';
 import { TrainerMap, COLORS, targetFeatures } from './map.js';
-import { loadStations, loadGeo, buildPool, streetsGeoJSON, DIFFICULTIES } from './data.js';
+import { loadStations, loadGeo, loadAreas, buildPool, streetsGeoJSON, DIFFICULTIES } from './data.js';
+import { circleArea, polygonArea } from './area.js';
 import { nearestOnLines, distance, formatDistance } from './geo.js';
 import { store } from './store.js';
 import { CITY, TYPE_LABEL, SITE_ROOT, LAST_CITY_KEY, DATA_BASE } from './city.js';
@@ -79,7 +80,8 @@ async function init() {
   }
   render();
   try {
-    const [st] = await Promise.all([loadStations(), tmap.ready]);
+    const [st, areas] = await Promise.all([loadStations(), loadAreas(), tmap.ready]);
+    state.areas = areas;
     state.stations = st.stations;
     state.meta = st.meta;
   } catch (e) {
@@ -159,21 +161,41 @@ async function selectStation(station) {
   updatePoolPreview();
 }
 
+// Amtliches Gebiet der Wache (Berlin: Einsatzbereich), falls vorhanden
+const stationAreaDef = (s) => (s && state.areas ? state.areas[String(s.area)] : null);
+const AREA_MODE = -1; // Wert von settings.radius für „amtliches Gebiet“
+
+// Aktuelles Trainingsgebiet: Einsatzbereich oder Kreis um die Wache
+let areaCache = { key: '', area: null };
+function currentArea() {
+  const s = state.station;
+  const def = state.settings.radius === AREA_MODE ? stationAreaDef(s) : null;
+  const radius = state.settings.radius > 0 ? state.settings.radius : 2000;
+  const key = `${s.key}|${def ? 'area' : radius}`;
+  if (areaCache.key !== key) {
+    areaCache = { key, area: def ? polygonArea(def.geometry, s.center, def.short) : circleArea(s.center, radius) };
+  }
+  return areaCache.area;
+}
+
 function previewArea() {
   const s = state.station;
-  tmap.showArea(s.center, state.settings.radius, areaColor(s.type));
-  tmap.fitArea(s.center, state.settings.radius);
+  const area = currentArea();
+  tmap.showArea(area, areaColor(s.type));
+  tmap.fitArea(area);
 }
 
 function updatePoolPreview() {
   if (state.view !== 'setup' || !state.geo) return;
-  const pool = buildPool(state.geo, state.station.center, state.settings.radius, state.settings);
+  const pool = buildPool(state.geo, currentArea(), state.settings);
   state.poolSize = pool.length;
   state.poolStreets = pool.filter((t) => t.type === 'street').length;
   const el = document.getElementById('pool-info');
   if (el) el.innerHTML = poolInfoHTML();
   const startBtn = document.getElementById('start-btn');
   if (startBtn) startBtn.disabled = !pool.length;
+  const exploreBtn = document.querySelector('[data-act=explore]');
+  if (exploreBtn) exploreBtn.disabled = false;
 }
 
 function poolInfoHTML() {
@@ -199,7 +221,7 @@ function pickTargets(pool, count, stationKey) {
 function startGame(targets) {
   const s = state.settings;
   store.saveSettings(s);
-  const pool = targets ?? buildPool(state.geo, state.station.center, s.radius, s);
+  const pool = targets ?? buildPool(state.geo, currentArea(), s);
   if (!pool.length) {
     toast('Für diese Einstellungen gibt es keine Ziele.');
     return;
@@ -212,15 +234,15 @@ function startGame(targets) {
     guess: null,
     phase: 'guess',
     isRepeat: !!targets,
-    modeKey: `${s.difficulty}-${s.radius}-${s.transit ? 'b' : 'n'}`,
+    modeKey: `${s.difficulty}-${currentArea().kind === 'polygon' ? 'eb' : currentArea().radius}-${s.transit ? 'b' : 'n'}`,
     labelsUsed: s.labels,
   };
   state.view = 'game';
   tmap.clearOverlays();
   tmap.hideStationsExcept(state.station);
-  tmap.showArea(state.station.center, s.radius, areaColor(state.station.type));
+  tmap.showArea(currentArea(), areaColor(state.station.type));
   tmap.setLabels(s.labels);
-  tmap.fitArea(state.station.center, s.radius);
+  tmap.fitArea(currentArea());
   nextTarget(true);
 }
 
@@ -238,15 +260,15 @@ function nextTarget(first = false) {
   tmap.set('solution');
   tmap.set('link');
   tmap.setLabels(state.settings.labels);
-  if (!first) tmap.fitArea(state.station.center, state.settings.radius, { duration: 500 });
+  if (!first) tmap.fitArea(currentArea(), { duration: 500 });
   startTimer();
   render();
 }
 
 function placeGuess(lngLat) {
   const g = state.game;
-  if (distance(lngLat, state.station.center) > state.settings.radius + 1) {
-    toast('Tipps sind nur innerhalb des Kreises möglich.');
+  if (!currentArea().contains(lngLat)) {
+    toast(currentArea().kind === 'polygon' ? `Tipps sind nur innerhalb des ${CITY.areaName ?? 'Gebiets'} möglich.` : 'Tipps sind nur innerhalb des Kreises möglich.');
     return;
   }
   g.guess = lngLat;
@@ -257,7 +279,7 @@ function placeGuess(lngLat) {
 function scoreFor(target, d) {
   const tol = target.type === 'transit' ? 120 : 15;
   if (d <= tol) return 100;
-  const k = Math.max(150, state.settings.radius * 0.12);
+  const k = Math.max(150, Math.min(currentArea().eqRadius, 5000) * 0.12);
   return Math.max(0, Math.round(100 * Math.exp(-(d - tol) / k)));
 }
 
@@ -362,7 +384,7 @@ function showReview(focusIndex = null) {
   tmap.set('reviewPoints', { type: 'FeatureCollection', features: points });
   tmap.set('link', { type: 'FeatureCollection', features: links });
   tmap.setLabels(true);
-  if (focusIndex == null) tmap.fitArea(state.station.center, state.settings.radius);
+  if (focusIndex == null) tmap.fitArea(currentArea());
   else {
     const r = res[focusIndex];
     tmap.fitLines(r.target.type === 'transit' ? [] : r.target.lines, r.guess ? [r.guess, r.nearest, r.target.lines[0][0]] : [r.target.lines[0][0]]);
@@ -382,14 +404,14 @@ function startExplore() {
   const s = state.settings;
   store.saveSettings(s);
   state.view = 'explore';
-  const pool = buildPool(state.geo, state.station.center, s.radius, { difficulty: 'mixed', transit: true });
+  const pool = buildPool(state.geo, currentArea(), { difficulty: 'mixed', transit: true });
   state.explore = { pool, selected: null, hover: null };
   tmap.clearOverlays();
   tmap.hideStationsExcept(state.station);
-  tmap.showArea(state.station.center, s.radius, areaColor(state.station.type));
-  tmap.set('explore', streetsGeoJSON(state.geo, state.station.center, s.radius + 300));
+  tmap.showArea(currentArea(), areaColor(state.station.type));
+  tmap.set('explore', streetsGeoJSON(state.geo, currentArea(), 300));
   tmap.setLabels(s.labels);
-  tmap.fitArea(state.station.center, s.radius);
+  tmap.fitArea(currentArea());
   render();
 }
 
@@ -602,7 +624,7 @@ function renderSetup() {
   const s = state.station;
   const st = state.settings;
   const prog = store.station(s.key);
-  const modeKey = `${st.difficulty}-${st.radius}-${st.transit ? 'b' : 'n'}`;
+  const modeKey = `${st.difficulty}-${currentArea().kind === 'polygon' ? 'eb' : currentArea().radius}-${st.transit ? 'b' : 'n'}`;
   const best = prog.best[modeKey];
   const mastered = Object.values(prog.targets).filter((t) => t.hits >= 2 && t.last >= 70).length;
   const ff = s.type === 'FF';
@@ -619,8 +641,9 @@ function renderSetup() {
   <section class="settings">
     <label class="lbl">Schwierigkeit</label>
     ${seg('difficulty', DIFFICULTIES, st.difficulty, (o) => `${o.label}<small>${o.hint}</small>`)}
-    <label class="lbl">Radius um die Wache</label>
-    ${seg('radius', RADII.map((r) => ({ value: r, label: radiusLabel(r) })), st.radius)}
+    <label class="lbl">Trainingsgebiet</label>
+    ${seg('radius', [...(stationAreaDef(s) ? [{ value: AREA_MODE, label: stationAreaDef(s).short }] : []), ...RADII.map((r) => ({ value: r, label: radiusLabel(r) }))], currentArea().kind === 'polygon' ? AREA_MODE : currentArea().radius)}
+    ${currentArea().kind === 'polygon' ? `<p class="muted small area-hint">${esc(stationAreaDef(s).name)} – amtliches Gebiet (${esc(CITY.areaSource ?? '')}).</p>` : ''}
     <label class="lbl">Ziele pro Runde</label>
     ${seg('count', COUNTS.map((c) => ({ value: c, label: c ? String(c) : 'Alle' })), st.count)}
     <label class="lbl">Zeitlimit pro Ziel</label>
@@ -731,7 +754,7 @@ function renderExplore() {
       <span><i style="background:#1f5fbf"></i>Nebenstraße</span>
     </div>
     <label class="switch"><input type="checkbox" data-act="toggle-ex-labels" ${tmap.labelsVisible ? 'checked' : ''}/><span></span>Straßennamen der Karte anzeigen</label>
-    <p class="muted small">${ex.pool.length} Straßen und Bahnhöfe im Radius von ${radiusLabel(state.settings.radius)}.</p>
+    <p class="muted small">${ex.pool.length} Straßen und Bahnhöfe ${currentArea().kind === 'polygon' ? `im ${esc(currentArea().label)}` : `im Radius von ${currentArea().label}`}.</p>
     <div class="actions"><button class="btn primary" data-act="start">Jetzt trainieren</button></div>
   </div>`;
 }
@@ -861,9 +884,9 @@ new ResizeObserver(([entry]) => {
     tmap.map.resize();
     if (!state.station) return;
     if (state.view === 'setup' || state.view === 'explore' || (state.view === 'game' && state.game?.phase === 'guess')) {
-      tmap.fitArea(state.station.center, state.settings.radius, { duration: 300 });
+      tmap.fitArea(currentArea(), { duration: 300 });
     } else if (state.view === 'results') {
-      tmap.fitArea(state.station.center, state.settings.radius, { duration: 300 });
+      tmap.fitArea(currentArea(), { duration: 300 });
     }
   }, 120);
 }).observe(document.getElementById('map'));

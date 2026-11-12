@@ -402,3 +402,4 @@ html:has(body.start-page), body.start-page { overflow: auto; height: auto; min-h
 .btn.city-switch { display: inline-flex; align-items: center; gap: 8px; justify-content: center; text-decoration: none; color: var(--ink); width: 100%; }
 .btn.city-switch .ico { width: 20px; height: 20px; }
 @media (min-width: 821px) { #panel .brand .logo strong { font-size: 19px; } #panel .brand .logo small { font-size: 12px; } }
+.area-hint { margin: 6px 0 0; }

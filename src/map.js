@@ -1,5 +1,4 @@
 import maplibregl from 'maplibre-gl';
-import { outsideMask, circle, boundsOf } from './geo.js';
 
 export const MAP_STYLES = {
   light: 'https://tiles.openfreemap.org/styles/positron',
@@ -245,15 +244,19 @@ export class TrainerMap {
     this.#setVis('stations-label', 'none');
   }
 
-  showArea(center, radius, color = COLORS.BF) {
-    this.set('mask', { type: 'FeatureCollection', features: [outsideMask(center, radius)] });
-    this.set('ring', { type: 'Feature', properties: {}, geometry: { type: 'LineString', coordinates: circle(center, radius) } });
+  // Gebiet (Kreis oder Einsatzbereich) hervorheben: außen abdunkeln, Grenze als Linie
+  showArea(area, color = COLORS.BF) {
+    const world = [[-180, -85], [180, -85], [180, 85], [-180, 85], [-180, -85]];
+    const holes = (area.outerRings ?? area.rings).map((r) => r.slice().reverse());
+    this.set('mask', { type: 'Feature', properties: {}, geometry: { type: 'Polygon', coordinates: [world, ...holes] } });
+    this.set('ring', { type: 'Feature', properties: {}, geometry: { type: 'MultiLineString', coordinates: area.rings } });
     this.paint['ring|line-color'] = color;
     this.map.setPaintProperty('ring', 'line-color', color);
   }
 
-  fitArea(center, radius, opts = {}) {
-    this.map.fitBounds(boundsOf(center, radius), { padding: 24, duration: 700, ...opts });
+  fitArea(area, opts = {}) {
+    const [a, b, c, d] = area.bbox;
+    this.map.fitBounds([[a, b], [c, d]], { padding: 24, duration: 700, ...opts });
   }
 
   fitCity() {

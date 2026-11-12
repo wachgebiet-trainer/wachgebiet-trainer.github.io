@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "data": "node build/build-data.mjs",
+    "data": "node build/build-data.mjs && node build/build-areas-berlin.mjs",
     "data:duisburg": "node build/build-duisburg.mjs",
     "data:osm": "node build/build-osm-city.mjs",
     "pages": "node build/make-pages.mjs && node build/update-bounds.mjs"
