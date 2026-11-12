@@ -1,0 +1,77 @@
+{
+ "source": "Regionalverband Ruhr (RVR), POI-Datensatz „Rettungswesen“",
+ "license": "© Regionalverband Ruhr, Datenlizenz Deutschland – Namensnennung – Version 2.0",
+ "complete": [],
+ "stations": [
+  {
+   "type": "BF",
+   "name": "Feuer- und Rettungswache 1, Mitte",
+   "address": "Bergischer Ring 87, 58095 Hagen",
+   "center": [
+    7.463306,
+    51.357345
+   ],
+   "street": "Bergischer Ring"
+  },
+  {
+   "type": "BF",
+   "name": "Feuer- und Rettungswache 2, Ost",
+   "address": "Florianstraße 2, 58119 Hagen",
+   "center": [
+    7.545204,
+    51.374092
+   ],
+   "street": "Florianstraße"
+  },
+  {
+   "type": "BF",
+   "name": "Feuer- und Rettungswache 4",
+   "address": "Tückingstraße 2z, 58135 Hagen",
+   "center": [
+    7.432243,
+    51.352176
+   ],
+   "street": "Tückingstraße"
+  },
+  {
+   "type": "RW",
+   "name": "ASB- Rettungswache",
+   "address": "Eilper Straße 22a, 58091 Hagen",
+   "center": [
+    7.497859,
+    51.346058
+   ],
+   "street": "Eilper Straße"
+  },
+  {
+   "type": "RW",
+   "name": "Malteser Hagen - Rettungsdienst",
+   "address": "Boeler Straße 94, 58097 Hagen",
+   "center": [
+    7.473584,
+    51.376517
+   ],
+   "street": "Boeler Straße"
+  },
+  {
+   "type": "BF",
+   "name": "Feuer- und Rettungswache3, Vorhalle",
+   "address": "Revelstraße 10, 58089 Hagen",
+   "center": [
+    7.434397,
+    51.385892
+   ],
+   "street": "Revelstraße"
+  },
+  {
+   "type": "BF",
+   "name": "Feuer- und Rettungswache 5, Süd",
+   "address": "Am Obergraben 20, 58091 Hagen",
+   "center": [
+    7.532891,
+    51.305789
+   ],
+   "street": "Am Obergraben"
+  }
+ ]
+}

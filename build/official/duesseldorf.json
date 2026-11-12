@@ -1,0 +1,180 @@
+{
+ "source": "Landeshauptstadt Düsseldorf, Open Data „Standorte der Feuerwehr Düsseldorf und Freiwilligen Feuerwehr Düsseldorf“",
+ "license": "Datenlizenz Deutschland – Zero – Version 2.0",
+ "complete": [
+  "BF",
+  "FF"
+ ],
+ "stations": [
+  {
+   "type": "BF",
+   "name": "Feuerwache Umweltschutz u. Technische Dienste",
+   "address": "Posener Straße 171, 40231 Düsseldorf",
+   "center": [
+    6.839041,
+    51.215952
+   ],
+   "street": "Posener Straße"
+  },
+  {
+   "type": "BF",
+   "name": "Feuer- und Rettungswache 2",
+   "address": "Quirinstraße 49, 40545 Düsseldorf",
+   "center": [
+    6.75056,
+    51.234097
+   ],
+   "street": "Quirinstraße"
+  },
+  {
+   "type": "BF",
+   "name": "Feuer- und Rettungswache 5",
+   "address": "Flughafenstraße 65, 40474 Düsseldorf",
+   "center": [
+    6.754551,
+    51.273035
+   ],
+   "street": "Flughafenstraße"
+  },
+  {
+   "type": "BF",
+   "name": "Feuer- und Rettungswache 1",
+   "address": "Hüttenstraße 68, 40215 Düsseldorf",
+   "center": [
+    6.785994,
+    51.215464
+   ],
+   "street": "Hüttenstraße"
+  },
+  {
+   "type": "BF",
+   "name": "Feuer- und Rettungswache 3",
+   "address": "Münsterstraße 15, 40477 Düsseldorf",
+   "center": [
+    6.782951,
+    51.241235
+   ],
+   "street": "Münsterstraße"
+  },
+  {
+   "type": "BF",
+   "name": "Feuer- und Rettungswache 4",
+   "address": "Behrenstraße 74, 40233 Düsseldorf",
+   "center": [
+    6.813565,
+    51.225623
+   ],
+   "street": "Behrenstraße"
+  },
+  {
+   "type": "BF",
+   "name": "Feuer- und Rettungswache 6",
+   "address": "Frankfurter Straße 245, 40595 Düsseldorf",
+   "center": [
+    6.900656,
+    51.142967
+   ],
+   "street": "Frankfurter Straße"
+  },
+  {
+   "type": "BF",
+   "name": "Feuer- und Rettungswache 8",
+   "address": "Gräulinger Straße 27, 40625 Düsseldorf",
+   "center": [
+    6.861883,
+    51.238774
+   ],
+   "street": "Gräulinger Straße"
+  },
+  {
+   "type": "BF",
+   "name": "Feuer- und Rettungswache 7",
+   "address": "Werstener Feld 30, 40591 Düsseldorf",
+   "center": [
+    6.823426,
+    51.184814
+   ],
+   "street": "Werstener Feld"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Garath",
+   "address": "Frankfurter Straße 245, 40595 Düsseldorf",
+   "center": [
+    6.900656,
+    51.142967
+   ],
+   "street": "Frankfurter Straße"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Angermund",
+   "address": "Freiheitshagen 33, 40489 Düsseldorf",
+   "center": [
+    6.795037,
+    51.330598
+   ],
+   "street": "Freiheitshagen"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Unterbach",
+   "address": "Gerresheimer Landstraße 42, 40627 Düsseldorf",
+   "center": [
+    6.90491,
+    51.201178
+   ],
+   "street": "Gerresheimer Landstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Himmelgeist",
+   "address": "Itterstraße 154, 40589 Düsseldorf",
+   "center": [
+    6.820233,
+    51.169385
+   ],
+   "street": "Itterstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Hubbelrath",
+   "address": "Dorfstraße 13, 40629 Düsseldorf",
+   "center": [
+    6.907729,
+    51.257725
+   ],
+   "street": "Dorfstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Kalkum",
+   "address": "Edmund-Bertrams-Straße 14, 40489 Düsseldorf",
+   "center": [
+    6.758395,
+    51.301582
+   ],
+   "street": "Edmund-Bertrams-Straße"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Wittlaer",
+   "address": "Rheinweg 1, 40489 Düsseldorf",
+   "center": [
+    6.742671,
+    51.318826
+   ],
+   "street": "Rheinweg"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Kaiserswerth",
+   "address": "Friedrich-von-Spee-Straße 38, 40489 Düsseldorf",
+   "center": [
+    6.735747,
+    51.299795
+   ],
+   "street": "Friedrich-von-Spee-Straße"
+  }
+ ]
+}

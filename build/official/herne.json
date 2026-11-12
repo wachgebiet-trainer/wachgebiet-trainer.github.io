@@ -1,0 +1,97 @@
+{
+ "source": "Regionalverband Ruhr (RVR), POI-Datensatz „Rettungswesen“",
+ "license": "© Regionalverband Ruhr, Datenlizenz Deutschland – Namensnennung – Version 2.0",
+ "complete": [],
+ "stations": [
+  {
+   "type": "BF",
+   "name": "Feuerwache 1 Herne",
+   "address": "Sodinger Straße 9, 44623 Herne",
+   "center": [
+    7.230959,
+    51.537051
+   ],
+   "street": "Sodinger Straße"
+  },
+  {
+   "type": "BF",
+   "name": "Feuer- und Rettungswache 2",
+   "address": "",
+   "center": [
+    7.156489,
+    51.531848
+   ],
+   "street": ""
+  },
+  {
+   "type": "RW",
+   "name": "ASB Regionalverband Herne-Gelsenkirchen e. V.",
+   "address": "Siepenstraße 12a, 44623 Herne",
+   "center": [
+    7.225051,
+    51.531755
+   ],
+   "street": "Siepenstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Röhlinghausen",
+   "address": "Plutostraße 4, 44623 Herne",
+   "center": [
+    7.151013,
+    51.521823
+   ],
+   "street": "Plutostraße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Eickel",
+   "address": "Edmund-Weber-Straße 48, 44651 Herne",
+   "center": [
+    7.17591,
+    51.509894
+   ],
+   "street": "Edmund-Weber-Straße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Bickern-Crange",
+   "address": "Stöckstraße 32-34, 44623 Herne",
+   "center": [
+    7.156137,
+    51.531978
+   ],
+   "street": "Stöckstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr In der Wanne",
+   "address": "Stöckstraße 32-34, 44623 Herne",
+   "center": [
+    7.156145,
+    51.53178
+   ],
+   "street": "Stöckstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Herne-Mitte und Holsterhausen",
+   "address": "Koniner Straße 8, 44625 Herne",
+   "center": [
+    7.198935,
+    51.526533
+   ],
+   "street": "Koniner Straße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Sodingen und Baukau",
+   "address": "",
+   "center": [
+    7.26991,
+    51.548341
+   ],
+   "street": ""
+  }
+ ]
+}

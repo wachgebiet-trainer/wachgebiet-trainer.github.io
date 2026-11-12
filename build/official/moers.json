@@ -1,0 +1,97 @@
+{
+ "source": "Regionalverband Ruhr (RVR), POI-Datensatz „Rettungswesen“",
+ "license": "© Regionalverband Ruhr, Datenlizenz Deutschland – Namensnennung – Version 2.0",
+ "complete": [],
+ "stations": [
+  {
+   "type": "BF",
+   "name": "Feuer- und Rettungswache Moers",
+   "address": "Am Jostenhof 39, 47441 Moers",
+   "center": [
+    6.60605,
+    51.455675
+   ],
+   "street": "Am Jostenhof"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Moers-Hülsdonk",
+   "address": "Am Jostenhof 39, 47441 Moers",
+   "center": [
+    6.605794,
+    51.455616
+   ],
+   "street": "Am Jostenhof"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Moers-Repelen",
+   "address": "Am Jungbornpark 214, 47445 Moers",
+   "center": [
+    6.608155,
+    51.487268
+   ],
+   "street": "Am Jungbornpark"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Moers-Scherpenberg",
+   "address": "Cecilienstraße 38, 47443 Moers",
+   "center": [
+    6.670378,
+    51.448419
+   ],
+   "street": "Cecilienstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Moers-Stadtmitte",
+   "address": "Essenberger Straße 5, 47441 Moers",
+   "center": [
+    6.640916,
+    51.449242
+   ],
+   "street": "Essenberger Straße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Moers-Asberg",
+   "address": "Essenberger Straße 5a, 47441 Moers",
+   "center": [
+    6.641354,
+    51.449133
+   ],
+   "street": "Essenberger Straße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Moers-Kapellen",
+   "address": "Industriestraße 11-13, 47447 Moers",
+   "center": [
+    6.595614,
+    51.414289
+   ],
+   "street": "Industriestraße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Moers-Schwafheim",
+   "address": "Düsseldorfer Straße 270, 47447 Moers",
+   "center": [
+    6.653012,
+    51.423322
+   ],
+   "street": "Düsseldorfer Straße"
+  },
+  {
+   "type": "BF",
+   "name": "Feuerwehr",
+   "address": "",
+   "center": [
+    6.657054,
+    51.438709
+   ],
+   "street": ""
+  }
+ ]
+}

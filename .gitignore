@@ -2,6 +2,7 @@ build/node_modules
 build/raw
 build/raw-cities
 build/raw-duisburg
+build/raw-official
 build/raw-wiki
 dist
 node_modules

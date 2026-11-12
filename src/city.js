@@ -59,6 +59,23 @@ function osmDefaults(c) {
     ],
     odbl: true,
     dataNote: `Die Wachenstandorte für ${c.name} stammen aus OpenStreetMap und können unvollständig sein. Fehlt eine Wache oder stimmt etwas nicht? Schreib an ${CONTACT_MAIL}.`,
+    ...(c.official ? officialOverrides(c) : {}),
+  };
+}
+
+// Städte mit amtlicher Standortliste (ganz oder teilweise)
+function officialOverrides(c) {
+  const o = c.official;
+  return {
+    footerSources: `Daten: Wachen ${o.license.split(',')[0].replace(/^©\s*/, '© ')} · Stadtgrenze © GeoBasis-DE / BKG (2026), dl-de/by-2-0 · Straßen, Bahnhöfe${o.complete ? ' und private Rettungswachen' : ' und ergänzende Wachen'} © OpenStreetMap-Mitwirkende (ODbL) · Karte © OpenFreeMap`,
+    sources: [
+      `Standorte der Feuerwachen und Freiwilligen Feuerwehren: ${o.source}, ${o.license}`,
+      'Stadtgrenze: © GeoBasis-DE / BKG (2026), Verwaltungsgebiete 1:250 000 (VG250, Gemeinden), Datenlizenz Deutschland – Namensnennung – Version 2.0 (www.govdata.de/dl-de/by-2-0)',
+      `${o.complete ? 'Weitere Rettungswachen' : 'Ergänzende Wachen und Rettungswachen'}, Straßen und Bahnhöfe: © OpenStreetMap-Mitwirkende (ODbL), über OpenMapTiles/OpenFreeMap und Nominatim`,
+    ],
+    dataNote: o.complete
+      ? null
+      : `Feuerwachen und Freiwillige Feuerwehren für ${c.name} stammen aus der amtlichen Liste (${o.source.split(',')[0].replace(/ \(RVR\)$/, '')}), ergänzt um OpenStreetMap. Fehlt etwas? Schreib an ${CONTACT_MAIL}.`,
   };
 }
 

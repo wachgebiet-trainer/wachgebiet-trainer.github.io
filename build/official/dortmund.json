@@ -1,0 +1,297 @@
+{
+ "source": "Regionalverband Ruhr (RVR), POI-Datensatz „Rettungswesen“",
+ "license": "© Regionalverband Ruhr, Datenlizenz Deutschland – Namensnennung – Version 2.0",
+ "complete": [],
+ "stations": [
+  {
+   "type": "BF",
+   "name": "Berufsfeuerwehr Dortmund",
+   "address": "Max-von-der-Grün-Platz 5, 44137 Dortmund",
+   "center": [
+    7.460486,
+    51.516355
+   ],
+   "street": "Max-von-der-Grün-Platz"
+  },
+  {
+   "type": "BF",
+   "name": "Berufsfeuerwehr Dortmund",
+   "address": "Lütge Heidestraße 70, 44147 Dortmund",
+   "center": [
+    7.453775,
+    51.545451
+   ],
+   "street": "Lütge Heidestraße"
+  },
+  {
+   "type": "BF",
+   "name": "Berufsfeuerwehr Dortmund",
+   "address": "Aplerbecker Straße 280, 44309 Dortmund",
+   "center": [
+    7.563622,
+    51.511283
+   ],
+   "street": "Aplerbecker Straße"
+  },
+  {
+   "type": "BF",
+   "name": "Berufsfeuerwehr Dortmund",
+   "address": "Zillestraße 1, 44263 Dortmund",
+   "center": [
+    7.490901,
+    51.475578
+   ],
+   "street": "Zillestraße"
+  },
+  {
+   "type": "BF",
+   "name": "Berufsfeuerwehr Dortmund",
+   "address": "Bärenbruch 31-33, 44379 Dortmund",
+   "center": [
+    7.377419,
+    51.512757
+   ],
+   "street": "Bärenbruch"
+  },
+  {
+   "type": "BF",
+   "name": "Berufsfeuerwehr Dortmund",
+   "address": "Flughafenstraße 471, 44328 Dortmund",
+   "center": [
+    7.538949,
+    51.552289
+   ],
+   "street": "Flughafenstraße"
+  },
+  {
+   "type": "BF",
+   "name": "Berufsfeuerwehr Dortmund",
+   "address": "Flugplatz 7-9, 44319 Dortmund",
+   "center": [
+    7.605961,
+    51.512234
+   ],
+   "street": "Flugplatz"
+  },
+  {
+   "type": "BF",
+   "name": "Berufsfeuerwehr Dortmund",
+   "address": "Steinsweg 107, 44227 Dortmund",
+   "center": [
+    7.396167,
+    51.481613
+   ],
+   "street": "Steinsweg"
+  },
+  {
+   "type": "BF",
+   "name": "Berufsfeuerwehr Dortmund",
+   "address": "Haberlandstraße 13-15, 44359 Dortmund",
+   "center": [
+    7.37837,
+    51.56109
+   ],
+   "street": "Haberlandstraße"
+  },
+  {
+   "type": "BF",
+   "name": "Berufsfeuerwehr Dortmund",
+   "address": "Deusener Straße 5, 44369 Dortmund",
+   "center": [
+    7.433712,
+    51.534151
+   ],
+   "street": "Deusener Straße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr",
+   "address": "Nathmerichstraße 7, 44289 Dortmund",
+   "center": [
+    7.588793,
+    51.499323
+   ],
+   "street": "Nathmerichstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr",
+   "address": "Riesestraße 3, 44287 Dortmund",
+   "center": [
+    7.555578,
+    51.487201
+   ],
+   "street": "Riesestraße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr",
+   "address": "Am Oelpfad 115, 44269 Dortmund",
+   "center": [
+    7.522041,
+    51.482458
+   ],
+   "street": "Am Oelpfad"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr",
+   "address": "Reichsmarkstraße 138, 44265 Dortmund",
+   "center": [
+    7.486426,
+    51.427581
+   ],
+   "street": "Reichsmarkstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr",
+   "address": "Hellerstraße 8, 44229 Dortmund",
+   "center": [
+    7.444155,
+    51.45494
+   ],
+   "street": "Hellerstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr",
+   "address": "Domänenstraße 19, 44225 Dortmund",
+   "center": [
+    7.439841,
+    51.47339
+   ],
+   "street": "Domänenstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr",
+   "address": "Kruckeler Straße 363, 44227 Dortmund",
+   "center": [
+    7.4101,
+    51.460706
+   ],
+   "street": "Kruckeler Straße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr",
+   "address": "Kleybredde 30, 44149 Dortmund",
+   "center": [
+    7.374244,
+    51.487768
+   ],
+   "street": "Kleybredde"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr",
+   "address": "Lütgendortmunder Straße 158, 44388 Dortmund",
+   "center": [
+    7.333,
+    51.498169
+   ],
+   "street": "Lütgendortmunder Straße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr",
+   "address": "Mengeder Straße 335, 44359 Dortmund",
+   "center": [
+    7.396521,
+    51.552767
+   ],
+   "street": "Mengeder Straße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr",
+   "address": "Im Odemsloh 11, 44357 Dortmund",
+   "center": [
+    7.366957,
+    51.550974
+   ],
+   "street": "Im Odemsloh"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr",
+   "address": "Haberlandstraße 13-15, 44359 Dortmund",
+   "center": [
+    7.378453,
+    51.561124
+   ],
+   "street": "Haberlandstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr",
+   "address": "Königsheide 99a, 44359 Dortmund",
+   "center": [
+    7.399426,
+    51.583821
+   ],
+   "street": "Königsheide"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr",
+   "address": "Grünningsweg 50, 44319 Dortmund",
+   "center": [
+    7.597911,
+    51.531768
+   ],
+   "street": "Grünningsweg"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr",
+   "address": "Lütge Heidestraße 70, 44147 Dortmund",
+   "center": [
+    7.453775,
+    51.545451
+   ],
+   "street": "Lütge Heidestraße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr",
+   "address": "Merkurstraße 32, 44329 Dortmund",
+   "center": [
+    7.56971,
+    51.575463
+   ],
+   "street": "Merkurstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr",
+   "address": "Römerstraße 47, 44289 Dortmund",
+   "center": [
+    7.59768,
+    51.471679
+   ],
+   "street": "Römerstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Dortmund Holzen",
+   "address": "Heinrich-Pieper-Straße 1, 44267 Dortmund",
+   "center": [
+    7.522542,
+    51.444669
+   ],
+   "street": "Heinrich-Pieper-Straße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr",
+   "address": "Wulfgraben 30, 44369 Dortmund",
+   "center": [
+    7.427033,
+    51.547218
+   ],
+   "street": "Wulfgraben"
+  }
+ ]
+}

@@ -1,0 +1,227 @@
+{
+ "source": "Regionalverband Ruhr (RVR), POI-Datensatz „Rettungswesen“",
+ "license": "© Regionalverband Ruhr, Datenlizenz Deutschland – Namensnennung – Version 2.0",
+ "complete": [],
+ "stations": [
+  {
+   "type": "BF",
+   "name": "Hauptfeuer- und Rettungswache III (Bochum-Ost)",
+   "address": "Brandwacht 1, 44894 Bochum",
+   "center": [
+    7.298955,
+    51.488914
+   ],
+   "street": "Brandwacht"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Bochum - Nord Löscheinheit 32",
+   "address": "Lothringer Allee 3, 44805 Bochum",
+   "center": [
+    7.271862,
+    51.514756
+   ],
+   "street": "Lothringer Allee"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Bochum-Querenburg Löscheinheit 34",
+   "address": "Overbergstraße 16, 44801 Bochum",
+   "center": [
+    7.26505,
+    51.450475
+   ],
+   "street": "Overbergstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Bochum-Langendreer Löscheinheit 33",
+   "address": "Ambergweg 1, 44892 Bochum",
+   "center": [
+    7.300163,
+    51.474622
+   ],
+   "street": "Ambergweg"
+  },
+  {
+   "type": "BF",
+   "name": "Feuer- und Rettungswache II (Bochum-Mitte)",
+   "address": "Bessemerstraße 26, 44793 Bochum",
+   "center": [
+    7.204197,
+    51.476915
+   ],
+   "street": "Bessemerstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Wattenscheid-Heide Löscheinheit 12",
+   "address": "Bochumer Straße 69a, 44866 Bochum",
+   "center": [
+    7.155927,
+    51.479717
+   ],
+   "street": "Bochumer Straße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Wattenscheid - Mitte Löscheinheit 13",
+   "address": "Grünstraße 31-37, 44867 Bochum",
+   "center": [
+    7.153162,
+    51.473196
+   ],
+   "street": "Grünstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Bochum-Mitte Löscheinheit 22",
+   "address": "Bessemerstraße 26, 44793 Bochum",
+   "center": [
+    7.204238,
+    51.476915
+   ],
+   "street": "Bessemerstraße"
+  },
+  {
+   "type": "BF",
+   "name": "Feuer- und Rettungswache IV der Feuerwehr Bochum",
+   "address": "Hattinger Straße 410, 44795 Bochum",
+   "center": [
+    7.191332,
+    51.442445
+   ],
+   "street": "Hattinger Straße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Stiepel Löscheinheit 25",
+   "address": "Kemnader Straße 199, 44797 Bochum",
+   "center": [
+    7.232245,
+    51.431972
+   ],
+   "street": "Kemnader Straße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Dahlhausen Löscheinheit 24",
+   "address": "Am Sattelgut 11, 44879 Bochum",
+   "center": [
+    7.145514,
+    51.427547
+   ],
+   "street": "Am Sattelgut"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Eppendorf-Höntrop LE 14",
+   "address": "Höntroper Straße 97, 44869 Bochum",
+   "center": [
+    7.162213,
+    51.459843
+   ],
+   "street": "Höntroper Straße"
+  },
+  {
+   "type": "BF",
+   "name": "Feuer- und Rettungswache I (Wattenscheid)",
+   "address": "Grünstraße 31-37, 44867 Bochum",
+   "center": [
+    7.153024,
+    51.473667
+   ],
+   "street": "Grünstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Altenbochum Löscheinheit 23",
+   "address": "Feldmark 7, 44803 Bochum",
+   "center": [
+    7.252426,
+    51.476528
+   ],
+   "street": "Feldmark"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache V des ASB",
+   "address": "Wohlfahrtstraße 124, 44799 Bochum",
+   "center": [
+    7.223154,
+    51.452689
+   ],
+   "street": "Wohlfahrtstraße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache VII im Josefs-Hospital",
+   "address": "Gudrunstraße 56, 44791 Bochum",
+   "center": [
+    7.22937,
+    51.494006
+   ],
+   "street": "Gudrunstraße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache 8 im Martin-Luther-Krankenhaus",
+   "address": "Voedestraße 79, 44866 Bochum",
+   "center": [
+    7.142526,
+    51.482734
+   ],
+   "street": "Voedestraße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Günnigfeld Löscheinheit 11",
+   "address": "Osterfeldstraße 35, 44866 Bochum",
+   "center": [
+    7.142622,
+    51.500551
+   ],
+   "street": "Osterfeldstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr SE-V41",
+   "address": "Osterfeldstraße 35, 44866 Bochum",
+   "center": [
+    7.142545,
+    51.500538
+   ],
+   "street": "Osterfeldstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Brandwacht Löscheinheit 31",
+   "address": "Brandwacht 1, 44894 Bochum",
+   "center": [
+    7.298784,
+    51.489093
+   ],
+   "street": "Brandwacht"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache VII der JUH",
+   "address": "Max-Greve-Straße 40, 44791 Bochum",
+   "center": [
+    7.234736,
+    51.486778
+   ],
+   "street": "Max-Greve-Straße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Bochum-Linden Löscheinheit 26",
+   "address": "Lindener Straße 107, 44867 Bochum",
+   "center": [
+    7.167958,
+    51.427584
+   ],
+   "street": "Lindener Straße"
+  }
+ ]
+}

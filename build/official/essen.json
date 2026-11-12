@@ -1,0 +1,297 @@
+{
+ "source": "Regionalverband Ruhr (RVR), POI-Datensatz „Rettungswesen“",
+ "license": "© Regionalverband Ruhr, Datenlizenz Deutschland – Namensnennung – Version 2.0",
+ "complete": [],
+ "stations": [
+  {
+   "type": "BF",
+   "name": "Feuerwache 5 Essen",
+   "address": "Ottostraße 60, 45307 Essen",
+   "center": [
+    7.090134,
+    51.467783
+   ],
+   "street": "Ottostraße"
+  },
+  {
+   "type": "BF",
+   "name": "Feuerwache 8 Essen",
+   "address": "Schulstraße 20-22, 45219 Essen",
+   "center": [
+    6.94039,
+    51.364699
+   ],
+   "street": "Schulstraße"
+  },
+  {
+   "type": "BF",
+   "name": "Feuerwache 9 Essen",
+   "address": "Manfredstraße 26, 45131 Essen",
+   "center": [
+    7.003324,
+    51.423979
+   ],
+   "street": "Manfredstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Kettwig",
+   "address": "Werdener Straße 15, 45219 Essen",
+   "center": [
+    6.935198,
+    51.358806
+   ],
+   "street": "Werdener Straße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Dilldorf",
+   "address": "Deilbachtal 44, 45257 Essen",
+   "center": [
+    7.086842,
+    51.380192
+   ],
+   "street": "Deilbachtal"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Byfang",
+   "address": "Kleinheide 1, 45257 Essen",
+   "center": [
+    7.105871,
+    51.403074
+   ],
+   "street": "Kleinheide"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr E-Margarethenhöhe",
+   "address": "Lührmannwald 28, 45149 Essen",
+   "center": [
+    6.975761,
+    51.426155
+   ],
+   "street": "Lührmannwald"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Horst-Eiberg",
+   "address": "Schultenweg 84c, 45279 Essen",
+   "center": [
+    7.116875,
+    51.443439
+   ],
+   "street": "Schultenweg"
+  },
+  {
+   "type": "BF",
+   "name": "Feuerwache 7 Essen",
+   "address": "Ruhrbruchshof 6, 45276 Essen",
+   "center": [
+    7.083721,
+    51.445616
+   ],
+   "street": "Ruhrbruchshof"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache 12",
+   "address": "Hufelandstraße 55, 45147 Essen",
+   "center": [
+    6.989735,
+    51.435995
+   ],
+   "street": "Hufelandstraße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache 13",
+   "address": "Hülsmannstraße 17, 45355 Essen",
+   "center": [
+    6.950162,
+    51.475931
+   ],
+   "street": "Hülsmannstraße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache 14",
+   "address": "Moltkestraße 61, 45138 Essen",
+   "center": [
+    7.033472,
+    51.445469
+   ],
+   "street": "Moltkestraße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache 15",
+   "address": "Von-Bergmann-Straße 2, 45141 Essen",
+   "center": [
+    7.033434,
+    51.474795
+   ],
+   "street": "Von-Bergmann-Straße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache 16",
+   "address": "Hellweg 100, 45276 Essen",
+   "center": [
+    7.091119,
+    51.450056
+   ],
+   "street": "Hellweg"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache 17",
+   "address": "Heidbergweg 22-24, 45257 Essen",
+   "center": [
+    7.085318,
+    51.391579
+   ],
+   "street": "Heidbergweg"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache 18",
+   "address": "Propsteistraße 2, 45239 Essen",
+   "center": [
+    7.006268,
+    51.389172
+   ],
+   "street": "Propsteistraße"
+  },
+  {
+   "type": "RW",
+   "name": "DRK Rettungsdienst",
+   "address": "Hachestraße 32, 45127 Essen",
+   "center": [
+    7.008262,
+    51.451986
+   ],
+   "street": "Hachestraße"
+  },
+  {
+   "type": "RW",
+   "name": "MHD Lehrrettungswache",
+   "address": "Hilgertstraße 19, 45127 Essen",
+   "center": [
+    7.003434,
+    51.469953
+   ],
+   "street": "Hilgertstraße"
+  },
+  {
+   "type": "RW",
+   "name": "Johanniter-Unfallrettung",
+   "address": "Henricistraße 100, 45136 Essen",
+   "center": [
+    7.032429,
+    51.441603
+   ],
+   "street": "Henricistraße"
+  },
+  {
+   "type": "RW",
+   "name": "ASB-Rettungsdienst",
+   "address": "Richterstraße 20-22, 45143 Essen",
+   "center": [
+    6.981495,
+    51.457428
+   ],
+   "street": "Richterstraße"
+  },
+  {
+   "type": "BF",
+   "name": "Feuerwache 2 Essen",
+   "address": "Wüstenhöfer Straße 36, 45355 Essen",
+   "center": [
+    6.960804,
+    51.464975
+   ],
+   "street": "Wüstenhöfer Straße"
+  },
+  {
+   "type": "BF",
+   "name": "Feuerwache 3 Essen",
+   "address": "Ostuferstraße 16, 45356 Essen",
+   "center": [
+    6.976605,
+    51.503522
+   ],
+   "street": "Ostuferstraße"
+  },
+  {
+   "type": "BF",
+   "name": "Feuerwache 4 Essen",
+   "address": "Fundlandstraße 25, 45326 Essen",
+   "center": [
+    7.023542,
+    51.498253
+   ],
+   "street": "Fundlandstraße"
+  },
+  {
+   "type": "BF",
+   "name": "Feuerwache 6 Essen",
+   "address": "Kupferdreher Straße 82-86, 45257 Essen",
+   "center": [
+    7.08458,
+    51.396595
+   ],
+   "street": "Kupferdreher Straße"
+  },
+  {
+   "type": "BF",
+   "name": "Feuerwache 11 Essen",
+   "address": "Alte Hauptstraße 36, 45289 Essen",
+   "center": [
+    7.117023,
+    51.416476
+   ],
+   "street": "Alte Hauptstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Katernberg",
+   "address": "Gelsenkirchener Straße 325, 45327 Essen",
+   "center": [
+    7.052736,
+    51.494584
+   ],
+   "street": "Gelsenkirchener Straße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Stoppenberg",
+   "address": "Hugenkamp 30, 45141 Essen",
+   "center": [
+    7.036638,
+    51.482822
+   ],
+   "street": "Hugenkamp"
+  },
+  {
+   "type": "BF",
+   "name": "Feuerwache 18 Essen",
+   "address": "Brakeler Wald 19, 45239 Essen",
+   "center": [
+    7.020462,
+    51.377032
+   ],
+   "street": "Brakeler Wald"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Heisingen",
+   "address": "Zölestinstraße 25, 45259 Essen",
+   "center": [
+    7.068873,
+    51.401175
+   ],
+   "street": "Zölestinstraße"
+  }
+ ]
+}

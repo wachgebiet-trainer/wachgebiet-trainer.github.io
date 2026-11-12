@@ -1,0 +1,87 @@
+{
+ "source": "Regionalverband Ruhr (RVR), POI-Datensatz „Rettungswesen“",
+ "license": "© Regionalverband Ruhr, Datenlizenz Deutschland – Namensnennung – Version 2.0",
+ "complete": [],
+ "stations": [
+  {
+   "type": "BF",
+   "name": "Städtische Berufsfeuerwehr Oberhausen",
+   "address": "Brücktorstraße 30, 46047 Oberhausen",
+   "center": [
+    6.866877,
+    51.481253
+   ],
+   "street": "Brücktorstraße"
+  },
+  {
+   "type": "BF",
+   "name": "Feuer- und Rettungswache 2",
+   "address": "Dorstener Straße 119, 46145 Oberhausen",
+   "center": [
+    6.855187,
+    51.513667
+   ],
+   "street": "Dorstener Straße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Oberhausen-Mitte",
+   "address": "Brücktorstraße 30, 46047 Oberhausen",
+   "center": [
+    6.866478,
+    51.481165
+   ],
+   "street": "Brücktorstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Oberhausen-Königshardt",
+   "address": "",
+   "center": [
+    6.848928,
+    51.54409
+   ],
+   "street": ""
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Oberhausen-Süd",
+   "address": "Brücktorstraße 30, 46047 Oberhausen",
+   "center": [
+    6.866501,
+    51.4813
+   ],
+   "street": "Brücktorstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Oberhausen Sterkrade",
+   "address": "Dorstener Straße 119, 46145 Oberhausen",
+   "center": [
+    6.855275,
+    51.513336
+   ],
+   "street": "Dorstener Straße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache Oberhausen Holten (Nord)",
+   "address": "Schmachtendorfer Straße 24/26, 46147 Oberhausen",
+   "center": [
+    6.812902,
+    51.534821
+   ],
+   "street": "Schmachtendorfer Straße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache Oberhausen Alstaden (Süd)",
+   "address": "Rehmer 20, 46049 Oberhausen",
+   "center": [
+    6.834393,
+    51.459622
+   ],
+   "street": "Rehmer"
+  }
+ ]
+}

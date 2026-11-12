@@ -1,0 +1,67 @@
+{
+ "source": "Regionalverband Ruhr (RVR), POI-Datensatz „Rettungswesen“",
+ "license": "© Regionalverband Ruhr, Datenlizenz Deutschland – Namensnennung – Version 2.0",
+ "complete": [],
+ "stations": [
+  {
+   "type": "BF",
+   "name": "Berufsfeuerwehr Mülheim",
+   "address": "Zur Alten Dreherei 11, 45479 Mülheim an der Ruhr",
+   "center": [
+    6.861418,
+    51.427995
+   ],
+   "street": "Zur Alten Dreherei"
+  },
+  {
+   "type": "BF",
+   "name": "Feuerwache Heißen",
+   "address": "An der Seilfahrt 17-19, 45472 Mülheim an der Ruhr",
+   "center": [
+    6.92563,
+    51.436722
+   ],
+   "street": "An der Seilfahrt"
+  },
+  {
+   "type": "BF",
+   "name": "DRK Wache 8, Hansastraße",
+   "address": "Hansastraße 11, 45478 Mülheim an der Ruhr",
+   "center": [
+    6.84337,
+    51.429382
+   ],
+   "street": "Hansastraße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache der Johanniter",
+   "address": "Denkhauser Höfe 44, 45475 Mülheim an der Ruhr",
+   "center": [
+    6.891121,
+    51.459011
+   ],
+   "street": "Denkhauser Höfe"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Mülheim an der Ruhr - Broich",
+   "address": "Zur Alten Dreherei 11, 45479 Mülheim an der Ruhr",
+   "center": [
+    6.861423,
+    51.427878
+   ],
+   "street": "Zur Alten Dreherei"
+  },
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Mülheim an der Ruhr - Heißen",
+   "address": "An der Seilfahrt 17-19, 45472 Mülheim an der Ruhr",
+   "center": [
+    6.925416,
+    51.437015
+   ],
+   "street": "An der Seilfahrt"
+  }
+ ]
+}

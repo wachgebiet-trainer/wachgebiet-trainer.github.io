@@ -1,0 +1,257 @@
+{
+ "source": "Regionalverband Ruhr (RVR), POI-Datensatz „Rettungswesen“",
+ "license": "© Regionalverband Ruhr, Datenlizenz Deutschland – Namensnennung – Version 2.0",
+ "complete": [],
+ "stations": [
+  {
+   "type": "BF",
+   "name": "Feuerwache Altstadt (1)",
+   "address": "Wildenbruchstraße 50, 45888 Gelsenkirchen",
+   "center": [
+    7.110608,
+    51.508195
+   ],
+   "street": "Wildenbruchstraße"
+  },
+  {
+   "type": "BF",
+   "name": "Feuerwache Buer (2)",
+   "address": "Seestraße 3, 45894 Gelsenkirchen",
+   "center": [
+    7.068865,
+    51.563927
+   ],
+   "street": "Seestraße"
+  },
+  {
+   "type": "BF",
+   "name": "Feuerwache Hassel (4)",
+   "address": "Lüttinghofstraße 90, 45896 Gelsenkirchen",
+   "center": [
+    7.04361,
+    51.605496
+   ],
+   "street": "Lüttinghofstraße"
+  },
+  {
+   "type": "BF",
+   "name": "Feuerwache Heßler (3)",
+   "address": "An der Landwehr 5, 45883 Gelsenkirchen",
+   "center": [
+    7.053743,
+    51.525606
+   ],
+   "street": "An der Landwehr"
+  },
+  {
+   "type": "FF",
+   "name": "Gerätehaus Löschzug Altstadt (11)",
+   "address": "Wildenbruchstraße 50, 45888 Gelsenkirchen",
+   "center": [
+    7.110608,
+    51.508195
+   ],
+   "street": "Wildenbruchstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Gerätehaus Löschzug Buer (12)",
+   "address": "Urban-von-Vorst-Weg 8, 45894 Gelsenkirchen",
+   "center": [
+    7.044963,
+    51.584819
+   ],
+   "street": "Urban-von-Vorst-Weg"
+  },
+  {
+   "type": "FF",
+   "name": "Gerätehaus Löschzug Erle-Nord (17)",
+   "address": "Seestraße 3, 45894 Gelsenkirchen",
+   "center": [
+    7.068865,
+    51.563927
+   ],
+   "street": "Seestraße"
+  },
+  {
+   "type": "FF",
+   "name": "Gerätehaus Löschzug Erle-Süd (13)",
+   "address": "Im Emscherbruch 30, 45892 Gelsenkirchen",
+   "center": [
+    7.107009,
+    51.556429
+   ],
+   "street": "Im Emscherbruch"
+  },
+  {
+   "type": "FF",
+   "name": "Gerätehaus Löschzug Heßler (19)",
+   "address": "An der Landwehr 5, 45883 Gelsenkirchen",
+   "center": [
+    7.053743,
+    51.525606
+   ],
+   "street": "An der Landwehr"
+  },
+  {
+   "type": "FF",
+   "name": "Gerätehaus Löschzug Horst (14)",
+   "address": "Kampstraße 3, 45899 Gelsenkirchen",
+   "center": [
+    7.041155,
+    51.548999
+   ],
+   "street": "Kampstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Gerätehaus Löschzug Resse (16)",
+   "address": "Recklinghauser Straße 110, 45892 Gelsenkirchen",
+   "center": [
+    7.109294,
+    51.584766
+   ],
+   "street": "Recklinghauser Straße"
+  },
+  {
+   "type": "FF",
+   "name": "Gerätehaus Löschzug Scholven-Hassel (15)",
+   "address": "Lüttinghofstraße 90, 45896 Gelsenkirchen",
+   "center": [
+    7.04361,
+    51.605496
+   ],
+   "street": "Lüttinghofstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Gerätehaus Löschzug Ückendorf (18)",
+   "address": "Bergmannstraße 201, 45886 Gelsenkirchen",
+   "center": [
+    7.130478,
+    51.504993
+   ],
+   "street": "Bergmannstraße"
+  },
+  {
+   "type": "RW",
+   "name": "Notarztstation Buer (20)",
+   "address": "Schernerweg 4, 45894 Gelsenkirchen",
+   "center": [
+    7.059503,
+    51.571371
+   ],
+   "street": "Schernerweg"
+  },
+  {
+   "type": "RW",
+   "name": "Notarztstation Heßler (30)",
+   "address": "An der Landwehr 5, 45883 Gelsenkirchen",
+   "center": [
+    7.053743,
+    51.525606
+   ],
+   "street": "An der Landwehr"
+  },
+  {
+   "type": "RW",
+   "name": "Notarztstation Ückendorf (10)",
+   "address": "Virchowstraße 135, 45886 Gelsenkirchen",
+   "center": [
+    7.101381,
+    51.495336
+   ],
+   "street": "Virchowstraße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache Altstadt (1)",
+   "address": "Wildenbruchstraße 50, 45888 Gelsenkirchen",
+   "center": [
+    7.110608,
+    51.508195
+   ],
+   "street": "Wildenbruchstraße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache Beckhausen (21)",
+   "address": "Kampstraße 3, 45899 Gelsenkirchen",
+   "center": [
+    7.041155,
+    51.548999
+   ],
+   "street": "Kampstraße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache Buer (2)",
+   "address": "Seestraße 3, 45894 Gelsenkirchen",
+   "center": [
+    7.068865,
+    51.563927
+   ],
+   "street": "Seestraße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache Buer-Mitte (41)",
+   "address": "Mühlenstraße 5, 45894 Gelsenkirchen",
+   "center": [
+    7.047968,
+    51.581457
+   ],
+   "street": "Mühlenstraße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache Hassel (4)",
+   "address": "Lüttinghofstraße 90, 45896 Gelsenkirchen",
+   "center": [
+    7.04361,
+    51.605496
+   ],
+   "street": "Lüttinghofstraße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache Heßler (3)",
+   "address": "An der Landwehr 5, 45883 Gelsenkirchen",
+   "center": [
+    7.053743,
+    51.525606
+   ],
+   "street": "An der Landwehr"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache Resser Mark (22)",
+   "address": "Im Emscherbruch 30, 45892 Gelsenkirchen",
+   "center": [
+    7.107009,
+    51.556429
+   ],
+   "street": "Im Emscherbruch"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache Schalke (31)",
+   "address": "Hochkampstraße 68C, 45881 Gelsenkirchen",
+   "center": [
+    7.089319,
+    51.528636
+   ],
+   "street": "Hochkampstraße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache Ückendorf (11)",
+   "address": "Virchowstraße 133, 45886 Gelsenkirchen",
+   "center": [
+    7.102985,
+    51.496003
+   ],
+   "street": "Virchowstraße"
+  }
+ ]
+}

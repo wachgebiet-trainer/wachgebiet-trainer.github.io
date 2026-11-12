@@ -1,0 +1,307 @@
+{
+ "source": "Regionalverband Ruhr (RVR), POI-Datensatz „Rettungswesen“",
+ "license": "© Regionalverband Ruhr, Datenlizenz Deutschland – Namensnennung – Version 2.0",
+ "complete": [],
+ "stations": [
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Hamm-Westen",
+   "address": "Rathenaustraße 16, 59067 Hamm",
+   "center": [
+    7.789986,
+    51.655416
+   ],
+   "street": "Rathenaustraße"
+  },
+  {
+   "type": "BF",
+   "name": "Feuer- und Rettungswache 1 Mitte",
+   "address": "Hafenstraße 45, 59067 Hamm",
+   "center": [
+    7.792435,
+    51.677868
+   ],
+   "street": "Hafenstraße"
+  },
+  {
+   "type": "BF",
+   "name": "Feuer- und Rettungswache 2 Ost",
+   "address": "Hohefeldweg 25, 59071 Hamm",
+   "center": [
+    7.851581,
+    51.67676
+   ],
+   "street": "Hohefeldweg"
+  },
+  {
+   "type": "FF",
+   "name": "Feuerwehr Hamm - Freiwillige Feuerwehr Rhynern",
+   "address": "Vöhde 41, 59069 Hamm",
+   "center": [
+    7.85226,
+    51.626666
+   ],
+   "street": "Vöhde"
+  },
+  {
+   "type": "BF",
+   "name": "Rettungswache West",
+   "address": "An den Kirchen 26-28, 59077 Hamm",
+   "center": [
+    7.734614,
+    51.660251
+   ],
+   "street": "An den Kirchen"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache Nord",
+   "address": "Waterkamp 2, 59075 Hamm",
+   "center": [
+    7.770043,
+    51.699891
+   ],
+   "street": "Waterkamp"
+  },
+  {
+   "type": "FF",
+   "name": "Feuerwehr Hamm - Freiwillige Feuerwehr Bockum",
+   "address": "Schultenstraße 10-12, 59075 Hamm",
+   "center": [
+    7.729201,
+    51.694653
+   ],
+   "street": "Schultenstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Feuerwehr Hamm - Freiwillige Feuerwehr Hamm-Mitte",
+   "address": "Hafenstraße 45, 59067 Hamm",
+   "center": [
+    7.792136,
+    51.677394
+   ],
+   "street": "Hafenstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Feuerwehr Hamm - Freiwillige Feuerwehr Hövel",
+   "address": "Römerstraße 44, 59075 Hamm",
+   "center": [
+    7.770606,
+    51.700246
+   ],
+   "street": "Römerstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Feuerwehr Hamm - Freiwillige Feuerwehr Mark",
+   "address": "Marker Dorfstraße 56, 59071 Hamm",
+   "center": [
+    7.860207,
+    51.682249
+   ],
+   "street": "Marker Dorfstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Feuerwehr Hamm - Freiwillige Feuerwehr Hamm-Norden",
+   "address": "Sudetenweg 1a, 59065 Hamm",
+   "center": [
+    7.804315,
+    51.687326
+   ],
+   "street": "Sudetenweg"
+  },
+  {
+   "type": "FF",
+   "name": "Feuerwehr Hamm - Freiwillige Feuerwehr Wiescherhöfen/Weetfeld",
+   "address": "Auf der Horst 14+18, 59077 Hamm",
+   "center": [
+    7.77687,
+    51.638348
+   ],
+   "street": "Auf der Horst"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache Süd",
+   "address": "Vöhde 41, 59069 Hamm",
+   "center": [
+    7.851861,
+    51.626561
+   ],
+   "street": "Vöhde"
+  },
+  {
+   "type": "FF",
+   "name": "Feuerwehr Hamm - Freiwillige Feuerwehr Hamm-Uentrop",
+   "address": "An der Uentroper Kirche 2, 59071 Hamm",
+   "center": [
+    7.948637,
+    51.692828
+   ],
+   "street": "An der Uentroper Kirche"
+  },
+  {
+   "type": "FF",
+   "name": "Feuerwehr Hamm - Freiwillige Feuerwehr Berge",
+   "address": "Sophienpfad 2, 59069 Hamm",
+   "center": [
+    7.83442,
+    51.647944
+   ],
+   "street": "Sophienpfad"
+  },
+  {
+   "type": "FF",
+   "name": "Feuerwehr Hamm - Freiwillige Feuerwehr Osterflierich",
+   "address": "Steubenweg 2, 59069 Hamm",
+   "center": [
+    7.830349,
+    51.599033
+   ],
+   "street": "Steubenweg"
+  },
+  {
+   "type": "FF",
+   "name": "Feuerwehr Hamm - Freiwillige Feuerwehr Westtünnen",
+   "address": "Brehmstraße 10, 59069 Hamm",
+   "center": [
+    7.853922,
+    51.655588
+   ],
+   "street": "Brehmstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Feuerwehr Hamm - Freiwillige Feuerwehr Osttünnen",
+   "address": "Davidisstraße 9, 59069 Hamm",
+   "center": [
+    7.884318,
+    51.646441
+   ],
+   "street": "Davidisstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Feuerwehr Hamm - Freiwillige Feuerwehr Ostwennemar",
+   "address": "Soester Straße 363, 59071 Hamm",
+   "center": [
+    7.877187,
+    51.669177
+   ],
+   "street": "Soester Straße"
+  },
+  {
+   "type": "FF",
+   "name": "Feuerwehr Hamm - Freiwillige Feuerwehr Heessen",
+   "address": "Piebrockskamp 3, 59073 Hamm",
+   "center": [
+    7.834283,
+    51.703902
+   ],
+   "street": "Piebrockskamp"
+  },
+  {
+   "type": "FF",
+   "name": "Feuerwehr Hamm - Freiwillige Feuerwehr Werries",
+   "address": "Eickhoffstraße 1, 59071 Hamm",
+   "center": [
+    7.88553,
+    51.690743
+   ],
+   "street": "Eickhoffstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Feuerwehr Hamm - Freiwillige Feuerwehr Haaren",
+   "address": "Sundernstraße 1, 59071 Hamm",
+   "center": [
+    7.91715,
+    51.695844
+   ],
+   "street": "Sundernstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Feuerwehr Hamm - Freiwillige Feuerwehr Norddinker",
+   "address": "Soester Straße 433, 59071 Hamm",
+   "center": [
+    7.927074,
+    51.655198
+   ],
+   "street": "Soester Straße"
+  },
+  {
+   "type": "FF",
+   "name": "Feuerwehr Hamm - Freiwillige Feuerwehr Süddinker",
+   "address": "Am Fuhrbach 1, 59069 Hamm",
+   "center": [
+    7.918745,
+    51.636838
+   ],
+   "street": "Am Fuhrbach"
+  },
+  {
+   "type": "FF",
+   "name": "Feuerwehr Hamm - Freiwillige Feuerwehr Wambeln",
+   "address": "Scheidinger Straße 6, 59069 Hamm",
+   "center": [
+    7.903197,
+    51.604489
+   ],
+   "street": "Scheidinger Straße"
+  },
+  {
+   "type": "FF",
+   "name": "Feuerwehr Hamm - Freiwillige Feuerwehr Allen",
+   "address": "Allener Straße, 59069 Hamm",
+   "center": [
+    7.872467,
+    51.610169
+   ],
+   "street": "Allener Straße"
+  },
+  {
+   "type": "FF",
+   "name": "Feuerwehr Hamm - Freiwillige Feuerwehr Pelkum",
+   "address": "Auf Bögers Hof 7, 59077 Hamm",
+   "center": [
+    7.741284,
+    51.638872
+   ],
+   "street": "Auf Bögers Hof"
+  },
+  {
+   "type": "FF",
+   "name": "Feuerwehr Hamm - Freiwillige Feuerwehr Lerche",
+   "address": "Kerstheider Straße 2, 59077 Hamm",
+   "center": [
+    7.709399,
+    51.622537
+   ],
+   "street": "Kerstheider Straße"
+  },
+  {
+   "type": "FF",
+   "name": "Feuerwehr Hamm - Freiwillige Feuerwehr Herringen",
+   "address": "Fangstraße 26, 59077 Hamm",
+   "center": [
+    7.743593,
+    51.658275
+   ],
+   "street": "Fangstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Feuerwehr Hamm - Freiwillige Feuerwehr Sandbochum",
+   "address": "Urnenfeldstraße 2, 59077 Hamm",
+   "center": [
+    7.689762,
+    51.655556
+   ],
+   "street": "Urnenfeldstraße"
+  }
+ ]
+}

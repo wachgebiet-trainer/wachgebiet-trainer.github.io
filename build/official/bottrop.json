@@ -1,0 +1,117 @@
+{
+ "source": "Regionalverband Ruhr (RVR), POI-Datensatz „Rettungswesen“",
+ "license": "© Regionalverband Ruhr, Datenlizenz Deutschland – Namensnennung – Version 2.0",
+ "complete": [],
+ "stations": [
+  {
+   "type": "FF",
+   "name": "OW 11 - Altstadt",
+   "address": "Hans-Sachs-Straße 78, 46236 Bottrop",
+   "center": [
+    6.923646,
+    51.53184
+   ],
+   "street": "Hans-Sachs-Straße"
+  },
+  {
+   "type": "FF",
+   "name": "OW 12 - Boy",
+   "address": "Wilhelm-Tenhagen-Straße 21, 46240 Bottrop",
+   "center": [
+    6.975983,
+    51.531967
+   ],
+   "street": "Wilhelm-Tenhagen-Straße"
+  },
+  {
+   "type": "FF",
+   "name": "OW 13 - Eigen",
+   "address": "Am Schlangenholt 21, 46240 Bottrop",
+   "center": [
+    6.933084,
+    51.543316
+   ],
+   "street": "Am Schlangenholt"
+  },
+  {
+   "type": "FF",
+   "name": "OW 14 - Fuhlenbrock",
+   "address": "Gorch-Fock-Straße 25, 46242 Bottrop",
+   "center": [
+    6.895872,
+    51.533599
+   ],
+   "street": "Gorch-Fock-Straße"
+  },
+  {
+   "type": "FF",
+   "name": "OW 15 - Vonderort",
+   "address": "Am Wienberg 16f, 46242 Bottrop",
+   "center": [
+    6.91043,
+    51.503307
+   ],
+   "street": "Am Wienberg"
+  },
+  {
+   "type": "FF",
+   "name": "OW 16 - Schulstr. 15",
+   "address": "Schulstraße 15, 46244 Bottrop",
+   "center": [
+    6.919642,
+    51.605533
+   ],
+   "street": "Schulstraße"
+  },
+  {
+   "type": "FF",
+   "name": "OW 17 - Grafenwald",
+   "address": "Heimersfeld 5, 46244 Bottrop",
+   "center": [
+    6.896015,
+    51.575464
+   ],
+   "street": "Heimersfeld"
+  },
+  {
+   "type": "FF",
+   "name": "OW 18 - Feldhausen",
+   "address": "Kapellenstraße 34, 46244 Bottrop",
+   "center": [
+    6.969229,
+    51.612514
+   ],
+   "street": "Kapellenstraße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache des DRK",
+   "address": "Siemensstraße 32, 46238 Bottrop",
+   "center": [
+    6.953859,
+    51.531582
+   ],
+   "street": "Siemensstraße"
+  },
+  {
+   "type": "BF",
+   "name": "WACHE I",
+   "address": "Hans-Sachs-Straße 80, 46236 Bottrop",
+   "center": [
+    6.923646,
+    51.53184
+   ],
+   "street": "Hans-Sachs-Straße"
+  },
+  {
+   "type": "BF",
+   "name": "WACHE II",
+   "address": "Schulstraße 15, 46244 Bottrop",
+   "center": [
+    6.919642,
+    51.605533
+   ],
+   "street": "Schulstraße"
+  }
+ ]
+}

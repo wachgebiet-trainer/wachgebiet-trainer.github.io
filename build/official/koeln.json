@@ -1,0 +1,720 @@
+{
+ "source": "Stadt Köln, WFS „Feuer- und Rettungswachen, Löschgruppen“",
+ "license": "Stadt Köln, Datenlizenz Deutschland – Zero – Version 2.0",
+ "complete": [
+  "BF",
+  "FF"
+ ],
+ "stations": [
+  {
+   "type": "BF",
+   "name": "Feuer- und Rettungswache 2 Marienburg",
+   "address": "Schillingsrotter Weg 8-12, 50968 Köln",
+   "center": [
+    6.973304,
+    50.893772
+   ],
+   "street": "Schillingsrotter Weg"
+  },
+  {
+   "type": "BF",
+   "name": "Feuer- und Rettungswache 6 Chorweiler",
+   "address": "Volkhovener Weg 184, 50765 Köln",
+   "center": [
+    6.892743,
+    51.01644
+   ],
+   "street": "Volkhovener Weg"
+  },
+  {
+   "type": "BF",
+   "name": "Feuer- und Rettungswache 8 Ostheim",
+   "address": "Hardtgenbuscher Kirchweg 100, 51107 Köln",
+   "center": [
+    7.048135,
+    50.924944
+   ],
+   "street": "Hardtgenbuscher Kirchweg"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache 17 Zündorf",
+   "address": "Unterm Berg 19, 51143 Köln",
+   "center": [
+    7.030922,
+    50.861384
+   ],
+   "street": "Unterm Berg"
+  },
+  {
+   "type": "BF",
+   "name": "Feuer- und Rettungswache 1 Innenstadt",
+   "address": "Agrippastraße 18, 50676 Köln",
+   "center": [
+    6.953877,
+    50.933754
+   ],
+   "street": "Agrippastraße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache 19 Dellbrück",
+   "address": "Urnenstraße 9-11, 51069 Köln",
+   "center": [
+    7.065175,
+    50.978367
+   ],
+   "street": "Urnenstraße"
+  },
+  {
+   "type": "RW",
+   "name": "NEF Stützpunkt Porz",
+   "address": "Urbacher Weg 19, 51149 Köln",
+   "center": [
+    7.051465,
+    50.892482
+   ],
+   "street": "Urbacher Weg"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache Spies",
+   "address": "Sachsenring 67, 50677 Köln",
+   "center": [
+    6.951541,
+    50.923869
+   ],
+   "street": "Sachsenring"
+  },
+  {
+   "type": "BF",
+   "name": "Feuer- und Rettungswache 5 Weidenpesch",
+   "address": "Scheibenstraße 13, 50737 Köln",
+   "center": [
+    6.948872,
+    50.985499
+   ],
+   "street": "Scheibenstraße"
+  },
+  {
+   "type": "BF",
+   "name": "Feuer- und Rettungswache 3 Lindenthal",
+   "address": "Gleueler Straße 223-225, 50935 Köln",
+   "center": [
+    6.908795,
+    50.922652
+   ],
+   "street": "Gleueler Straße"
+  },
+  {
+   "type": "BF",
+   "name": "Feuer- und Rettungswache 4 Ehrenfeld",
+   "address": "Äußere Kanalstraße 67, 50827 Köln",
+   "center": [
+    6.902873,
+    50.957438
+   ],
+   "street": "Äußere Kanalstraße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache 12 Rodenkirchen",
+   "address": "Schillingsrotter Straße 36, 50996 Köln",
+   "center": [
+    6.991894,
+    50.889579
+   ],
+   "street": "Schillingsrotter Straße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache 16 Worringen",
+   "address": "St.-Tönnis-Straße 60, 50769 Köln",
+   "center": [
+    6.862284,
+    51.062912
+   ],
+   "street": "St.-Tönnis-Straße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache 18 KH Merheim",
+   "address": "Ostmerheimer Straße 200, 51109 Köln",
+   "center": [
+    7.053458,
+    50.939464
+   ],
+   "street": "Ostmerheimer Straße"
+  },
+  {
+   "type": "BF",
+   "name": "Feuer- und Rettungswache 9 Mülheim",
+   "address": "Bergisch Gladbacher Straße 179, 51063 Köln",
+   "center": [
+    7.020699,
+    50.965117
+   ],
+   "street": "Bergisch Gladbacher Straße"
+  },
+  {
+   "type": "BF",
+   "name": "Feuer- und Rettungswache 10 Kalk",
+   "address": "Gummersbacher Straße 33, 51103 Köln",
+   "center": [
+    6.990005,
+    50.939466
+   ],
+   "street": "Gummersbacher Straße"
+  },
+  {
+   "type": "BF",
+   "name": "Feuer- und Rettungswache 14 Lövenich",
+   "address": "Richard-Wagner-Straße 26-32, 50859 Köln",
+   "center": [
+    6.83047,
+    50.942107
+   ],
+   "street": "Richard-Wagner-Straße"
+  },
+  {
+   "type": "BF",
+   "name": "Feuer- und Rettungswache 7 Porz",
+   "address": "Kaiserstraße 69, 51145 Köln",
+   "center": [
+    7.072272,
+    50.880818
+   ],
+   "street": "Kaiserstraße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache Mülheim Interimsstandort",
+   "address": "Bergisch Gladbacher Straße 177, 51063 Köln",
+   "center": [
+    7.020168,
+    50.964642
+   ],
+   "street": "Bergisch Gladbacher Straße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache 19/2 Stammheim Interimsstandort",
+   "address": "Düsseldorfer Straße 334, 51061 Köln",
+   "center": [
+    7.00017,
+    50.988537
+   ],
+   "street": "Düsseldorfer Straße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache 8 Interimsstandort",
+   "address": "Frankfurter Straße 666, 51107 Köln",
+   "center": [
+    7.039647,
+    50.930625
+   ],
+   "street": "Frankfurter Straße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache Merheim Interimsstandort",
+   "address": "Fußfallstraße 55, 51109 Köln",
+   "center": [
+    7.045519,
+    50.949586
+   ],
+   "street": "Fußfallstraße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache Ossendorf Interimsstandort",
+   "address": "Mathias-Brüggen-Straße 39, 50829 Köln",
+   "center": [
+    6.89054,
+    50.972226
+   ],
+   "street": "Mathias-Brüggen-Straße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache Rodenkirchen Interimsstandort",
+   "address": "Ringstraße 46\n, 50996 Köln",
+   "center": [
+    6.993501,
+    50.886771
+   ],
+   "street": "Ringstraße 46\n,"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache Dünnwald Interimsstandort",
+   "address": "Rönsahler Straße 3-17, 51069 Köln",
+   "center": [
+    7.034952,
+    51.001047
+   ],
+   "street": "Rönsahler Straße"
+  },
+  {
+   "type": "RW",
+   "name": "NEF Stützpunkt Braunsfeld",
+   "address": "Stolberger Straße 319, 50933 Köln",
+   "center": [
+    6.891248,
+    50.941803
+   ],
+   "street": "Stolberger Straße"
+  },
+  {
+   "type": "RW",
+   "name": "Hubschrauberstation (Rettungshubschrauber)",
+   "address": "Waldstraße 247, 51147 Köln",
+   "center": [
+    7.110934,
+    50.880551
+   ],
+   "street": "Waldstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Fühlingen (Weiler)",
+   "address": "Windröschenweg 1, 50765 Köln",
+   "center": [
+    6.883451,
+    51.019337
+   ],
+   "street": "Windröschenweg"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Fühlingen",
+   "address": "Schmiedhofsweg 7, 50769 Köln",
+   "center": [
+    6.904622,
+    51.036205
+   ],
+   "street": "Schmiedhofsweg"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Lövenich",
+   "address": "Richard-Wagner-Straße 34-36, 50859 Köln",
+   "center": [
+    6.829818,
+    50.941977
+   ],
+   "street": "Richard-Wagner-Straße"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Longerich",
+   "address": "Hugo-Junkers-Straße 56-60, 50739 Köln",
+   "center": [
+    6.908184,
+    50.991488
+   ],
+   "street": "Hugo-Junkers-Straße"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Roggendorf/Thenhoven",
+   "address": "Quettinghofstraße 36a, 50769 Köln",
+   "center": [
+    6.848608,
+    51.047097
+   ],
+   "street": "Quettinghofstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Porz/Langel",
+   "address": "Hintergasse 10, 51143 Köln",
+   "center": [
+    7.006212,
+    50.845161
+   ],
+   "street": "Hintergasse"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Widdersdorf",
+   "address": "Neue Sandkaul 11, 50859 Köln",
+   "center": [
+    6.835781,
+    50.965879
+   ],
+   "street": "Neue Sandkaul"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Zündorf",
+   "address": "Unterm Berg 19, 51143 Köln",
+   "center": [
+    7.031019,
+    50.861454
+   ],
+   "street": "Unterm Berg"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Heumar",
+   "address": "Forststraße 20, 51107 Köln",
+   "center": [
+    7.084473,
+    50.916543
+   ],
+   "street": "Forststraße"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Wahn/Heide/Lind",
+   "address": "Heidestraße 179, 51147 Köln",
+   "center": [
+    7.100462,
+    50.859144
+   ],
+   "street": "Heidestraße"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Brück",
+   "address": "Hovenstraße 38-42, 51109 Köln",
+   "center": [
+    7.081284,
+    50.943976
+   ],
+   "street": "Hovenstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Dünnwald",
+   "address": "Rönsahler Straße 30, 51069 Köln",
+   "center": [
+    7.035791,
+    51.002102
+   ],
+   "street": "Rönsahler Straße"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Eil",
+   "address": "Neue Eiler Straße 52, 51145 Köln",
+   "center": [
+    7.073688,
+    50.896818
+   ],
+   "street": "Neue Eiler Straße"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Flittard",
+   "address": "Edelhofstraße 66 (Anfahrt)/Am Feldrain 10a (Postanschrift), 51061 Köln",
+   "center": [
+    6.980944,
+    50.997353
+   ],
+   "street": "Edelhofstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Holweide",
+   "address": "Buschfeldstraße 46, 51067 Köln",
+   "center": [
+    7.039592,
+    50.971088
+   ],
+   "street": "Buschfeldstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Langel/Rheinkassel",
+   "address": "Amandusstraße 51, 50769 Köln",
+   "center": [
+    6.932342,
+    51.041842
+   ],
+   "street": "Amandusstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Libur",
+   "address": "Margaretenstraße 34, 51147 Köln",
+   "center": [
+    7.073084,
+    50.838658
+   ],
+   "street": "Margaretenstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Merkenich",
+   "address": "Causemannstraße 66, 50769 Köln",
+   "center": [
+    6.948493,
+    51.022713
+   ],
+   "street": "Causemannstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Strunden",
+   "address": "Gierather Straße 16, 51069 Köln",
+   "center": [
+    7.09092,
+    50.970687
+   ],
+   "street": "Gierather Straße"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Umweltschutzdienst",
+   "address": "Osterather Straße 40, 50739 Köln",
+   "center": [
+    6.936065,
+    50.960499
+   ],
+   "street": "Osterather Straße"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Ensen/Westhoven",
+   "address": "Annastraße 9, 51149 Köln",
+   "center": [
+    7.037852,
+    50.89851
+   ],
+   "street": "Annastraße"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Worringen",
+   "address": "Hackenbroicher Straße 48, 50769 Köln",
+   "center": [
+    6.861013,
+    51.065163
+   ],
+   "street": "Hackenbroicher Straße"
+  },
+  {
+   "type": "FF",
+   "name": "Fernmeldedienst (FMD)",
+   "address": "Scheibenstraße 13, 50737 Köln",
+   "center": [
+    6.949481,
+    50.985053
+   ],
+   "street": "Scheibenstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Urbach",
+   "address": "Kaiserstraße 69, 51145 Köln",
+   "center": [
+    7.072126,
+    50.880835
+   ],
+   "street": "Kaiserstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Kalk",
+   "address": "Gummersbacher Straße 33, 51103 Köln",
+   "center": [
+    6.989806,
+    50.939435
+   ],
+   "street": "Gummersbacher Straße"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Dellbrück",
+   "address": "Urnenstraße 9-11, 51069 Köln",
+   "center": [
+    7.065256,
+    50.978401
+   ],
+   "street": "Urnenstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Esch",
+   "address": "Weilerstraße 4, 50765 Köln",
+   "center": [
+    6.85842,
+    51.013219
+   ],
+   "street": "Weilerstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Löschgruppe Rodenkirchen",
+   "address": "Sürther Str. 197, 50996 Köln",
+   "center": [
+    7.004803,
+    50.872329
+   ],
+   "street": "Sürther Str."
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache 17 Zündorf",
+   "address": "Unterm Berg 19, 51143 Köln",
+   "center": [
+    7.030922,
+    50.861384
+   ],
+   "street": "Unterm Berg"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache 19 Dellbrück",
+   "address": "Urnenstraße 9-11, 51069 Köln",
+   "center": [
+    7.065175,
+    50.978367
+   ],
+   "street": "Urnenstraße"
+  },
+  {
+   "type": "RW",
+   "name": "NEF Stützpunkt Porz",
+   "address": "Urbacher Weg 19, 51149 Köln",
+   "center": [
+    7.051465,
+    50.892482
+   ],
+   "street": "Urbacher Weg"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache Spies",
+   "address": "Sachsenring 67, 50677 Köln",
+   "center": [
+    6.951541,
+    50.923869
+   ],
+   "street": "Sachsenring"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache 12 Rodenkirchen",
+   "address": "Schillingsrotter Straße 36, 50996 Köln",
+   "center": [
+    6.991894,
+    50.889579
+   ],
+   "street": "Schillingsrotter Straße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache 16 Worringen",
+   "address": "St.-Tönnis-Straße 60, 50769 Köln",
+   "center": [
+    6.862284,
+    51.062912
+   ],
+   "street": "St.-Tönnis-Straße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache 18 KH Merheim",
+   "address": "Ostmerheimer Straße 200, 51109 Köln",
+   "center": [
+    7.053458,
+    50.939464
+   ],
+   "street": "Ostmerheimer Straße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache Mülheim Interimsstandort",
+   "address": "Bergisch Gladbacher Straße 177, 51063 Köln",
+   "center": [
+    7.020168,
+    50.964642
+   ],
+   "street": "Bergisch Gladbacher Straße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache 19/2 Stammheim Interimsstandort",
+   "address": "Düsseldorfer Straße 334, 51061 Köln",
+   "center": [
+    7.00017,
+    50.988537
+   ],
+   "street": "Düsseldorfer Straße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache 8 Interimsstandort",
+   "address": "Frankfurter Straße 666, 51107 Köln",
+   "center": [
+    7.039647,
+    50.930625
+   ],
+   "street": "Frankfurter Straße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache Merheim Interimsstandort",
+   "address": "Fußfallstraße 55, 51109 Köln",
+   "center": [
+    7.045519,
+    50.949586
+   ],
+   "street": "Fußfallstraße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache Ossendorf Interimsstandort",
+   "address": "Mathias-Brüggen-Straße 39, 50829 Köln",
+   "center": [
+    6.89054,
+    50.972226
+   ],
+   "street": "Mathias-Brüggen-Straße"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache Rodenkirchen Interimsstandort",
+   "address": "Ringstraße 46\n, 50996 Köln",
+   "center": [
+    6.993501,
+    50.886771
+   ],
+   "street": "Ringstraße 46\n,"
+  },
+  {
+   "type": "RW",
+   "name": "Rettungswache Dünnwald Interimsstandort",
+   "address": "Rönsahler Straße 3-17, 51069 Köln",
+   "center": [
+    7.034952,
+    51.001047
+   ],
+   "street": "Rönsahler Straße"
+  },
+  {
+   "type": "RW",
+   "name": "NEF Stützpunkt Braunsfeld",
+   "address": "Stolberger Straße 319, 50933 Köln",
+   "center": [
+    6.891248,
+    50.941803
+   ],
+   "street": "Stolberger Straße"
+  },
+  {
+   "type": "RW",
+   "name": "Hubschrauberstation (Rettungshubschrauber)",
+   "address": "Waldstraße 247, 51147 Köln",
+   "center": [
+    7.110934,
+    50.880551
+   ],
+   "street": "Waldstraße"
+  }
+ ]
+}
