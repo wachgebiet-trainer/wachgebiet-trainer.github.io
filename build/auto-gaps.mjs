@@ -16,9 +16,18 @@ const STOP = new Set(['der', 'die', 'das', 'und', 'stadt', 'feuerwehr', 'freiwil
 
 function search(q, cfg) {
   const [[w, s], [e, n]] = cfg.bounds;
-  const res = JSON.parse(execFileSync('curl', ['-sS', '--fail', '-m', '60', '-A', UA, '-G', 'https://nominatim.openstreetmap.org/search',
+  let res;
+  for (let attempt = 0; ; attempt++) {
+    try {
+      res = JSON.parse(execFileSync('curl', ['-sS', '--fail', '-m', '60', '-A', UA, '-G', 'https://nominatim.openstreetmap.org/search',
     '--data-urlencode', `q=${q}`, '--data-urlencode', `viewbox=${w},${n},${e},${s}`, '--data-urlencode', 'bounded=1',
-    '--data-urlencode', 'limit=5', '--data-urlencode', 'format=jsonv2', '--data-urlencode', 'addressdetails=1']).toString());
+    '--data-urlencode', 'limit=5', '--data-urlencode', 'format=jsonv2', '--data-urlencode', 'addressdetails=1'], { stdio: ['ignore', 'pipe', 'ignore'] }).toString());
+      break;
+    } catch (e) {
+      if (attempt >= 4) throw e;
+      sleep(5000 * (attempt + 1)); // Nominatim antwortet zeitweise mit 503/429
+    }
+  }
   sleep(1200);
   return res.find((r) => (r.category === 'amenity' && r.type === 'fire_station') || (r.category === 'emergency' && r.type === 'ambulance_station'));
 }

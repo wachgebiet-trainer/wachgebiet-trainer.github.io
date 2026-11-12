@@ -1,0 +1,97 @@
+{
+ "source": "Regionalverband Ruhr (RVR), POI-Datensatz „Rettungswesen“",
+ "license": "© Regionalverband Ruhr, Datenlizenz Deutschland – Namensnennung – Version 2.0",
+ "complete": [],
+ "stations": [
+  {
+   "type": "BF",
+   "name": "Hauptfeuer- und Rettungswache Recklinghausen",
+   "address": "Kurt-Schumacher-Allee 2, 45657 Recklinghausen",
+   "center": [
+    7.202937,
+    51.608405
+   ],
+   "street": "Kurt-Schumacher-Allee"
+  },
+  {
+   "type": "RW",
+   "name": "DRK - Kreisverband Recklinghausen e.V. / Rot Kreuz Zentrum",
+   "address": "Kölner Straße 20, 45661 Recklinghausen",
+   "center": [
+    7.205771,
+    51.580504
+   ],
+   "street": "Kölner Straße"
+  },
+  {
+   "type": "FF",
+   "name": "Feuerwache Süd - Löschzug 5",
+   "address": "Am Neumarkt 20, 45663 Recklinghausen",
+   "center": [
+    7.214632,
+    51.57267
+   ],
+   "street": "Am Neumarkt"
+  },
+  {
+   "type": "FF",
+   "name": "Feuerwehrgerätehaus - Löschzug Hochlar-Löschzug 6",
+   "address": "Averdunkstraße 1, 45659 Recklinghausen",
+   "center": [
+    7.167989,
+    51.604362
+   ],
+   "street": "Averdunkstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Feuerwehrgerätehaus - Löschzug Speckhorn -Löschzug 3",
+   "address": "Kühlstraße 16, 45659 Recklinghausen",
+   "center": [
+    7.191887,
+    51.64576
+   ],
+   "street": "Kühlstraße"
+  },
+  {
+   "type": "FF",
+   "name": "Feuerwehrhaus- Löschzug Suderwich -Löschzug 4",
+   "address": "Stresemannplatz 34, 45665 Recklinghausen",
+   "center": [
+    7.258777,
+    51.610187
+   ],
+   "street": "Stresemannplatz"
+  },
+  {
+   "type": "BF",
+   "name": "Feuerwehr Recklinghausen - DRK-Rettungswache Ortloh",
+   "address": "Alte Röllinghäuser Straße 32, 45665 Recklinghausen",
+   "center": [
+    7.244691,
+    51.598882
+   ],
+   "street": "Alte Röllinghäuser Straße"
+  },
+  {
+   "type": "BF",
+   "name": "neue Hauptfeuerwache geplant",
+   "address": "Schimmelsheider Weg, 45663 Recklinghausen",
+   "center": [
+    7.222063,
+    51.583404
+   ],
+   "street": "Schimmelsheider Weg"
+  },
+  {
+   "type": "FF",
+   "name": "Löschzüge Altstadt und Ost",
+   "address": "Kurt-Schumacher-Allee 2, 45657 Recklinghausen",
+   "center": [
+    7.203094,
+    51.608586
+   ],
+   "street": "Kurt-Schumacher-Allee"
+  }
+ ]
+}

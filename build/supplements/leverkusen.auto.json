@@ -1,0 +1,15 @@
+{
+ "source": "automatisch: Wikipedia-Abgleich + OSM-Suche",
+ "add": [
+  {
+   "type": "FF",
+   "name": "Freiwillige Feuerwehr Bürrig",
+   "center": [
+    6.982795,
+    51.048987
+   ],
+   "address": "Im Steinfeld 43, 51371 Leverkusen",
+   "source": "Wikipedia „Feuerwehr Leverkusen“ + OSM-Suche"
+  }
+ ]
+}

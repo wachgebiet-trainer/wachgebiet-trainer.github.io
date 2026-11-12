@@ -9,7 +9,7 @@ export const SKIP = /werk(s)?feuerwehr|\bwf\b|betriebsfeuerwehr|uniklinik|klinik
 
 export const ORG = /\b(drk|brk|asb|juh|mhd|johanniter|malteser|falck|arbeiter-samariter|rotes kreuz)\b/i;
 export const RW = /rettungswache|rettungsdienst|rettungsstation|notarzt|\brtw\b|\bdrk\b|\basb\b|johanniter|malteser|arbeiter-samariter|rotes kreuz/i;
-export const BF = /feuerwache|berufsfeuerwehr|feuer-?\s?(und|u\.)\s?rettungswache|feuer-?\s?(und|u\.)\s?umweltwache|umweltwache|rettungszentrum|feuerwehrzentrum|\bfu?rw\b|hauptfeuerwache|hauptwache|\bwache \d|\bfw \d|^f ?\d{1,3}\b|\(f ?\d{1,3}\)/i;
+export const BF = /feuerwache|berufsfeuerwehr|feuer-?\s?(und|u\.|&)\s?rettungswache|feuer-?\s?(und|u\.|&)\s?umweltwache|umweltwache|rettungszentrum|feuerwehrzentrum|\bfu?rw\b|hauptfeuerwache|hauptwache|\bwache \d|\bfw \d|^f ?\d{1,3}\b|\(f ?\d{1,3}\)/i;
 export const FF = /freiwillige|\bff\b|\bffw\b|löschzug|löschgruppe|löscheinheit|ortswehr|ortsfeuerwehr|gerätehaus|feuerwehrhaus|löschabteilung|abteilung|stadtteilfeuerwehr|\blz\b|\blg\b|\ble\b/i;
 export function classify(p) {
   const n = p.name;
@@ -53,7 +53,7 @@ export function refineStations(stations, cityName = '') {
   const hq = cityName ? new RegExp(`^(Feuerwehr|Berufsfeuerwehr) ${cityName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i') : null;
   for (const s of stations) {
     // „Feuer-und Rettungswache“ (ohne Leerzeichen) o. Ä. ist eine Wache der Berufsfeuerwehr
-    if (s.type === 'RW' && /feuer-?\s?(und|u\.)\s?rettungswache|feuerwache/i.test(s.name)) {
+    if (s.type === 'RW' && /feuer-?\s?(und|u\.|&)\s?rettungswache|feuerwache/i.test(s.name)) {
       s.type = 'BF';
       const n = s.name.match(/wache\s*(\d{1,3})/i);
       s.number = n ? n[1] : 'FW';
