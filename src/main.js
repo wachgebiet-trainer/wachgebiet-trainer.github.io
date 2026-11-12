@@ -13,7 +13,8 @@ import { loadStations, loadGeo, loadAreas, buildPool, streetsGeoJSON, DIFFICULTI
 import { circleArea, polygonArea } from './area.js';
 import { nearestOnLines, distance, formatDistance } from './geo.js';
 import { store } from './store.js';
-import { CITY, TYPE_LABEL, SITE_ROOT, LAST_CITY_KEY, DATA_BASE } from './city.js';
+import { CITY, TYPE_LABEL, SITE_ROOT, LAST_CITY_KEY, DATA_BASE, FREE_STATION } from './city.js';
+import { loadLiveGeo } from './live.js';
 
 const RADII = [500, 1000, 2000, 3000, 4000, 5000];
 const COUNTS = [10, 20, 0];
@@ -73,17 +74,28 @@ darkQuery.addEventListener?.('change', () => state.settings.theme === 'auto' && 
 
 // ---------------------------------------------------------------- Start
 async function init() {
+  if (CITY.free && !FREE_STATION) {
+    location.replace(`${SITE_ROOT.href}#suche`);
+    return;
+  }
   try {
-    localStorage.setItem(LAST_CITY_KEY, CITY.id);
+    if (!CITY.free) localStorage.setItem(LAST_CITY_KEY, CITY.id);
   } catch {
     /* ohne Speicher kein Merken der Stadt */
   }
   render();
   try {
-    const [st, areas] = await Promise.all([loadStations(), loadAreas(), tmap.ready]);
-    state.areas = areas;
-    state.stations = st.stations;
-    state.meta = st.meta;
+    if (CITY.free) {
+      await tmap.ready;
+      state.areas = {};
+      state.stations = [FREE_STATION];
+      state.meta = {};
+    } else {
+      const [st, areas] = await Promise.all([loadStations(), loadAreas(), tmap.ready]);
+      state.areas = areas;
+      state.stations = st.stations;
+      state.meta = st.meta;
+    }
   } catch (e) {
     state.view = 'error';
     state.error = e.message || String(e);
@@ -100,7 +112,7 @@ async function init() {
 
   const params = new URLSearchParams(location.search);
   const wanted = (params.get('wache') ?? params.get('station') ?? [...params.keys()].find((k) => /^\d{4}$/.test(k)) ?? '').trim().toLowerCase();
-  const found = wanted && state.stations.find((s) => s.number === wanted || s.key === wanted);
+  const found = CITY.free ? FREE_STATION : wanted && state.stations.find((s) => s.number === wanted || s.key === wanted);
   if (found) selectStation(found);
   else showHome();
   if (location.hash === '#impressum') {
@@ -118,6 +130,7 @@ window.addEventListener('hashchange', () => {
 });
 
 function setUrl(station) {
+  if (CITY.free) return;
   const url = new URL(location.href);
   url.search = station ? `?wache=${station.number}` : '';
   history.replaceState(null, '', url);
@@ -125,6 +138,10 @@ function setUrl(station) {
 
 // ---------------------------------------------------------------- Ansichten
 function showHome() {
+  if (CITY.free) {
+    location.href = `${SITE_ROOT.href}#suche`;
+    return;
+  }
   stopTimer();
   state.view = 'home';
   state.station = null;
@@ -152,9 +169,14 @@ async function selectStation(station) {
   render();
   if (!state.geo) {
     try {
-      state.geo = await loadGeo();
+      state.geo = CITY.free
+        ? await loadLiveGeo(station.center, 5600, (n, total) => {
+            const el = document.getElementById('pool-info');
+            if (el) el.innerHTML = `<span class="muted">Straßendaten werden geladen … ${Math.round((n / total) * 100)} %</span>`;
+          })
+        : await loadGeo();
     } catch (e) {
-      toast(e.message);
+      toast(CITY.free ? 'Die Kartendaten konnten nicht geladen werden. Bitte später erneut versuchen.' : e.message);
       return;
     }
   }
@@ -629,13 +651,14 @@ function renderSetup() {
   const mastered = Object.values(prog.targets).filter((t) => t.hits >= 2 && t.last >= 70).length;
   const ff = s.type === 'FF';
   return `${header()}
-  <button class="back" data-act="home">← Alle Wachen</button>
+  <button class="back" data-act="home">${CITY.free ? '← Zur Suche' : '← Alle Wachen'}</button>
   <section class="station-card ${s.type}">
     <div class="sc-top"><span class="badge ${s.type} big">${s.number}</span><span class="type">${typeLabel(s.type)}${s.area ? ` · ${esc(CITY.areaLabel(s.area))}` : ''}</span></div>
     <h2>${esc(s.name)}</h2>
     ${s.address || s.ortsteil ? `<p>${esc(s.address)}${s.address && s.ortsteil ? ' · ' : ''}${esc(s.ortsteil ?? '')}</p>` : ''}
     ${s.hostedAt ? `<p class="hosted">Untergebracht an der ${esc(s.hostedAt)}</p>` : ''}
     ${ff && !s.hostedAt ? `<p class="hint">${CITY.ffHint}</p>` : ''}
+    ${CITY.free ? `<p class="hint">${esc(CITY.dataNote)}</p>` : ''}
   </section>
 
   <section class="settings">

@@ -97,6 +97,43 @@ export const CITIES = Object.fromEntries(
   ]),
 );
 
+// Freie Suche: eine einzelne Wache irgendwo in Deutschland, übergeben per Adresszeile
+// (?n=Name&lat=…&lon=…&t=BF|FF|RW&a=Adresse&o=OSM-Kennung)
+const FREE_PARAMS = new URLSearchParams(location.search);
+const freeLat = parseFloat(FREE_PARAMS.get('lat'));
+const freeLon = parseFloat(FREE_PARAMS.get('lon'));
+export const FREE_STATION = Number.isFinite(freeLat) && Number.isFinite(freeLon)
+  ? {
+      key: `osm-${(FREE_PARAMS.get('o') || `${freeLat.toFixed(5)}-${freeLon.toFixed(5)}`).replace(/[^a-z0-9-]/gi, '')}`,
+      number: { BF: 'FW', FF: 'FF', RW: 'RW' }[FREE_PARAMS.get('t')] ?? 'FW',
+      type: ['BF', 'FF', 'RW'].includes(FREE_PARAMS.get('t')) ? FREE_PARAMS.get('t') : 'FF',
+      name: (FREE_PARAMS.get('n') || 'Feuerwache').slice(0, 120),
+      short: (FREE_PARAMS.get('n') || 'Feuerwache').slice(0, 120),
+      address: (FREE_PARAMS.get('a') || '').slice(0, 160),
+      center: [freeLon, freeLat],
+    }
+  : null;
+CITIES.frei = {
+  id: 'frei',
+  name: 'Freie Suche',
+  path: 'frei/',
+  free: true,
+  source: 'free',
+  bounds: FREE_STATION
+    ? [[FREE_STATION.center[0] - 0.08, FREE_STATION.center[1] - 0.05], [FREE_STATION.center[0] + 0.08, FREE_STATION.center[1] + 0.05]]
+    : [[5.9, 47.3], [15.0, 55.1]],
+  subtitle: 'Freie Suche · ganz Deutschland',
+  searchPlaceholder: '',
+  areaLabel: (a) => a,
+  ffHint: 'Tipp: Freiwillige Feuerwehren haben oft große Ausrückebereiche – probiere 3 bis 5 km.',
+  officialName: 'zuständigen Feuerwehr',
+  disclaimerExtra: ' oder Gemeinde',
+  footerSources: 'Daten: Wache, Straßen und Bahnhöfe © OpenStreetMap-Mitwirkende (ODbL), live über OpenFreeMap und Nominatim · Karte © OpenFreeMap',
+  sources: ['Wache, Straßen und Bahnhöfe: © OpenStreetMap-Mitwirkende (ODbL), live über OpenMapTiles/OpenFreeMap und die OpenStreetMap-Suche Nominatim'],
+  dataNote: `Freie Suche: Wache, Straßen und Bahnhöfe stammen direkt aus OpenStreetMap und werden nicht geprüft. Fehler kannst du an ${CONTACT_MAIL} melden.`,
+  storageKey: 'wachgebiet-trainer:frei:v1',
+};
+
 const wanted = document.querySelector('meta[name="wachgebiet-city"]')?.content ?? '';
 // Auf der Startseite (ohne Stadt) ist CITY null
 export const CITY = CITIES[wanted] ?? null;

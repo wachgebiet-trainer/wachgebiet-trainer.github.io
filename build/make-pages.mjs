@@ -4,8 +4,12 @@ import path from 'node:path';
 const root = path.join(path.dirname(new URL(import.meta.url).pathname), '..');
 const cities = JSON.parse(fs.readFileSync(path.join(root, 'src', 'cities.json'), 'utf8'));
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+// Zusätzlich: Seite für die freie Suche
+cities.push({ id: 'frei', name: 'Freie Suche' });
 for (const c of cities) {
-  const desc = c.id === 'berlin'
+  const desc = c.id === 'frei'
+    ? 'Ortskunde-Training für jede Feuerwache in Deutschland – Straßen und Bahnhöfe rund um die Wache.'
+    : c.id === 'berlin'
     ? 'Ortskunde-Training für Berufsfeuerwehr und Freiwillige Feuerwehren in Berlin.'
     : `Ortskunde-Training für Feuerwehr und Rettungsdienst in ${c.name}.`;
   const html = `<!doctype html>

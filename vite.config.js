@@ -14,6 +14,7 @@ export default defineConfig({
       input: {
         start: resolve(__dirname, 'index.html'),
         ...Object.fromEntries(cities.map((c) => [c.id, resolve(__dirname, `${c.id}/index.html`)])),
+        frei: resolve(__dirname, 'frei/index.html'),
       },
     },
   },

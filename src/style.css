@@ -403,3 +403,31 @@ html:has(body.start-page), body.start-page { overflow: auto; height: auto; min-h
 .btn.city-switch .ico { width: 20px; height: 20px; }
 @media (min-width: 821px) { #panel .brand .logo strong { font-size: 19px; } #panel .brand .logo small { font-size: 12px; } }
 .area-hint { margin: 6px 0 0; }
+
+/* ---------- Startseite: Suche und Bundesländer ---------- */
+.finder { background: var(--card); border: 2px solid var(--line); border-radius: var(--radius); padding: 16px 18px; margin: 0 0 22px; }
+.finder h2, .cities-title { font-size: 22px; text-transform: uppercase; margin: 0 0 10px; }
+.finder-form { display: flex; gap: 8px; }
+.finder-form input { flex: 1; min-width: 0; padding: 12px 14px; border: 2px solid var(--line); border-radius: var(--radius); background: var(--bg); font-size: 16px; outline: none; }
+.finder-form input:focus { border-color: var(--red); }
+.finder-form .btn { flex: none; min-width: 0; padding: 12px 18px; }
+.finder-hint { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
+.finder-meta { font-size: 13px; color: var(--muted); margin: 14px 0 8px; }
+#finder-results .muted { margin: 12px 0 0; }
+.station-results { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; }
+.station-results .station { text-decoration: none; color: var(--ink); }
+.cities-title span { color: var(--muted); font-size: 16px; margin-left: 4px; }
+.land { border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); margin: 0 0 8px; }
+.land summary {
+  list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+  padding: 13px 16px; font-family: var(--font-cond); font-weight: 800; font-size: 19px; text-transform: uppercase; letter-spacing: .02em;
+}
+.land summary::-webkit-details-marker { display: none; }
+.land summary::after { content: '+'; font-size: 22px; color: var(--red); margin-left: 12px; }
+.land[open] summary::after { content: '–'; }
+.land summary span:first-child { flex: 1; }
+.land-count { font-family: var(--font); font-size: 13px; font-weight: 700; color: var(--muted); background: var(--bg); border-radius: 99px; padding: 2px 9px; }
+.land[open] summary { border-bottom: 1px solid var(--line); }
+.land .city-list { padding: 10px; margin: 0; }
+#filtered { margin: 0 0 8px; }
+.cities { margin: 0 0 28px; }
