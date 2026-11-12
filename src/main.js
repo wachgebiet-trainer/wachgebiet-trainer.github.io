@@ -9,7 +9,10 @@ import '@fontsource/barlow-condensed/latin-700.css';
 import '@fontsource/barlow-condensed/latin-800.css';
 import './style.css';
 import { TrainerMap, COLORS, targetFeatures } from './map.js';
-import { loadStations, loadGeo, loadAreas, buildPool, streetsGeoJSON, DIFFICULTIES } from './data.js';
+import { loadStations, loadGeo, loadAreas, buildPool, streetsGeoJSON, DIFFICULTIES, loadObjects, loadRoads } from './data.js';
+import { RoadGraph } from './roadgraph.js';
+import { prepareRoutes, makeQuestion } from './route-quiz.js';
+import { OBJ_CATS, CAT, DEFAULT_CATS, specialityLabels } from './objects.js';
 import { circleArea, polygonArea } from './area.js';
 import { nearestOnLines, distance, formatDistance } from './geo.js';
 import { store } from './store.js';
@@ -19,7 +22,17 @@ import { loadLiveGeo } from './live.js';
 const RADII = [500, 1000, 2000, 3000, 4000, 5000];
 const COUNTS = [10, 20, 0];
 const TIME_LIMITS = [0, 10, 20, 30, 45, 60];
-const DEFAULTS = { difficulty: 'mixed', radius: 2000, count: 10, timeLimit: 0, labels: false, transit: true, theme: 'city' };
+const DEFAULTS = { mode: 'streets', difficulty: 'mixed', radius: 2000, count: 10, timeLimit: 0, labels: false, transit: true, theme: 'city', cats: DEFAULT_CATS, objQ: 'where' };
+const MODES = [
+  { value: 'streets', label: 'Straßen' },
+  { value: 'objects', label: 'Objekte' },
+  { value: 'route', label: 'Anfahrt' },
+];
+const OBJ_QUESTIONS = [
+  { value: 'where', label: 'Wo ist …?', hint: 'auf der Karte tippen' },
+  { value: 'which', label: 'Was ist hier?', hint: '4 Antworten' },
+];
+const STRING_SETTINGS = ['difficulty', 'theme', 'mode', 'objQ'];
 const ico = (d) => `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
 const THEMES = [
   { value: 'auto', label: 'Auto', icon: ico('<circle cx="12" cy="12" r="8"/><path d="M12 4v16a8 8 0 0 0 0-16z" fill="currentColor"/>') },
@@ -43,6 +56,8 @@ const state = {
   settings: { ...DEFAULTS, ...(store.settings ?? {}) },
   game: null,
   explore: null,
+  objects: null, // Objekt-Trainer
+  graph: null, // Anfahrt-Trainer
 };
 
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -180,7 +195,58 @@ async function selectStation(station) {
       return;
     }
   }
+  await ensureModeData();
   updatePoolPreview();
+}
+
+// Zusatzdaten der gewählten Trainingsart nachladen (Objekte bzw. Straßengraph)
+async function ensureModeData() {
+  const mode = state.settings.mode;
+  try {
+    if (mode === 'objects' && !state.objects) {
+      state.objects = CITY.free ? state.geo?.objects ?? [] : await loadObjects();
+    }
+    if (mode === 'route' && !state.graph) {
+      const el = document.getElementById('pool-info');
+      if (el) el.innerHTML = '<span class="muted">Straßennetz wird geladen …</span>';
+      state.graph = new RoadGraph(CITY.free ? state.geo.roads : await loadRoads());
+    }
+  } catch (e) {
+    toast('Die Daten für diese Trainingsart konnten nicht geladen werden.');
+  }
+}
+
+// ---------------------------------------------------------------- Zielpools je Trainingsart
+function objectPool(cats = state.settings.cats) {
+  const area = currentArea();
+  return (state.objects ?? [])
+    .filter((o) => cats.includes(o.c) && area.contains(o.p))
+    .map((o) => ({ id: `o:${o.id}`, type: 'object', name: o.n, cat: o.c, obj: o, lines: [[o.p]] }))
+    .sort((a, b) => a.name.localeCompare(b.name, 'de'));
+}
+
+let routeCache = { key: '', prep: null };
+function routePrep() {
+  if (!state.graph) return null;
+  const area = currentArea();
+  const key = `${state.station.key}|${areaCache.key}`;
+  if (routeCache.key !== key) routeCache = { key, prep: prepareRoutes(state.graph, state.station, area) };
+  return routeCache.prep;
+}
+
+function currentPool() {
+  const s = state.settings;
+  if (s.mode === 'objects') return state.objects ? objectPool() : null;
+  if (s.mode === 'route') return state.graph ? routePrep()?.targets ?? [] : null;
+  return state.geo ? buildPool(state.geo, currentArea(), s) : null;
+}
+
+const areaKey = () => (currentArea().kind === 'polygon' ? 'eb' : currentArea().radius);
+function modeKey() {
+  const s = state.settings;
+  if (s.mode === 'objects') return `obj-${s.objQ}-${[...s.cats].sort().join('')}-${areaKey()}`;
+  if (s.mode === 'route') return `route-${areaKey()}`;
+  return `${s.difficulty}-${areaKey()}-${s.transit ? 'b' : 'n'}`;
 }
 
 // Amtliches Gebiet der Wache (Berlin: Einsatzbereich), falls vorhanden
@@ -209,21 +275,36 @@ function previewArea() {
 
 function updatePoolPreview() {
   if (state.view !== 'setup' || !state.geo) return;
-  const pool = buildPool(state.geo, currentArea(), state.settings);
-  state.poolSize = pool.length;
-  state.poolStreets = pool.filter((t) => t.type === 'street').length;
+  const pool = currentPool();
+  state.pool = pool;
   const el = document.getElementById('pool-info');
   if (el) el.innerHTML = poolInfoHTML();
   const startBtn = document.getElementById('start-btn');
-  if (startBtn) startBtn.disabled = !pool.length;
+  const minSize = state.settings.mode === 'objects' && state.settings.objQ === 'which' ? 4 : 1;
+  if (startBtn) startBtn.disabled = !pool || pool.length < minSize;
   const exploreBtn = document.querySelector('[data-act=explore]');
-  if (exploreBtn) exploreBtn.disabled = false;
+  if (exploreBtn) exploreBtn.disabled = !pool;
+  // Zähler an den Objekt-Kategorien aktualisieren
+  if (state.settings.mode === 'objects' && state.objects) {
+    const all = objectPool(OBJ_CATS.map((c) => c.id));
+    for (const c of OBJ_CATS) {
+      const b = document.querySelector(`[data-act=cat][data-v=${c.id}] span`);
+      if (b) b.textContent = all.filter((o) => o.cat === c.id).length;
+    }
+  }
 }
 
 function poolInfoHTML() {
-  if (state.poolSize == null) return '<span class="muted">Straßendaten werden geladen …</span>';
-  const transit = state.poolSize - state.poolStreets;
-  return `<strong>${state.poolSize}</strong> Ziele im Pool <span class="muted">· ${state.poolStreets} Straßen${state.settings.transit ? `, ${transit} Bahnhöfe` : ''}</span>`;
+  const pool = state.pool;
+  const mode = state.settings.mode;
+  if (!pool) return `<span class="muted">${mode === 'route' ? 'Straßennetz' : mode === 'objects' ? 'Objekte werden' : 'Straßendaten werden'}${mode === 'route' ? ' wird' : ''} geladen …</span>`;
+  if (mode === 'objects') {
+    if (state.settings.objQ === 'which' && pool.length < 4) return '<span class="muted">Für „Was ist hier?“ braucht es mindestens 4 Objekte im Gebiet – wähle weitere Kategorien oder ein größeres Gebiet.</span>';
+    return pool.length ? `<strong>${pool.length}</strong> Objekte im Gebiet` : '<span class="muted">Keine Objekte dieser Kategorien im Gebiet.</span>';
+  }
+  if (mode === 'route') return pool.length ? `<strong>${pool.length}</strong> mögliche Einsatzstellen (Straßen) im Gebiet` : '<span class="muted">Keine Ziele – die Wache liegt nicht am Straßennetz der Karte.</span>';
+  const streets = pool.filter((t) => t.type === 'street').length;
+  return `<strong>${pool.length}</strong> Ziele im Pool <span class="muted">· ${streets} Straßen${state.settings.transit ? `, ${pool.length - streets} Bahnhöfe` : ''}</span>`;
 }
 
 // ---------------------------------------------------------------- Training
@@ -240,15 +321,29 @@ function pickTargets(pool, count, stationKey) {
   return weighted.slice(0, n).map((x) => x.t);
 }
 
+// „Was ist hier?“: drei andere Objekte als Auswahl (bevorzugt gleiche Kategorie, in der Nähe)
+function objectChoices(t, pool) {
+  const byDist = (list) => list.sort((a, b) => distance(a.obj.p, t.obj.p) - distance(b.obj.p, t.obj.p));
+  const uniq = (list) => [...new Set(list.map((o) => o.name))].filter((n) => n !== t.name);
+  const same = uniq(byDist(pool.filter((o) => o.cat === t.cat))).slice(0, 6).sort(() => Math.random() - 0.5);
+  const other = uniq(byDist(pool.filter((o) => o.cat !== t.cat))).slice(0, 6).sort(() => Math.random() - 0.5);
+  const names = [...same, ...other.filter((n) => !same.includes(n))].slice(0, 3);
+  return [t.name, ...names].sort(() => Math.random() - 0.5);
+}
+
 function startGame(targets) {
   const s = state.settings;
   store.saveSettings(s);
-  const pool = targets ?? buildPool(state.geo, currentArea(), s);
-  if (!pool.length) {
+  const pool = targets ?? currentPool();
+  if (!pool || !pool.length) {
     toast('Für diese Einstellungen gibt es keine Ziele.');
     return;
   }
-  const queue = targets ?? pickTargets(pool, s.count, state.station.key);
+  let queue = targets ?? pickTargets(pool, s.mode === 'route' && !s.count ? 50 : s.count, state.station.key);
+  if (!targets && s.mode === 'objects' && s.objQ === 'which') {
+    if (pool.length < 4) return toast('Für „Was ist hier?“ braucht es mindestens 4 Objekte im Gebiet.');
+    queue = queue.map((t) => ({ ...t, q: 'which', choices: objectChoices(t, pool), answer: t.name }));
+  }
   state.game = {
     queue,
     index: 0,
@@ -256,7 +351,8 @@ function startGame(targets) {
     guess: null,
     phase: 'guess',
     isRepeat: !!targets,
-    modeKey: `${s.difficulty}-${currentArea().kind === 'polygon' ? 'eb' : currentArea().radius}-${s.transit ? 'b' : 'n'}`,
+    mode: s.mode,
+    modeKey: modeKey(),
     labelsUsed: s.labels,
   };
   state.view = 'game';
@@ -275,16 +371,59 @@ function currentTarget() {
 function nextTarget(first = false) {
   const g = state.game;
   if (!first) g.index += 1;
-  if (g.index >= g.queue.length) return finishGame();
+  // Anfahrt: Frage erst bei Bedarf berechnen; Ziele ohne sinnvolle Frage überspringen
+  while (g.mode === 'route' && g.index < g.queue.length && g.queue[g.index].type !== 'route') {
+    const q = makeQuestion(state.graph, routePrep(), g.queue[g.index]);
+    if (q) g.queue[g.index] = q;
+    else g.queue.splice(g.index, 1);
+  }
+  if (g.index >= g.queue.length) return g.results.length ? finishGame() : (toast('Für dieses Gebiet ließen sich keine Anfahrtsfragen bilden.'), selectStation(state.station));
   g.guess = null;
   g.phase = 'guess';
+  g.chosen = null;
   tmap.set('points');
   tmap.set('solution');
   tmap.set('link');
+  tmap.set('route');
+  tmap.set('target');
   tmap.setLabels(state.settings.labels);
-  if (!first) tmap.fitArea(currentArea(), { duration: 500 });
+  const t = currentTarget();
+  if (t.type === 'route') {
+    tmap.set('target', { type: 'Feature', properties: { label: t.name }, geometry: { type: 'Point', coordinates: t.dest } });
+    tmap.fitLines([[state.station.center, t.dest]], [], { padding: 90 });
+  } else if (t.q === 'which') {
+    tmap.set('target', { type: 'Feature', properties: { label: '?' }, geometry: { type: 'Point', coordinates: t.obj.p } });
+    tmap.fitLines([[state.station.center, t.obj.p]], [], { padding: 90 });
+  } else if (!first) tmap.fitArea(currentArea(), { duration: 500 });
   startTimer();
   render();
+}
+
+// Antwort bei Auswahlfragen (Anfahrt, „Was ist hier?“)
+function choose(i) {
+  const g = state.game;
+  if (g.phase !== 'guess') return;
+  stopTimer();
+  const t = currentTarget();
+  const chosen = i == null ? null : t.choices[i];
+  const correct = chosen === t.answer;
+  g.chosen = chosen;
+  const result = { id: t.id, name: t.name, type: t.type, target: t, chosen, correct, skipped: chosen == null, distance: null, score: correct ? 100 : 0 };
+  g.results.push(result);
+  g.phase = 'reveal';
+  showChoiceOnMap(result);
+  render();
+}
+
+function showChoiceOnMap(r, color = COLORS.guess) {
+  const t = r.target;
+  if (t.type === 'route') {
+    tmap.set('route', { type: 'Feature', properties: { color }, geometry: { type: 'LineString', coordinates: t.route } });
+    tmap.setLabels(true);
+    tmap.fitLines([t.route]);
+  } else {
+    tmap.set('target', { type: 'Feature', properties: { label: t.name }, geometry: { type: 'Point', coordinates: t.obj.p } });
+  }
 }
 
 function placeGuess(lngLat) {
@@ -299,7 +438,7 @@ function placeGuess(lngLat) {
 }
 
 function scoreFor(target, d) {
-  const tol = target.type === 'transit' ? 120 : 15;
+  const tol = target.type === 'transit' ? 120 : target.type === 'object' ? 80 : 15;
   if (d <= tol) return 100;
   const k = Math.max(150, Math.min(currentArea().eqRadius, 5000) * 0.12);
   return Math.max(0, Math.round(100 * Math.exp(-(d - tol) / k)));
@@ -357,7 +496,8 @@ function startTimer() {
     }
     if (left <= 0) {
       stopTimer();
-      submitGuess(!g.guess);
+      if (currentTarget().choices) choose(null);
+      else submitGuess(!g.guess);
     }
   };
   tick();
@@ -392,8 +532,14 @@ function showReview(focusIndex = null) {
   const lines = [];
   const points = [];
   const links = [];
+  const routes = [];
   for (const r of list) {
     const color = scoreColor(r.score);
+    if (r.target.type === 'route') {
+      routes.push({ type: 'Feature', properties: { color }, geometry: { type: 'LineString', coordinates: r.target.route } });
+      points.push({ type: 'Feature', properties: { color }, geometry: { type: 'Point', coordinates: r.target.dest } });
+      continue;
+    }
     for (const f of targetFeatures(r.target, { color })) (f.geometry.type === 'Point' ? points : lines).push(f);
     if (r.guess) {
       points.push({ type: 'Feature', properties: { color: COLORS.guess }, geometry: { type: 'Point', coordinates: r.guess } });
@@ -405,11 +551,14 @@ function showReview(focusIndex = null) {
   tmap.set('reviewLines', { type: 'FeatureCollection', features: lines });
   tmap.set('reviewPoints', { type: 'FeatureCollection', features: points });
   tmap.set('link', { type: 'FeatureCollection', features: links });
+  tmap.set('route', { type: 'FeatureCollection', features: routes });
+  tmap.set('target');
   tmap.setLabels(true);
   if (focusIndex == null) tmap.fitArea(currentArea());
   else {
     const r = res[focusIndex];
-    tmap.fitLines(r.target.type === 'transit' ? [] : r.target.lines, r.guess ? [r.guess, r.nearest, r.target.lines[0][0]] : [r.target.lines[0][0]]);
+    if (r.target.type === 'route') tmap.fitLines([r.target.route]);
+    else tmap.fitLines(r.target.type === 'street' ? r.target.lines : [], r.guess ? [r.guess, r.nearest, r.target.lines[0][0]] : [r.target.lines[0][0]]);
   }
 }
 
@@ -426,14 +575,36 @@ function startExplore() {
   const s = state.settings;
   store.saveSettings(s);
   state.view = 'explore';
-  const pool = buildPool(state.geo, currentArea(), { difficulty: 'mixed', transit: true });
-  state.explore = { pool, selected: null, hover: null };
   tmap.clearOverlays();
   tmap.hideStationsExcept(state.station);
   tmap.showArea(currentArea(), areaColor(state.station.type));
-  tmap.set('explore', streetsGeoJSON(state.geo, currentArea(), 300));
+  if (s.mode === 'objects' && state.objects) {
+    const objs = objectPool(OBJ_CATS.map((c) => c.id));
+    state.explore = { objects: objs, cat: s.cats.length === 1 ? s.cats[0] : '', selected: null };
+    showExploreObjects();
+  } else {
+    const pool = buildPool(state.geo, currentArea(), { difficulty: 'mixed', transit: true });
+    state.explore = { pool, selected: null, hover: null };
+    tmap.set('explore', streetsGeoJSON(state.geo, currentArea(), 300));
+  }
   tmap.setLabels(s.labels);
   tmap.fitArea(currentArea());
+  render();
+}
+
+function showExploreObjects() {
+  const ex = state.explore;
+  const list = ex.objects.filter((o) => !ex.cat || o.cat === ex.cat);
+  tmap.set('objects', {
+    type: 'FeatureCollection',
+    features: list.map((o) => ({ type: 'Feature', properties: { id: o.id, c: o.cat, n: o.name, sel: ex.selected?.id === o.id }, geometry: { type: 'Point', coordinates: o.obj.p } })),
+  });
+}
+
+function exploreSelectObject(o) {
+  state.explore.selected = o;
+  showExploreObjects();
+  if (o) tmap.map.easeTo({ center: o.obj.p, zoom: Math.max(tmap.map.getZoom(), 15), duration: 600 });
   render();
 }
 
@@ -466,6 +637,12 @@ function onMapClick(e) {
     placeGuess(lngLat);
     return;
   }
+  if (state.view === 'explore' && state.explore.objects) {
+    const box = [[e.point.x - 10, e.point.y - 10], [e.point.x + 10, e.point.y + 10]];
+    const f = tmap.map.queryRenderedFeatures(box, { layers: ['objects'] })[0];
+    exploreSelectObject(f ? state.explore.objects.find((o) => o.id === f.properties.id) : null);
+    return;
+  }
   if (state.view === 'explore') {
     const box = [[e.point.x - 8, e.point.y - 8], [e.point.x + 8, e.point.y + 8]];
     const f = tmap.map.queryRenderedFeatures(box, { layers: ['explore'] })[0];
@@ -475,7 +652,7 @@ function onMapClick(e) {
 }
 
 function onMapMove(e) {
-  if (state.view !== 'explore') return;
+  if (state.view !== 'explore' || state.explore.objects) return;
   const box = [[e.point.x - 6, e.point.y - 6], [e.point.x + 6, e.point.y + 6]];
   const f = tmap.map.queryRenderedFeatures(box, { layers: ['explore'] })[0];
   const name = f?.properties.name ?? '';
@@ -585,8 +762,8 @@ function renderLegal() {
 
     <h3>Über den Wachgebiet-Trainer</h3>
     <p>Der Wachgebiet-Trainer ist ein privates, nicht-kommerzielles Projekt von <strong>Vincent Wolf</strong>.
-      Er hilft Einsatzkräften der Berufsfeuerwehr, der Freiwilligen Feuerwehren und des Rettungsdienstes, die Straßen und Bahnhöfe
-      in ihrem Wachgebiet zu lernen.</p>
+      Er hilft Einsatzkräften der Berufsfeuerwehr, der Freiwilligen Feuerwehren und des Rettungsdienstes, die Straßen, Bahnhöfe,
+      wichtigen Objekte und Anfahrtswege in ihrem Wachgebiet zu lernen.</p>
     <p>Inspiriert vom Ortskunde-Trainer „Wachgebiet“ (<a href="https://geo.knt-fw.de" target="_blank" rel="noopener">geo.knt-fw.de</a>).
       Gestaltung und Umsetzung: Vincent Wolf. © ${new Date().getFullYear()} Vincent Wolf. Alle Rechte an Gestaltung und Programmcode vorbehalten,
       soweit nicht anders angegeben.</p>
@@ -596,14 +773,21 @@ function renderLegal() {
     <h3>Datenquellen ${esc(CITY.name)}</h3>
     <ul>
       ${CITY.sources.map((src) => `<li>${esc(src)}</li>`).join('')}
+      <li>Objekte (Krankenhäuser mit Notaufnahme und Fachrichtungen, Einkaufszentren, Veranstaltungsorte u. a.) und Straßennetz
+        für den Anfahrt-Trainer: © OpenStreetMap-Mitwirkende (ODbL), über OpenMapTiles/OpenFreeMap und Nominatim</li>
       <li>Hintergrundkarte: OpenFreeMap, OpenMapTiles, © OpenStreetMap-Mitwirkende (ODbL)</li>
     </ul>
+    <p>Angaben zu Notaufnahmen und Fachrichtungen stammen aus OpenStreetMap und sind nicht vollständig. Für die Zuweisung
+      von Patientinnen und Patienten gelten ausschließlich die Vorgaben von Leitstelle und Ärztlicher Leitung Rettungsdienst.
+      Die Anfahrtsrouten sind für eine normale Pkw-Fahrt ohne Sonderrechte berechnet.</p>
     ${CITY.odbl ? `<p>Die für ${esc(CITY.name)} aus OpenStreetMap abgeleiteten Daten (Wachenstandorte, Straßen und Bahnhöfe) stehen unter der
       <a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener">Open Database License (ODbL) 1.0</a>
       und können als Dateien abgerufen werden:
       <a href="${DATA_BASE}stations.json" target="_blank" rel="noopener">Wachen</a>,
       <a href="${DATA_BASE}streets.json" target="_blank" rel="noopener">Straßen</a>,
       <a href="${DATA_BASE}transit.json" target="_blank" rel="noopener">Bahnhöfe</a>.</p>` : ''}
+    ${CITY.free ? '' : `<p>Ebenfalls unter der ODbL abrufbar: <a href="${DATA_BASE}objects.json" target="_blank" rel="noopener">Objekte</a>,
+      <a href="${DATA_BASE}roads.json" target="_blank" rel="noopener">Straßennetz (Anfahrt)</a>.</p>`}
 
     <h3>Datenschutz</h3>
     <p><strong>Verantwortlich:</strong> Vincent Wolf, Am Rain 8, 13591 Berlin, E-Mail: <a href="mailto:wachgebiet.trainer@gmail.com">wachgebiet.trainer@gmail.com</a></p>
@@ -642,12 +826,42 @@ function seg(name, options, current, fmt = (o) => o.label) {
     .join('')}</div>`;
 }
 
+// Einstellungen, die nur für eine Trainingsart gelten
+function modeSettings() {
+  const st = state.settings;
+  if (st.mode === 'objects') {
+    return `<p class="muted small mode-hint">Krankenhäuser, Einkaufszentren und andere größere Objekte im Wachgebiet finden.</p>
+    <label class="lbl">Objekte</label>
+    <div class="cat-chips">${OBJ_CATS.map((c) => `<button class="chip ${st.cats.includes(c.id) ? 'on' : ''}" data-act="cat" data-v="${c.id}" aria-pressed="${st.cats.includes(c.id)}"><b aria-hidden="true">${c.icon}</b>${c.label} <span>·</span></button>`).join('')}</div>
+    <label class="lbl">Frage</label>
+    ${seg('objQ', OBJ_QUESTIONS, st.objQ, (o) => `${o.label}<small>${o.hint}</small>`)}`;
+  }
+  if (st.mode === 'route') {
+    return `<p class="muted small mode-hint">Du siehst die Einsatzstelle auf der Karte und wählst die Straße, über die die schnellste Route ab deiner Wache führt.
+      Berechnet für eine normale Fahrt ohne Sonderrechte – im Einsatz kann ein anderer Weg schneller sein.</p>`;
+  }
+  return `<label class="lbl">Schwierigkeit</label>
+    ${seg('difficulty', DIFFICULTIES, st.difficulty, (o) => `${o.label}<small>${o.hint}</small>`)}`;
+}
+
+// Adresse, Notaufnahme und Fachrichtungen eines Objekts
+function objectInfo(o) {
+  const parts = [];
+  if (o.a) parts.push(`<span class="oi-addr">${esc(o.a)}</span>`);
+  if (o.c === 'kh') {
+    if (o.e === 1) parts.push('<span class="tag em">Notaufnahme</span>');
+    else if (o.e === 0) parts.push('<span class="tag">keine Notaufnahme</span>');
+    const sp = specialityLabels(o.s);
+    if (sp.length) parts.push(`<span class="oi-spec"><b>Fachrichtungen:</b> ${sp.map(esc).join(', ')}</span>`);
+  }
+  return parts.length ? `<div class="obj-info">${parts.join('')}</div>` : '';
+}
+
 function renderSetup() {
   const s = state.station;
   const st = state.settings;
   const prog = store.station(s.key);
-  const modeKey = `${st.difficulty}-${currentArea().kind === 'polygon' ? 'eb' : currentArea().radius}-${st.transit ? 'b' : 'n'}`;
-  const best = prog.best[modeKey];
+  const best = prog.best[modeKey()];
   const mastered = Object.values(prog.targets).filter((t) => t.hits >= 2 && t.last >= 70).length;
   const ff = s.type === 'FF';
   return `${header()}
@@ -662,8 +876,9 @@ function renderSetup() {
   </section>
 
   <section class="settings">
-    <label class="lbl">Schwierigkeit</label>
-    ${seg('difficulty', DIFFICULTIES, st.difficulty, (o) => `${o.label}<small>${o.hint}</small>`)}
+    <label class="lbl">Trainingsart</label>
+    ${seg('mode', MODES, st.mode)}
+    ${modeSettings()}
     <label class="lbl">Trainingsgebiet</label>
     ${seg('radius', [...(stationAreaDef(s) ? [{ value: AREA_MODE, label: stationAreaDef(s).short }] : []), ...RADII.map((r) => ({ value: r, label: radiusLabel(r) }))], currentArea().kind === 'polygon' ? AREA_MODE : currentArea().radius)}
     ${currentArea().kind === 'polygon' ? `<p class="muted small area-hint">${esc(stationAreaDef(s).name)} – amtliches Gebiet (${esc(CITY.areaSource ?? '')}).</p>` : ''}
@@ -672,14 +887,14 @@ function renderSetup() {
     <label class="lbl">Zeitlimit pro Ziel</label>
     ${seg('timeLimit', TIME_LIMITS.map((t) => ({ value: t, label: t ? `${t}s` : 'Keins' })), st.timeLimit)}
     <div class="toggles">
-      <label class="switch"><input type="checkbox" data-act="toggle" data-k="transit" ${st.transit ? 'checked' : ''}/><span></span>S-/U-Bahnhöfe abfragen</label>
+      ${st.mode === 'streets' ? `<label class="switch"><input type="checkbox" data-act="toggle" data-k="transit" ${st.transit ? 'checked' : ''}/><span></span>S-/U-Bahnhöfe abfragen</label>` : ''}
       <label class="switch"><input type="checkbox" data-act="toggle" data-k="labels" ${st.labels ? 'checked' : ''}/><span></span>Straßennamen anzeigen (Orientierungshilfe)</label>
     </div>
     <p id="pool-info" class="pool">${poolInfoHTML()}</p>
   </section>
   <div class="actions">
-    <button id="start-btn" class="btn primary" data-act="start" ${state.poolSize ? '' : 'disabled'}>Training starten</button>
-    <button class="btn" data-act="explore" ${state.geo ? '' : 'disabled'}>Gebiet erkunden</button>
+    <button id="start-btn" class="btn primary" data-act="start" ${state.pool?.length ? '' : 'disabled'}>Training starten</button>
+    <button class="btn" data-act="explore" ${state.pool ? '' : 'disabled'}>${st.mode === 'objects' ? 'Objekte ansehen' : 'Gebiet erkunden'}</button>
   </div>
   <section class="stats">
     <div><strong>${prog.rounds.length}</strong><small>Runden auf diesem Gerät</small></div>
@@ -695,7 +910,8 @@ function renderGame() {
   const t = currentTarget();
   const r = g.phase === 'reveal' ? g.results.at(-1) : null;
   const total = g.results.reduce((a, x) => a + x.score, 0);
-  const kind = t.type === 'transit' ? 'Finde den Bahnhof.' : 'Finde die Straße.';
+  if (t.choices) return renderChoiceGame(g, t, r, total);
+  const kind = t.type === 'transit' ? 'Finde den Bahnhof.' : t.type === 'object' ? `${CAT[t.cat].icon} ${CAT[t.cat].find}` : 'Finde die Straße.';
   return `<div class="game">
     <div class="game-top">
       <button class="icon-btn" data-act="abort" title="Runde abbrechen" aria-label="Runde abbrechen">✕</button>
@@ -713,6 +929,7 @@ function renderGame() {
         ? `<div class="reveal" style="--c:${scoreColor(r.score)}">
             ${r.skipped ? '<strong>Lösung angezeigt</strong><span>Dieses Ziel kommt in die Wiederholung.</span>' : `<strong>${formatDistance(r.distance)} daneben</strong><span>${r.score} Punkte${r.score === 100 ? ' · Treffer!' : ''}</span>`}
           </div>
+          ${t.type === 'object' ? objectInfo(t.obj) : ''}
           <div class="actions"><button class="btn primary" data-act="next" autofocus>${g.index + 1 < g.queue.length ? 'Nächstes Ziel' : 'Auswertung ansehen'}</button></div>`
         : `<p class="muted small">${g.guess ? 'Marker gesetzt – du kannst ihn noch verschieben.' : 'Tippe auf die Karte, um deinen Tipp zu setzen.'}</p>
           <div class="actions">
@@ -720,6 +937,46 @@ function renderGame() {
             <button class="btn" data-act="skip">Weiß ich nicht</button>
           </div>`
     }
+  </div>`;
+}
+
+function gameTop(g, total) {
+  return `<div class="game-top">
+      <button class="icon-btn" data-act="abort" title="Runde abbrechen" aria-label="Runde abbrechen">✕</button>
+      <span class="progress">${g.index + 1} / ${g.queue.length}${g.isRepeat ? ' · Wiederholung' : ''}</span>
+      <span class="score">${total} Punkte</span>
+      ${state.settings.timeLimit && g.phase === 'guess' ? '<span id="timer" class="timer"></span>' : ''}
+    </div>`;
+}
+
+// Auswahlfrage: Anfahrt („Über welche Straße?“) oder Objekt („Was ist hier?“)
+function renderChoiceGame(g, t, r, total) {
+  const route = t.type === 'route';
+  const buttons = t.choices
+    .map((c, i) => {
+      let cls = '';
+      if (r) cls = c === t.answer ? 'right' : c === r.chosen ? 'wrong' : 'dim';
+      return `<button class="choice ${cls}" data-act="choose" data-i="${i}" ${r ? 'disabled' : ''}><span class="key">${i + 1}</span>${esc(c)}</button>`;
+    })
+    .join('');
+  const reveal = r
+    ? `<div class="reveal" style="--c:${scoreColor(r.score)}">
+        <strong>${r.correct ? 'Richtig!' : r.skipped ? 'Lösung angezeigt' : 'Leider falsch'}</strong>
+        <span>${r.correct ? '100 Punkte' : `Richtig ist: ${esc(t.answer)}`}</span>
+      </div>
+      ${route ? `<div class="route-info"><p class="route-streets">${t.streets.map(esc).join(' → ')}</p>
+        <p class="muted small">${t.km.toFixed(1).replace('.', ',')} km · ca. ${Math.max(1, Math.round(t.minutes))} min (normale Fahrt, ohne Sonderrechte)</p></div>` : objectInfo(t.obj)}
+      <div class="actions"><button class="btn primary" data-act="next" autofocus>${g.index + 1 < g.queue.length ? 'Nächste Frage' : 'Auswertung ansehen'}</button></div>`
+    : `<div class="actions"><button class="btn" data-act="choose-skip">Weiß ich nicht</button></div>`;
+  return `<div class="game">
+    ${gameTop(g, total)}
+    <div class="prompt">
+      <small>${route ? 'Einsatzstelle' : 'Was ist hier?'}</small>
+      <h2>${route ? esc(t.name) : 'Welches Objekt ist markiert?'}</h2>
+      <p class="muted small">${route ? 'Über welche Straße führt die schnellste Anfahrt ab deiner Wache?' : 'Der rote Punkt auf der Karte zeigt das Objekt.'}</p>
+    </div>
+    <div class="choices">${buttons}</div>
+    ${reveal}
   </div>`;
 }
 
@@ -735,7 +992,7 @@ function renderResults() {
     ${g.newBest ? '<p class="newbest">Neue Bestleistung in diesem Modus!</p>' : ''}
     <p>${verdict(pct)}</p>
     <div class="stats">
-      <div><strong>${formatDistance(avgDistance)}</strong><small>Ø Abstand</small></div>
+      ${g.results.some((r) => r.target.choices) ? `<div><strong>${g.results.filter((r) => r.correct).length} / ${g.results.length}</strong><small>richtig</small></div>` : `<div><strong>${formatDistance(avgDistance)}</strong><small>Ø Abstand</small></div>`}
       <div><strong>${g.results.filter((r) => r.score === 100).length}</strong><small>Treffer</small></div>
       <div><strong>${g.results.filter((r) => r.skipped).length}</strong><small>Übersprungen</small></div>
     </div>
@@ -750,8 +1007,8 @@ function renderResults() {
         .map(
           (r, i) => `<li><button data-act="review" data-i="${i}">
           <span class="dot" style="background:${scoreColor(r.score)}"></span>
-          <span class="rl-name">${esc(r.name)}</span>
-          <span class="rl-val">${r.skipped ? 'übersprungen' : formatDistance(r.distance)}</span>
+          <span class="rl-name">${r.target.q === 'which' ? '' : r.target.type === 'route' ? '→ ' : ''}${esc(r.name)}</span>
+          <span class="rl-val">${r.skipped ? 'übersprungen' : r.target.choices ? (r.correct ? 'richtig' : 'falsch') : formatDistance(r.distance)}</span>
           <span class="rl-pts">${r.score}</span></button></li>`,
         )
         .join('')}
@@ -759,8 +1016,28 @@ function renderResults() {
   </div>`;
 }
 
+function renderExploreObjects() {
+  const ex = state.explore;
+  const sel = ex.selected;
+  const counts = Object.fromEntries(OBJ_CATS.map((c) => [c.id, ex.objects.filter((o) => o.cat === c.id).length]));
+  const list = ex.objects.filter((o) => !ex.cat || o.cat === ex.cat);
+  return `<div class="explore">
+    <button class="back" data-act="setup">← ${esc(state.station.name)}</button>
+    <h2>Objekte im Gebiet</h2>
+    <p class="muted">Tippe einen Punkt auf der Karte oder einen Eintrag in der Liste an.</p>
+    <div class="cat-chips">
+      <button class="chip ${!ex.cat ? 'on' : ''}" data-act="ex-cat" data-v="">Alle <span>${ex.objects.length}</span></button>
+      ${OBJ_CATS.filter((c) => counts[c.id]).map((c) => `<button class="chip ${ex.cat === c.id ? 'on' : ''}" data-act="ex-cat" data-v="${c.id}"><b aria-hidden="true">${c.icon}</b>${c.label} <span>${counts[c.id]}</span></button>`).join('')}
+    </div>
+    ${sel ? `<div class="selected"><small>${CAT[sel.cat].icon} ${esc(CAT[sel.cat].label)}</small><strong>${esc(sel.name)}</strong>${objectInfo(sel.obj)}</div>` : ''}
+    <ul class="obj-list">${list.map((o) => `<li><button data-act="ex-obj" data-id="${esc(o.id)}" class="${sel?.id === o.id ? 'on' : ''}"><b aria-hidden="true">${CAT[o.cat].icon}</b><span>${esc(o.name)}<small>${esc(o.obj.a ?? '')}${o.cat === 'kh' && o.obj.e === 1 ? ' · Notaufnahme' : ''}</small></span></button></li>`).join('') || '<li class="empty">Keine Objekte im Gebiet.</li>'}</ul>
+    <div class="actions"><button class="btn primary" data-act="start">Jetzt trainieren</button></div>
+  </div>`;
+}
+
 function renderExplore() {
   const ex = state.explore;
+  if (ex.objects) return renderExploreObjects();
   const sel = ex.selected;
   return `<div class="explore">
     <button class="back" data-act="setup">← ${esc(state.station.name)}</button>
@@ -797,16 +1074,43 @@ $panel.addEventListener('click', (e) => {
       return render();
     case 'set': {
       const k = b.dataset.k;
-      state.settings[k] = k === 'difficulty' || k === 'theme' ? b.dataset.v : Number(b.dataset.v);
+      state.settings[k] = STRING_SETTINGS.includes(k) ? b.dataset.v : Number(b.dataset.v);
       store.saveSettings(state.settings);
       if (k === 'theme') {
         applyTheme();
         return render();
       }
       if (k === 'radius') previewArea();
+      if (k === 'mode') {
+        state.pool = null;
+        render();
+        return ensureModeData().then(() => {
+          render();
+          updatePoolPreview();
+        });
+      }
       render();
       return updatePoolPreview();
     }
+    case 'cat': {
+      const v = b.dataset.v;
+      const cats = new Set(state.settings.cats);
+      if (cats.has(v)) cats.delete(v);
+      else cats.add(v);
+      if (!cats.size) return toast('Mindestens eine Kategorie auswählen.');
+      state.settings.cats = OBJ_CATS.map((c) => c.id).filter((id) => cats.has(id));
+      store.saveSettings(state.settings);
+      render();
+      return updatePoolPreview();
+    }
+    case 'choose': return choose(Number(b.dataset.i));
+    case 'choose-skip': return choose(null);
+    case 'ex-cat':
+      state.explore.cat = b.dataset.v;
+      state.explore.selected = null;
+      showExploreObjects();
+      return render();
+    case 'ex-obj': return exploreSelectObject(state.explore.objects.find((o) => o.id === b.dataset.id));
     case 'theme-menu':
       state.themeMenu = !state.themeMenu;
       return render();
@@ -886,6 +1190,8 @@ $panel.addEventListener('keydown', (e) => {
 
 document.addEventListener('keydown', (e) => {
   if (state.view !== 'game' || ['INPUT', 'BUTTON', 'SELECT'].includes(e.target.tagName)) return;
+  const t = currentTarget();
+  if (t?.choices && state.game.phase === 'guess' && /^[1-4]$/.test(e.key)) return choose(Number(e.key) - 1);
   if (e.key === 'Enter') {
     if (state.game.phase === 'guess' && state.game.guess) submitGuess();
     else if (state.game.phase === 'reveal') nextTarget();

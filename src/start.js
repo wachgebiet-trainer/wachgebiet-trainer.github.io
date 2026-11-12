@@ -73,15 +73,16 @@ function render() {
   <main class="start-main">
     <section class="intro">
       <h1>Kenne dein <em>Wachgebiet.</em></h1>
-      <p>Straßen und Bahnhöfe rund um deine Wache lernen – auf einer Karte ohne Beschriftung.</p>
+      <p>Straßen, Objekte und Anfahrtswege rund um deine Wache lernen – auf einer Karte ohne Beschriftung.</p>
     </section>
     <section class="how">
       <h2>So funktioniert's</h2>
       <ol>
         <li><b>Stadt wählen oder Wache suchen</b> – Großstädte unten nach Bundesland, alle anderen Orte über die Suche.</li>
         <li><b>Wache wählen</b> – Feuerwache, Freiwillige Feuerwehr oder Rettungswache.</li>
-        <li><b>Straße oder Bahnhof finden</b> – auf der Karte antippen, so genau wie möglich.</li>
-        <li><b>Abstand sehen</b> – Fehler kommen in späteren Runden öfter dran.</li>
+        <li><b>Trainingsart wählen</b> – <i>Straßen</i>, <i>Objekte</i> (Krankenhäuser, Einkaufszentren …) oder <i>Anfahrt</i>.</li>
+        <li><b>Auf der Karte antworten</b> – Ziel antippen bzw. die richtige Straße wählen.</li>
+        <li><b>Ergebnis sehen</b> – Fehler kommen in späteren Runden öfter dran.</li>
       </ol>
     </section>
 

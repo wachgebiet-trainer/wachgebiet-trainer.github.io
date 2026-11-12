@@ -8,7 +8,7 @@ const esc = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g
 cities.push({ id: 'frei', name: 'Freie Suche' });
 for (const c of cities) {
   const desc = c.id === 'frei'
-    ? 'Ortskunde-Training für jede Feuerwache in Deutschland – Straßen und Bahnhöfe rund um die Wache.'
+    ? 'Ortskunde-Training für jede Feuerwache in Deutschland – Straßen, Objekte und Anfahrtswege rund um die Wache.'
     : c.id === 'berlin'
     ? 'Ortskunde-Training für Berufsfeuerwehr und Freiwillige Feuerwehren in Berlin.'
     : `Ortskunde-Training für Feuerwehr und Rettungsdienst in ${c.name}.`;

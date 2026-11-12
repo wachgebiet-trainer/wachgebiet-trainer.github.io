@@ -69,7 +69,7 @@ export class TrainerMap {
     const halo = dark ? '#0c0c0c' : '#ffffff';
     this.labelLayers = m.getStyle().layers.filter((l) => l.type === 'symbol').map((l) => l.id);
     const src = (id) => m.addSource(id, { type: 'geojson', data: EMPTY });
-    ['mask', 'ring', 'explore', 'solution', 'link', 'points', 'stations', 'reviewLines', 'reviewPoints'].forEach(src);
+    ['mask', 'ring', 'explore', 'solution', 'link', 'points', 'stations', 'reviewLines', 'reviewPoints', 'route', 'objects', 'target'].forEach(src);
 
     m.addLayer({ id: 'mask', type: 'fill', source: 'mask', paint: { 'fill-color': dark ? '#000000' : '#17212b', 'fill-opacity': dark ? 0.55 : 0.35 } });
     m.addLayer({ id: 'ring', type: 'line', source: 'ring', paint: { 'line-color': COLORS.BF, 'line-width': 2.5, 'line-dasharray': [2, 1.5] } });
@@ -88,6 +88,15 @@ export class TrainerMap {
     m.addLayer({
       id: 'reviewLines', type: 'line', source: 'reviewLines',
       paint: { 'line-color': ['get', 'color'], 'line-width': ['interpolate', ['linear'], ['zoom'], 12, 4, 17, 10], 'line-opacity': 0.8 },
+    });
+    // Anfahrt: berechnete Route
+    m.addLayer({
+      id: 'route-casing', type: 'line', source: 'route', layout: { 'line-join': 'round', 'line-cap': 'round' },
+      paint: { 'line-color': halo, 'line-width': ['interpolate', ['linear'], ['zoom'], 11, 7, 17, 15] },
+    });
+    m.addLayer({
+      id: 'route', type: 'line', source: 'route', layout: { 'line-join': 'round', 'line-cap': 'round' },
+      paint: { 'line-color': ['coalesce', ['get', 'color'], COLORS.guess], 'line-width': ['interpolate', ['linear'], ['zoom'], 11, 4, 17, 10] },
     });
     m.addLayer({
       id: 'solution-casing', type: 'line', source: 'solution',
@@ -117,6 +126,30 @@ export class TrainerMap {
         'circle-stroke-color': '#fff',
         'circle-stroke-width': 3,
       },
+    });
+    // Objekte (Erkunden im Objekt-Modus)
+    m.addLayer({
+      id: 'objects', type: 'circle', source: 'objects',
+      paint: {
+        'circle-radius': ['interpolate', ['linear'], ['zoom'], 11, ['case', ['get', 'sel'], 9, 5], 16, ['case', ['get', 'sel'], 13, 9]],
+        'circle-color': ['match', ['get', 'c'], 'kh', '#c8102e', 'ez', '#7b3fb5', 'va', '#e07b00', 'ho', '#1f5fbf', 'bi', '#0b8a4b', 'be', '#4a5868', '#0097a7'],
+        'circle-stroke-color': ['case', ['get', 'sel'], ink, halo], 'circle-stroke-width': ['case', ['get', 'sel'], 3, 1.5],
+      },
+    });
+    m.addLayer({
+      id: 'objects-label', type: 'symbol', source: 'objects', minzoom: 13.5,
+      layout: { 'text-field': ['get', 'n'], 'text-font': ['Noto Sans Regular'], 'text-size': 11, 'text-offset': [0, 1.2], 'text-anchor': 'top', 'text-max-width': 9 },
+      paint: { 'text-color': ink, 'text-halo-color': halo, 'text-halo-width': 1.5 },
+    });
+    // Ziel einer Frage (Anfahrt: Einsatzstelle, Objekt: „Was ist hier?“)
+    m.addLayer({
+      id: 'target', type: 'circle', source: 'target',
+      paint: { 'circle-radius': 11, 'circle-color': '#ffd400', 'circle-stroke-color': '#1d1d1b', 'circle-stroke-width': 3.5 },
+    });
+    m.addLayer({
+      id: 'target-label', type: 'symbol', source: 'target',
+      layout: { 'text-field': ['get', 'label'], 'text-font': ['Noto Sans Bold'], 'text-size': 13, 'text-offset': [0, 1.5], 'text-anchor': 'top', 'text-max-width': 10, 'text-allow-overlap': true },
+      paint: { 'text-color': ink, 'text-halo-color': halo, 'text-halo-width': 2 },
     });
     m.addLayer({
       id: 'stations', type: 'circle', source: 'stations',
@@ -159,7 +192,7 @@ export class TrainerMap {
   }
 
   clearOverlays() {
-    ['mask', 'ring', 'explore', 'solution', 'link', 'points', 'reviewLines', 'reviewPoints'].forEach((id) => this.set(id));
+    ['mask', 'ring', 'explore', 'solution', 'link', 'points', 'reviewLines', 'reviewPoints', 'route', 'objects', 'target'].forEach((id) => this.set(id));
     this.map.setFilter('explore-hover', ['==', ['get', 'name'], '']);
   }
 
@@ -263,7 +296,7 @@ export class TrainerMap {
     this.map.fitBounds(BOUNDS, { padding: 20, duration: 700 });
   }
 
-  fitLines(lines, extra = []) {
+  fitLines(lines, extra = [], opts = {}) {
     const pts = lines.flat().concat(extra);
     if (!pts.length) return;
     let [minX, minY, maxX, maxY] = [Infinity, Infinity, -Infinity, -Infinity];
@@ -271,12 +304,12 @@ export class TrainerMap {
       minX = Math.min(minX, x); maxX = Math.max(maxX, x);
       minY = Math.min(minY, y); maxY = Math.max(maxY, y);
     }
-    this.map.fitBounds([[minX, minY], [maxX, maxY]], { padding: 70, maxZoom: 16.5, duration: 700 });
+    this.map.fitBounds([[minX, minY], [maxX, maxY]], { padding: 70, maxZoom: 16.5, duration: 700, ...opts });
   }
 }
 
 export function targetFeatures(target, props = {}) {
-  if (target.type === 'transit') {
+  if (target.type === 'transit' || target.type === 'object') {
     return [{ type: 'Feature', properties: props, geometry: { type: 'Point', coordinates: target.lines[0][0] } }];
   }
   return [{ type: 'Feature', properties: props, geometry: { type: 'MultiLineString', coordinates: target.lines } }];

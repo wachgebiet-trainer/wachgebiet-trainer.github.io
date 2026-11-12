@@ -7,7 +7,7 @@ export const CONTACT_MAIL = 'wachgebiet.trainer@gmail.com';
 const SPECIAL = {
   berlin: {
     subtitle: 'Berlin · BF, FF &amp; Rettungswachen',
-    intro: 'Wähle deine Wache – Berufsfeuerwehr, Freiwillige Feuerwehr oder Rettungswache – und trainiere Straßen und Bahnhöfe auf einer Karte ohne Beschriftung.',
+    intro: 'Wähle deine Wache – Berufsfeuerwehr, Freiwillige Feuerwehr oder Rettungswache – und trainiere Straßen, Bahnhöfe, wichtige Objekte und Anfahrtswege auf einer Karte ohne Beschriftung.',
     searchPlaceholder: 'Wachnummer, Name oder Ortsteil',
     areaLabel: (a) => `EB ${a}`,
     areaAll: 'Alle Einsatzbereiche',
@@ -28,7 +28,7 @@ const SPECIAL = {
   },
   duisburg: {
     subtitle: 'Duisburg · BF, FF &amp; Rettungswachen',
-    intro: 'Wähle deine Wache – Feuer- und Rettungswache, Löschzug der Freiwilligen Feuerwehr oder Rettungswache – und trainiere Straßen und Bahnhöfe auf einer Karte ohne Beschriftung.',
+    intro: 'Wähle deine Wache – Feuer- und Rettungswache, Löschzug der Freiwilligen Feuerwehr oder Rettungswache – und trainiere Straßen, Bahnhöfe, wichtige Objekte und Anfahrtswege auf einer Karte ohne Beschriftung.',
     searchPlaceholder: 'Wache, Löschzug oder Stadtbezirk',
     areaAll: 'Alle Stadtbezirke',
     areaAria: 'Stadtbezirk',
@@ -49,7 +49,7 @@ function osmDefaults(c) {
   return {
     subtitle: `${c.name} · Feuerwehr &amp; Rettungsdienst`,
     units: 'Feuerwachen & Freiwillige Feuerwehren',
-    intro: 'Wähle deine Wache – Feuerwache, Freiwillige Feuerwehr oder Rettungswache – und trainiere Straßen und Bahnhöfe auf einer Karte ohne Beschriftung.',
+    intro: 'Wähle deine Wache – Feuerwache, Freiwillige Feuerwehr oder Rettungswache – und trainiere Straßen, Bahnhöfe, wichtige Objekte und Anfahrtswege auf einer Karte ohne Beschriftung.',
     searchPlaceholder: 'Wache oder Stadtteil',
     areaAll: 'Alle Bereiche',
     areaAria: 'Bereich',

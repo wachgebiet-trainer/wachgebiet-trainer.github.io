@@ -2,6 +2,8 @@
 // rund um einen Punkt laden – im gleichen Format wie loadGeo() in data.js.
 import { VectorTile } from '@mapbox/vector-tile';
 import Pbf from 'pbf';
+import { GraphBuilder } from './roadgraph.js';
+import { poiCategory, isEmergencyPoi } from './objects.js';
 
 const TILEJSON = 'https://tiles.openfreemap.org/planet';
 const Z = 14;
@@ -47,6 +49,9 @@ export async function loadLiveGeo(center, radius = 5500, onProgress = () => {}) 
   const segs = [];
   const transit = new Map();
   const fireStations = [];
+  const found = [];
+  const emergency = [];
+  const gb = new GraphBuilder(Z);
   let done = 0;
   const queue = tiles.slice();
   async function worker() {
@@ -56,6 +61,7 @@ export async function loadLiveGeo(center, radius = 5500, onProgress = () => {}) 
       done++;
       onProgress(done, tiles.length);
       if (!tile) continue;
+      gb.addTile(tile, x, y);
       const tn = tile.layers.transportation_name;
       for (let i = 0; tn && i < tn.length; i++) {
         const ft = tn.feature(i);
@@ -87,9 +93,21 @@ export async function loadLiveGeo(center, radius = 5500, onProgress = () => {}) 
           if (!transit.has(name)) transit.set(name, { id: `osm:${name}`, name, modes: pr.subclass === 'subway' ? 'U' : 'S', center: c });
         }
         if (pr.class === 'fire_station' && pr.name) fireStations.push({ name: String(pr.name), center: c });
+        if (isEmergencyPoi(pr)) emergency.push(c);
+        const cat = poiCategory(pr);
+        if (cat) found.push({ c: cat, n: String(pr['name:de'] || pr.name).trim(), p: c, fid: ft.id });
       }
     }
   }
   await Promise.all(Array.from({ length: 6 }, worker));
-  return { segs, transit: [...transit.values()], fireStations };
+  // Objekte: Doppelte (Kachelrand, Knoten + Fläche) zusammenfassen
+  const d = (a, b) => Math.hypot((b[0] - a[0]) * 111320 * Math.cos((a[1] * Math.PI) / 180), (b[1] - a[1]) * 110540);
+  const objects = [];
+  for (const o of found) {
+    if (objects.some((k) => k.c === o.c && d(k.p, o.p) < 300 && (k.n === o.n || d(k.p, o.p) < 25))) continue;
+    const rec = { id: `L${o.fid ?? objects.length}`, c: o.c, n: o.n, p: o.p };
+    if (o.c === 'kh' && emergency.some((p) => d(p, o.p) < 400)) rec.e = 1;
+    objects.push(rec);
+  }
+  return { segs, transit: [...transit.values()], fireStations, objects, roads: gb.finalize() };
 }
