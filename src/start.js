@@ -89,10 +89,10 @@ function render() {
     <section class="finder" id="suche">
       <h2>Wache oder Stadt suchen</h2>
       <form class="finder-form" id="finder" role="search">
-        <input id="q" type="search" placeholder="Stadt, Ort oder Wache" autocomplete="off" aria-label="Stadt, Ort oder Wache" />
+        <input id="q" type="search" placeholder="PLZ, Stadt, Ort oder Wache" autocomplete="off" aria-label="PLZ, Stadt, Ort oder Wache" />
         <button class="btn primary" type="submit">Suchen</button>
       </form>
-      <p class="finder-hint">Großstädte werden beim Tippen gefiltert. <b>Suchen</b> findet zusätzlich jede Feuer- und Rettungswache in Deutschland.</p>
+      <p class="finder-hint">Großstädte werden beim Tippen gefiltert. <b>Suchen</b> findet zusätzlich jede Feuer- und Rettungswache in Deutschland – auch über die Postleitzahl.</p>
       <div id="finder-results" aria-live="polite"></div>
     </section>
 
@@ -131,8 +131,10 @@ function filterCities(q) {
     byLandEl.hidden = false;
     return;
   }
-  const hits = cities.filter((c) => norm(c.name).includes(n));
-  filtered.innerHTML = hits.length ? hits.map(cityCard).join('') : '<p class="city-empty">Keine Großstadt mit diesem Namen – mit <b>Suchen</b> findest du Wachen in jedem Ort.</p>';
+  const hits = /^\d/.test(n) ? [] : cities.filter((c) => norm(c.name).includes(n));
+  filtered.innerHTML = hits.length ? hits.map(cityCard).join('')
+    : /^\d/.test(n) ? '<p class="city-empty">Postleitzahl eingeben und <b>Suchen</b> drücken – du bekommst alle Wachen in diesem PLZ-Gebiet.</p>'
+    : '<p class="city-empty">Keine Großstadt mit diesem Namen – mit <b>Suchen</b> findest du Wachen in jedem Ort.</p>';
   filtered.hidden = false;
   byLandEl.hidden = true;
   fillCounts();
@@ -144,12 +146,13 @@ const isStation = (r) => r.type === 'fire_station' || r.type === 'ambulance_stat
 const SKIP = /werk(s)?feuerwehr|jugendfeuerwehr|museum|schule|übungs|lager|leitstelle|verwaltung|army|bundeswehr|flughafen/i;
 function typeOf(r) {
   const n = r.name || '';
+  if (/feuerwache|berufsfeuerwehr|feuer-?\s?(und|u\.|&)\s?rettungswache|hauptwache|umweltwache/i.test(n) && !/freiwillige/i.test(n)) return 'BF';
   if (r.type === 'ambulance_station' || /rettungswache|rettungsdienst/i.test(n) && !/feuer/i.test(n)) return 'RW';
-  if (/feuerwache|berufsfeuerwehr|feuer-?\s?(und|u\.)\s?rettungswache|hauptwache|umweltwache/i.test(n) && !/freiwillige/i.test(n)) return 'BF';
   return 'FF';
 }
-async function nominatim(q) {
-  const url = `${NOMINATIM}?${new URLSearchParams({ q, countrycodes: 'de', limit: '20', format: 'jsonv2', addressdetails: '1', 'accept-language': 'de' })}`;
+async function nominatim(q, extra = {}) {
+  const params = typeof q === 'string' ? { q, countrycodes: 'de', limit: '20', ...extra } : q;
+  const url = `${NOMINATIM}?${new URLSearchParams({ ...params, format: 'jsonv2', addressdetails: '1', 'accept-language': 'de' })}`;
   const res = await fetch(url);
   if (!res.ok) throw new Error(res.status);
   return res.json();
@@ -165,6 +168,12 @@ async function searchStations(q) {
   box.innerHTML = '<p class="muted">Suche läuft …</p>';
   try {
     await new Promise((r) => setTimeout(r, wait));
+    const plz = q.trim().match(/^(\d{5})(?:\s|,|$)/)?.[1];
+    if (plz) return await searchPostcode(plz, box);
+    if (/^\d+$/.test(q.trim())) {
+      box.innerHTML = '<p class="muted">Bitte eine vollständige Postleitzahl mit 5 Ziffern eingeben.</p>';
+      return;
+    }
     const looksLikeStation = /feuer|ff\b|ffw|wache|löschzug|löschgruppe|rettung/i.test(q);
     const queries = looksLikeStation ? [q, `Feuerwehr in ${q.replace(/^(ff|ffw|freiwillige feuerwehr|feuerwehr|feuerwache)\s+/i, '')}`] : [`Feuerwehr in ${q}`, `Rettungswache in ${q}`];
     const found = new Map();
@@ -181,11 +190,50 @@ async function searchStations(q) {
          <ul class="station-results">${list.map(resultItem).join('')}</ul>`
       : '<p class="muted">Keine Wache gefunden. Versuche den Ortsnamen (z. B. „Hösbach“) oder den Namen der Wache.</p>';
   } catch {
+    lastSearch = Date.now();
     box.innerHTML = '<p class="muted">Die Suche ist gerade nicht erreichbar. Bitte in einem Moment erneut versuchen.</p>';
   } finally {
     searching = false;
   }
 }
+// Postleitzahl: PLZ-Gebiet bestimmen, dann alle Wachen darin (und knapp daneben) suchen
+const pause = () => new Promise((r) => setTimeout(r, 1100));
+async function searchPostcode(plz, box) {
+  const area = (await nominatim({ postalcode: plz, country: 'de', limit: '1' }))[0];
+  if (!area) {
+    lastSearch = Date.now();
+    box.innerHTML = `<p class="muted">Die Postleitzahl ${plz} wurde nicht gefunden.</p>`;
+    return;
+  }
+  const [s, n, w, e] = area.boundingbox.map(Number);
+  const a = area.address || {};
+  const place = a.city || a.town || a.village || a.municipality || '';
+  const found = new Map();
+  // Ist das Gebiet zu klein für Treffer, den Ausschnitt schrittweise vergrößern (ca. 3 und 8 km)
+  for (const pad of [0, 0.03, 0.075]) {
+    const viewbox = [w - pad * 1.6, n + pad, e + pad * 1.6, s - pad].join(',');
+    for (const q of ['Feuerwehr', 'Rettungswache']) {
+      await pause();
+      for (const r of await nominatim(q, { viewbox, bounded: '1', limit: '40' })) {
+        if (isStation(r) && r.name && !SKIP.test(r.name)) found.set(`${r.osm_type}${r.osm_id}`, r);
+      }
+    }
+    if (found.size >= 3) break;
+  }
+  lastSearch = Date.now();
+  // Wachen mit derselben PLZ zuerst, dann nach Entfernung zur Mitte des PLZ-Gebiets
+  const cx = +area.lon, cy = +area.lat;
+  const d = (r) => Math.hypot((+r.lon - cx) * Math.cos((cy * Math.PI) / 180), +r.lat - cy);
+  const list = [...found.values()].sort((x, y) => (x.address?.postcode !== plz) - (y.address?.postcode !== plz) || d(x) - d(y)).slice(0, 30);
+  const inPlz = list.filter((r) => r.address?.postcode === plz).length;
+  const big = cities.find((c) => norm(c.name) === norm(place) || norm(c.name) === norm(a.city || ''));
+  const bigHint = big ? `<p class="finder-meta">${esc(plz)} liegt in <a href="${cityUrl(big)}">${esc(big.name)}</a> – dort gibt es den Trainer mit allen Wachen der Stadt.</p>` : '';
+  box.innerHTML = bigHint + (list.length
+    ? `<p class="finder-meta">${list.length} Wache${list.length === 1 ? '' : 'n'} für PLZ ${esc(plz)}${place ? ' ' + esc(place) : ''}${inPlz && inPlz < list.length ? ` (${inPlz} im PLZ-Gebiet, weitere in der Nähe)` : ''} · Daten aus OpenStreetMap</p>
+       <ul class="station-results">${list.map(resultItem).join('')}</ul>`
+    : `<p class="muted">Keine Wache im PLZ-Gebiet ${esc(plz)}${place ? ' ' + esc(place) : ''} gefunden. Versuche den Ortsnamen.</p>`);
+}
+
 function resultItem(r) {
   const a = r.address || {};
   const type = typeOf(r);
